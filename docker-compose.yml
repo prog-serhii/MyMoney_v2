@@ -11,3 +11,17 @@ services:
       - 8000:8000
     env_file:
       - ./backend/.env
+    depends_on: 
+      - db
+  db:
+    container_name: my_money_postgres_db
+    image: postgres:11
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data/
+    environment: 
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=(vk185a4)
+      - POSTGRES_DB=my_money
+
+volumes:
+  postgres_data:
