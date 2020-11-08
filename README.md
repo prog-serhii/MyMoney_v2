@@ -15,3 +15,5 @@ MyMoney was created by Serhii Kazmiruk
 
 ## Demo
 .....
+
+pipenv run pip freeze > requirements.txt
