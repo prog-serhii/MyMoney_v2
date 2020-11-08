@@ -16,4 +16,20 @@ MyMoney was created by Serhii Kazmiruk
 ## Demo
 .....
 
-pipenv run pip freeze > requirements.txt
+Build the image:
+docker-compose build
+
+
+Once the image is built, run the container:
+
+docker-compose up -d
+
+
+or
+
+docker-compose up -d --build
+
+
+Bring down the development containers (and the associated volumes with the -v flag):
+
+docker-compose down -v
