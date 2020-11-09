@@ -1,4 +1,5 @@
 from djmoney.models.fields import MoneyField
+from djmoney.models.managers import money_manager
 
 from django.db import models
 from django.contrib.auth import get_user_model
@@ -40,8 +41,9 @@ class Wallet(models.Model):
     active = models.BooleanField(verbose_name='Active',
                                  default=True)
 
-    # custom model manager
-    objects = WalletManager()
+    # Django-money leaves you to use any custom model managers you like for your models,
+    # but it needs to wrap some of the methods to allow searching for models with money values.
+    objects = money_manager(WalletManager())
 
     class Meta:
         verbose_name = 'Wallet'

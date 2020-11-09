@@ -1,19 +1,24 @@
+from djmoney.models.managers import understands_money
+
 from django.db.models import Manager, QuerySet
 
 
 class WalletQuerySet(QuerySet):
+    @understands_money
     def by_user(self, user):
         """
         Filtering by user id.
         """
         return self.filter(user=user)
 
+    @understands_money
     def by_currency(self, currency):
         """
         Filtering by currency code.
         """
         return self.filter(start_balance_currency=currency)
 
+    @understands_money
     def active(self):
         """
         Filtering by active items.
