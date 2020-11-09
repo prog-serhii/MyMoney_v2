@@ -49,7 +49,7 @@ class Wallet(models.Model):
         verbose_name = 'Wallet'
         verbose_name_plural = 'Wallets'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.name}__{self.user}'
 
     @property

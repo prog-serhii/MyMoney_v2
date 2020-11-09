@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djmoney',
 
-    'apps.wallet'
+    'apps.wallet.apps.WalletConfig'
 ]
 
 MIDDLEWARE = [
