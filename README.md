@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/prog-serhii/MyMoney_v2.svg?branch=main)](https://travis-ci.com/prog-serhii/MyMoney_v2)
 # MyMoney
 A web application for budget tracking and money management.
 
