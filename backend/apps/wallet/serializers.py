@@ -1,5 +1,5 @@
 from moneyed.classes import get_currency, CurrencyDoesNotExist
-from djmoney.contrib.django_rest_framework import MoneyField
+# from djmoney.contrib.django_rest_framework import MoneyField
 from rest_framework import serializers
 
 from .models import Wallet

@@ -34,10 +34,10 @@ class Wallet(models.Model):
                                default_currency='EUR',
                                blank=False,
                                null=False)
-    logo = models.ImageField(verbose_name='Logo',
-                             upload_to='logos/wallets/%Y/%m/%d/',
-                             blank=True
-                             )
+    # logo = models.ImageField(verbose_name='Logo',
+    #                          upload_to='logos/wallets/%Y/%m/%d/',
+    #                          blank=True
+    #                          )
     active = models.BooleanField(verbose_name='Active',
                                  default=True)
 
