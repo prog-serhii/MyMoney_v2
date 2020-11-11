@@ -1,16 +1,21 @@
-FROM python:3.7
-
-# set work directory
-WORKDIR /usr/src/app
+FROM python:3.7-alpine
+LABEL maintainer="Serhii Kazmiruk"
 
 # set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# install dependencies
-RUN pip install --upgrade pip
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+# Install dependencies
+COPY ./requirements.txt /requirements.txt
+RUN apk add --update --no-cache postgresql-client
+RUN apk add --update --no-cache --virtual .tmp-build-deps \
+    gcc libc-dev linux-headers postgresql-dev
+RUN pip install -r /requirements.txt
+RUN apk del .tmp-build-deps
 
-# copy project
-COPY . .
+# Setup directory structure
+RUN mkdir /app
+WORKDIR /app
+COPY . /app
+
+RUN adduser -D user
+USER user
