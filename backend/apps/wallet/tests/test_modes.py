@@ -102,8 +102,8 @@ class WalletModelTests(TestCase):
             2
         )
 
-    def test_logo_field(self):
-        pass
+    # def test_logo_field(self):
+        # pass
 
     def test_active_field(self):
         self.assertIsInstance(
@@ -114,4 +114,34 @@ class WalletModelTests(TestCase):
         self.assertEqual(
             self.wallet_3.active,
             True
+        )
+
+    def test_manager_method_by_user(self):
+        self.assertEqual(
+            Wallet.objects.by_user(self.user_1).count(),
+            2
+        )
+        self.assertEqual(
+            Wallet.objects.by_user(self.user_2).count(),
+            1
+        )
+
+    def test_manager_method_by_currency(self):
+        self.assertEqual(
+            Wallet.objects.by_currency('EUR').count(),
+            2
+        )
+        self.assertEqual(
+            Wallet.objects.by_currency('UAH').count(),
+            1
+        )
+        self.assertEqual(
+            Wallet.objects.by_currency('RUB').count(),
+            0
+        )
+
+    def test_manager_method_active(self):
+        self.assertEqual(
+            Wallet.objects.active().count(),
+            2
         )
