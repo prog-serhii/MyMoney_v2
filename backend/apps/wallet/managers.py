@@ -16,14 +16,7 @@ class WalletQuerySet(QuerySet):
         """
         Filtering by currency code.
         """
-        return self.filter(start_balance_currency=currency)
-
-    @understands_money
-    def active(self):
-        """
-        Filtering by active items.
-        """
-        return self.filter(active=True)
+        return self.filter(initial_balance_currency=currency)
 
 
 class WalletManager(Manager):
@@ -42,6 +35,3 @@ class WalletManager(Manager):
 
     def by_currency(self, currency):
         return self.get_queryset().by_currency(currency)
-
-    def active(self):
-        return self.get_queryset().active()

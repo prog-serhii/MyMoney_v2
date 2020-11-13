@@ -27,19 +27,15 @@ class Wallet(models.Model):
                                    max_length=10,
                                    choices=TypeOfWallet.choices,
                                    default=TypeOfWallet.CASHE)
-    start_balance = MoneyField(verbose_name='Start balance',
-                               max_digits=10,
-                               decimal_places=2,
-                               default=0,
-                               default_currency='EUR',
-                               blank=False,
-                               null=False)
-    # logo = models.ImageField(verbose_name='Logo',
-    #                          upload_to='logos/wallets/%Y/%m/%d/',
-    #                          blank=True
-    #                          )
-    active = models.BooleanField(verbose_name='Active',
-                                 default=True)
+    initial_balance = MoneyField(verbose_name='Initial balance',
+                                 max_digits=10,
+                                 decimal_places=2,
+                                 default=0,
+                                 default_currency='EUR',
+                                 blank=False,
+                                 null=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     # Django-money leaves you to use any custom model managers you like for your models,
     # but it needs to wrap some of the methods to allow searching for models with money values.
@@ -48,6 +44,7 @@ class Wallet(models.Model):
     class Meta:
         verbose_name = 'Wallet'
         verbose_name_plural = 'Wallets'
+        ordering = ['updated']
 
     def __str__(self) -> str:
         return f'{self.name}__{self.user}'

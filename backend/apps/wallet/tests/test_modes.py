@@ -22,24 +22,22 @@ class WalletModelTests(TestCase):
             user=cls.user_1,
             name='wallet_1',
             wallet_type='cashe',
-            start_balance=100.00,
-            start_balance_currency='UAH',
-            active=True
+            initial_balance=100.00,
+            initial_balance_currency='UAH',
         )
         cls.wallet_2 = Wallet.objects.create(
             user=cls.user_1,
             name='wallet_2',
             wallet_type='cashe',
-            start_balance=500.00,
-            start_balance_currency='EUR',
-            active=False
+            initial_balance=500.00,
+            initial_balance_currency='EUR',
         )
         cls.wallet_3 = Wallet.objects.create(
             user=cls.user_2,
             name='wallet_3',
             wallet_type='cashe',
-            start_balance=200.00,
-            start_balance_currency='EUR',
+            initial_balance=200.00,
+            initial_balance_currency='EUR',
         )
 
     def test_wallets_count(self):
@@ -82,38 +80,24 @@ class WalletModelTests(TestCase):
             str
         )
 
-    def test_start_balance_field(self):
+    def test_initial_balance_field(self):
         self.assertIsInstance(
-            self.wallet_1.start_balance,
+            self.wallet_1.initial_balance,
             Money
         )
         self.assertIsInstance(
-            self.wallet_1.start_balance_currency,
+            self.wallet_1.initial_balance_currency,
             str
         )
         self.assertEqual(
-            Wallet.objects.get(start_balance=Money(500, 'EUR')),
+            Wallet.objects.get(initial_balance=Money(500, 'EUR')),
             self.wallet_2
         )
         # check count of wallets with the start balance grater then 50 EUR
         # this test also check if custom model manager is wrapped by money_manage
         self.assertEqual(
-            Wallet.objects.filter(start_balance__gt=Money(50, 'EUR')).count(),
+            Wallet.objects.filter(initial_balance__gt=Money(50, 'EUR')).count(),
             2
-        )
-
-    # def test_logo_field(self):
-        # pass
-
-    def test_active_field(self):
-        self.assertIsInstance(
-            self.wallet_1.active,
-            bool
-        )
-        # test default value
-        self.assertEqual(
-            self.wallet_3.active,
-            True
         )
 
     def test_manager_method_by_user(self):
@@ -138,10 +122,4 @@ class WalletModelTests(TestCase):
         self.assertEqual(
             Wallet.objects.by_currency('RUB').count(),
             0
-        )
-
-    def test_manager_method_active(self):
-        self.assertEqual(
-            Wallet.objects.active().count(),
-            2
         )
