@@ -1,9 +1,12 @@
+from djmoney.models.fields import MoneyField
+
 from django.contrib.auth import get_user_model
+from django.db import models
 
 from apps.wallet.models import Wallet
 
 
-class ExpenseCategory(Categories):
+class ExpenseCategory(models.Model):
     user = models.ForeignKey(get_user_model(),
                              verbose_name='User',
                              on_delete=models.CASCADE,
@@ -20,7 +23,7 @@ class ExpenseCategory(Categories):
         verbose_name_plural = 'Expense categories'
 
 
-class Expense(AccountChanges):
+class Expense(models.Model):
     title = models.CharField(verbose_name='Title',
                              max_length=250,
                              blank=True)
