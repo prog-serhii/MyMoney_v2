@@ -34,8 +34,8 @@ class Wallet(models.Model):
                                  default_currency='EUR',
                                  blank=False,
                                  null=False)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created = models.DateField(auto_now_add=True)
+    updated = models.DateField(auto_now=True)
 
     # Django-money leaves you to use any custom model managers you like for your models,
     # but it needs to wrap some of the methods to allow searching for models with money values.
