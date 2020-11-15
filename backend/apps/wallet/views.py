@@ -7,8 +7,5 @@ from .serializers import WalletSerializer
 
 
 class WalletListCreateView(generics.ListCreateAPIView):
-    # Mocking user
-    user = User.objects.first()
-
-    queryset = Wallet.objects.by_user(user)
+    queryset = Wallet.objects.all()
     serializer_class = WalletSerializer

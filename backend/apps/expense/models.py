@@ -1,9 +1,11 @@
+from datetime import date
 from djmoney.models.fields import MoneyField
 
 from django.contrib.auth import get_user_model
 from django.db import models
 
 from apps.wallet.models import Wallet
+from apps.expense.managers import ExpenseManager
 
 
 class ExpenseCategory(models.Model):
@@ -15,8 +17,8 @@ class ExpenseCategory(models.Model):
     name = models.CharField(verbose_name='Name',
                             max_length=100)
 
-    def __str__(self):
-        return f"{self.name} ({str(self.user)})"
+    def __str__(self) -> str:
+        return f'{self.name} ({self.user})'
 
     class Meta:
         verbose_name = 'Expense category'
@@ -24,9 +26,9 @@ class ExpenseCategory(models.Model):
 
 
 class Expense(models.Model):
-    title = models.CharField(verbose_name='Title',
-                             max_length=250,
-                             blank=True)
+    name = models.CharField(verbose_name='Name',
+                            max_length=250,
+                            blank=True)
     user = models.ForeignKey(get_user_model(),
                              verbose_name='User',
                              on_delete=models.CASCADE,
@@ -35,16 +37,21 @@ class Expense(models.Model):
                                  verbose_name='Category',
                                  on_delete=models.CASCADE,
                                  related_name='expenses')
-    wallet = models.ForeignKey(Wallet,
-                               verbose_name='Wallet',
-                               on_delete=models.CASCADE,
-                               related_name='expenses')
-    data = models.DateField(verbose_name='Data',
-                            auto_now_add=True)
+    from_wallet = models.ForeignKey(Wallet,
+                                    verbose_name='From wallet',
+                                    on_delete=models.CASCADE,
+                                    related_name='expenses')
+    date = models.DateField(verbose_name='Date',
+                            default=date.today)
     amount = MoneyField(verbose_name='Amount',
                         max_digits=10,
                         decimal_places=2,
                         default_currency='EUR')
+
+    objects = ExpenseManager()
+
+    def __str__(self) -> str:
+        return f'{self.name} ({self.user})'
 
     class Meta:
         verbose_name = 'Expense'

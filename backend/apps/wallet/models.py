@@ -47,7 +47,7 @@ class Wallet(models.Model):
         ordering = ['updated']
 
     def __str__(self) -> str:
-        return f'{self.name}__{self.user}'
+        return f'{self.name} ({self.user})'
 
     @property
     def currency(self) -> str:
