@@ -22,9 +22,9 @@ class ExpenseQuerySet(QuerySet):
         date(year=2019) - return all objects created in 2019 year
         date(year=2020, month=1) - return all objects created in the 1-th month of 2020.
         date(year=2020, month=1, day=1) - return all objects created 
-                                          on 1-th day of 1-th mount and 2020 year.
+                                          on 1-th day of 1-th month and 2020 year.
         date(year=2020, day=1) - return all objects created 
-                                on 1-th day of current mount and 2020 year.
+                                on 1-th day of current month and 2020 year.
         """
         today = date.today()
 

@@ -90,3 +90,31 @@ class WalletModelTests(TestCase):
             Expense.objects.date(year=1020, month=9, day=11).count(),
             0
         )
+
+    def test_manager_method_date_range(self):
+        self.assertEqual(
+            # from 1.1.2019 to today
+            Expense.objects.date_range(start_date=date(year=2019, month=1, day=1)).count(),
+            4
+        )
+        self.assertEqual(
+            # from 11.9.2020 to today
+            Expense.objects.date_range(start_date=date(year=2020, month=9, day=11)).count(),
+            3
+        )
+        self.assertEqual(
+            # from 10.10.2020 to 17.10.2020
+            Expense.objects.date_range(
+                start_date=date(year=2020, month=10, day=1),
+                end_date=date(year=2020, month=10, day=10)
+            ).count(),
+            2
+        )
+        self.assertEqual(
+            # from 10.10.2010 to 17.10.2010
+            Expense.objects.date_range(
+                start_date=date(year=2010, month=10, day=10),
+                end_date=date(year=2010, month=10, day=17)
+            ).count(),
+            0
+        )
