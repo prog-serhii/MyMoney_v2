@@ -46,7 +46,7 @@ class WalletModelTests(TestCase):
             category=cls.category,
             from_wallet=cls.wallet,
             date=date(year=2020, month=10, day=10),
-            amount=Money(100, 'EUR')
+            amount=Money(200, 'EUR')
         )
         cls.expense_3 = Expense.objects.create(
             name='expense_3',
@@ -54,7 +54,7 @@ class WalletModelTests(TestCase):
             category=cls.category,
             from_wallet=cls.wallet,
             date=date(year=2020, month=9, day=11),
-            amount=Money(100, 'EUR')
+            amount=Money(0.50, 'EUR')
         )
         cls.expense_4 = Expense.objects.create(
             name='expense_4',
@@ -62,7 +62,7 @@ class WalletModelTests(TestCase):
             category=cls.category,
             from_wallet=cls.wallet,
             date=date(year=2019, month=10, day=17),
-            amount=Money(100, 'EUR')
+            amount=Money(50, 'EUR')
         )
 
     def test_manager_method_date(self):

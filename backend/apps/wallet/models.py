@@ -1,10 +1,12 @@
+from djmoney.money import Money
 from djmoney.models.fields import MoneyField
 from djmoney.models.managers import money_manager
 
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth import get_user_model
 
-from .managers import WalletManager
+from apps.wallet.managers import WalletManager
 
 
 class Wallet(models.Model):
@@ -54,4 +56,14 @@ class Wallet(models.Model):
         """
         Return currency of the wallet
         """
-        return str(self.start_balance.currency)
+        return str(self.initial_balance.currency)
+
+    @property
+    def balance(self) -> Money:
+        initial_balance = self.initial_balance
+        expenses = self.expenses.aggregate(Sum('amount'))['amount__sum']
+        # incomes = self.incomes.aggregate(Sum('amount'))['amount__sum']
+
+        balance = initial_balance - Money(expenses, self.currency)
+
+        return round(balance, 2)

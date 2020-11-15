@@ -22,16 +22,16 @@ class WalletSerializer(serializers.ModelSerializer):
     # ДОДАТИ ДОЗВІЛ ТІЛЬКИ ДЛЯ АВТОРИЗОВАНИХ
     user = serializers.HiddenField(
         default=serializers.CurrentUserDefault())
-    start_balance_currency = serializers.CharField(
+    initial_balance_currency = serializers.CharField(
         required=True, write_only=True, validators=[CurrencyCodeValidator()])
 
     class Meta:
         model = Wallet
-        exclude = ['id', 'logo']
+        exclude = ['id', 'created', 'updated']
 
-        extra_kwargs = {
-            'start_balance':
-            {
-                'write_only': True
-            },
-        }
+        # extra_kwargs = {
+        #     'initial_balance':
+        #     {
+        #         'write_only': True
+        #     },
+        # }

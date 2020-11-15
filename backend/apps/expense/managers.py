@@ -85,4 +85,7 @@ class ExpenseManager(Manager):
         return self.get_queryset().date_range(start_date, end_date)
 
     def date(self, year=None, month=None, day=None):
+        """
+        Filtering by date range (year, month, day).
+        """
         return self.get_queryset().date(year, month, day)
