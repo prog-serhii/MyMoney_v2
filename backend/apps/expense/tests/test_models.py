@@ -2,7 +2,7 @@ from datetime import date
 from djmoney.money import Money
 
 from django.test import TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from apps.expense.models import Expense, ExpenseCategory
 from apps.wallet.models import Wallet
@@ -14,8 +14,8 @@ class WalletModelTests(TestCase):
         # Set up non-modified objects used by all test methods
 
         # set up user
-        cls.user = User.objects.create_user(
-            'user', 'user@email.ua', 'user1password')
+        cls.user = get_user_model().objects.create_user(
+            'user@email.ua', 'user1password')
 
         # set up wallet
         cls.wallet = Wallet.objects.create(
