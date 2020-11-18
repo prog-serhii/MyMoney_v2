@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     'apps.wallet.apps.WalletConfig',
     'apps.expense.apps.ExpenseConfig',
+    'apps.income.apps.IncomeConfig',
     'apps.user.apps.UserConfig'
 ]
 

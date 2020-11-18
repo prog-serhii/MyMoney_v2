@@ -61,9 +61,12 @@ class Wallet(models.Model):
     @property
     def balance(self) -> Money:
         initial_balance = self.initial_balance
+
         expenses = self.expenses.aggregate(Sum('amount'))['amount__sum']
-        # incomes = self.incomes.aggregate(Sum('amount'))['amount__sum']
+        expenses = Money(expenses, self.currency)
 
-        balance = initial_balance - Money(expenses, self.currency)
+        incomes = self.incomes.aggregate(Sum('amount'))['amount__sum']
+        incomes = Money(incomes, self.currency)
 
+        balance = initial_balance + incomes - expenses
         return round(balance, 2)
