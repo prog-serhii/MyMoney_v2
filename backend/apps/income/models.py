@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 from apps.wallet.models import Wallet
+from apps.core.managers import TransactionManager
 
 
 class IncomeCategory(models.Model):
@@ -47,7 +48,7 @@ class Income(models.Model):
                         decimal_places=2,
                         default_currency='EUR')
 
-    # objects = ExpenseManager()
+    objects = TransactionManager()
 
     def __str__(self) -> str:
         return f'{self.name} ({self.user})'

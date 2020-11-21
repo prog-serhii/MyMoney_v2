@@ -4,13 +4,15 @@ from djmoney.models.managers import understands_money
 from django.db.models import Manager, QuerySet
 
 
-class ExpenseQuerySet(QuerySet):
+class TransactionQuerySet(QuerySet):
     @understands_money
     def user(self, user):
+        # a model must contain a FK field - user
         return self.filter(user=user)
 
     @understands_money
     def date_range(self, start_date, end_date):
+        # a model must contain a date field - date
         return self.filter(date__range=(start_date, end_date))
 
     @understands_money
@@ -25,6 +27,8 @@ class ExpenseQuerySet(QuerySet):
                                         on 1-th day of 1-th month and 2020 year.
         date(year=2020, day=1) - return all objects created
                                 on 1-th day of current month and 2020 year.
+
+        A model must contain a date field - date.
         """
         today = date.today()
 
@@ -61,16 +65,16 @@ class ExpenseQuerySet(QuerySet):
             )
 
 
-class ExpenseManager(Manager):
+class TransactionManager(Manager):
     """
-    Expense model manager for filtering on various grounds.
+    Expense, Income, Transfer models manager
     """
 
     def get_queryset(self):
         """
-        Get custom Wallet query set.
+        Get custom query set.
         """
-        return ExpenseQuerySet(self.model, using=self._db)
+        return TransactionQuerySet(self.model, using=self._db)
 
     def user(self, user):
         """
