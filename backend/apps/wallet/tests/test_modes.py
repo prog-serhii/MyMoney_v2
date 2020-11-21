@@ -46,7 +46,7 @@ class WalletModelTests(TestCase):
             3
         )
 
-    def test_user_field(self):
+    def test_field_user(self):
         self.assertEqual(
             self.wallet_1.user,
             self.user_1
@@ -68,19 +68,19 @@ class WalletModelTests(TestCase):
             1
         )
 
-    def test_name_field(self):
+    def test_field_name(self):
         self.assertIsInstance(
             self.wallet_1.name,
             str
         )
 
-    def test_wallet_type_field(self):
+    def test_field_wallet_type(self):
         self.assertIsInstance(
             self.wallet_1.wallet_type,
             str
         )
 
-    def test_initial_balance_field(self):
+    def test_field_initial_balance(self):
         self.assertIsInstance(
             self.wallet_1.initial_balance,
             Money
@@ -98,6 +98,38 @@ class WalletModelTests(TestCase):
         self.assertEqual(
             Wallet.objects.filter(initial_balance__gt=Money(50, 'EUR')).count(),
             2
+        )
+
+    def test_string_representation(self):
+        self.assertEqual(
+            str(self.wallet_1),
+            f'{self.wallet_1.name} ({self.wallet_1.user})'
+        )
+
+    def test_property_currency(self):
+        self.assertIsInstance(
+            self.wallet_1.currency,
+            str
+        )
+        self.assertEqual(
+            self.wallet_1.currency,
+            'UAH'
+        )
+        self.assertEquals(
+            self.wallet_2.currency,
+            self.wallet_3.currency,
+            'EUR'
+        )
+
+    def test_property_balance(self):
+        # test without any expenses, incomes or transfers
+        self.assertIsInstance(
+            self.wallet_1.balance,
+            Money
+        )
+        self.assertEqual(
+            self.wallet_1.balance,
+            self.wallet_1.initial_balance
         )
 
     def test_manager_method_by_user(self):

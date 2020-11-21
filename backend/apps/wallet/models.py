@@ -62,11 +62,18 @@ class Wallet(models.Model):
     def balance(self) -> Money:
         initial_balance = self.initial_balance
 
-        expenses = self.expenses.aggregate(Sum('amount'))['amount__sum']
-        expenses = Money(expenses, self.currency)
+        def aggregate_sum(instance, currency) -> Money:
+            amount = instance.aggregate(Sum('amount'))['amount__sum']
 
-        incomes = self.incomes.aggregate(Sum('amount'))['amount__sum']
-        incomes = Money(incomes, self.currency)
+            if amount is None:
+                amount = float()
+            else:
+                amount = float(amount)
+
+            return Money(amount, self.currency)
+
+        incomes = aggregate_sum(self.incomes, self.currency)
+        expenses = aggregate_sum(self.expenses, self.currency)
 
         balance = initial_balance + incomes - expenses
         return round(balance, 2)
