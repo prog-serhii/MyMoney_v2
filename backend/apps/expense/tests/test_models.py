@@ -37,7 +37,7 @@ class WalletModelTests(TestCase):
             user=cls.user,
             category=cls.category,
             from_wallet=cls.wallet,
-            date=date(year=2020, month=10, day=1),
+            date=date(year=2010, month=10, day=1),
             amount=Money(100, 'EUR')
         )
         cls.expense_2 = Expense.objects.create(
@@ -45,7 +45,7 @@ class WalletModelTests(TestCase):
             user=cls.user,
             category=cls.category,
             from_wallet=cls.wallet,
-            date=date(year=2020, month=10, day=10),
+            date=date(year=2010, month=10, day=10),
             amount=Money(200, 'EUR')
         )
         cls.expense_3 = Expense.objects.create(
@@ -53,7 +53,7 @@ class WalletModelTests(TestCase):
             user=cls.user,
             category=cls.category,
             from_wallet=cls.wallet,
-            date=date(year=2020, month=9, day=11),
+            date=date(year=2010, month=9, day=11),
             amount=Money(0.50, 'EUR')
         )
         cls.expense_4 = Expense.objects.create(
@@ -64,6 +64,20 @@ class WalletModelTests(TestCase):
             date=date(year=2019, month=10, day=17),
             amount=Money(50, 'EUR')
         )
+        cls.expense_5 = Expense.objects.create(
+            name='expense_5',
+            user=cls.user,
+            category=cls.category,
+            from_wallet=cls.wallet,
+            date=date.today(),
+            amount=Money(1, 'UAH')
+        )
+
+    def test_manager_method_user(self):
+        self.assertEqual(
+            Expense.objects.user(self.user).count(),
+            5
+        )
 
     def test_manager_method_date(self):
         self.assertEqual(
@@ -71,50 +85,60 @@ class WalletModelTests(TestCase):
             1
         )
         self.assertEqual(
-            Expense.objects.date(year=2020).count(),
+            Expense.objects.date(year=2010).count(),
             3
-        )
-        self.assertEqual(
-            Expense.objects.date(month=10).count(),
-            2
         )
         self.assertEqual(
             Expense.objects.date(year=2019, month=10).count(),
             1
         )
         self.assertEqual(
-            Expense.objects.date(year=2020, month=9, day=11).count(),
+            Expense.objects.date(year=2010, month=9, day=11).count(),
             1
         )
         self.assertEqual(
             Expense.objects.date(year=1020, month=9, day=11).count(),
             0
         )
+        self.assertEqual(
+            Expense.objects.date(month=date.today().month).count(),
+            1
+        )
+        self.assertEqual(
+            Expense.objects.date(
+                month=date.today().month,
+                day=date.today().day
+            ).count(),
+            1
+        )
+        self.assertEqual(
+            Expense.objects.date(
+                year=date.today().year,
+                month=date.today().month,
+                day=date.today().day
+            ).count(),
+            1
+        )
 
     def test_manager_method_date_range(self):
         self.assertEqual(
             # from 1.1.2019 to today
             Expense.objects.date_range(start_date=date(year=2019, month=1, day=1)).count(),
-            4
-        )
-        self.assertEqual(
-            # from 11.9.2020 to today
-            Expense.objects.date_range(start_date=date(year=2020, month=9, day=11)).count(),
-            3
-        )
-        self.assertEqual(
-            # from 10.10.2020 to 17.10.2020
-            Expense.objects.date_range(
-                start_date=date(year=2020, month=10, day=1),
-                end_date=date(year=2020, month=10, day=10)
-            ).count(),
             2
         )
         self.assertEqual(
             # from 10.10.2010 to 17.10.2010
             Expense.objects.date_range(
-                start_date=date(year=2010, month=10, day=10),
-                end_date=date(year=2010, month=10, day=17)
+                start_date=date(year=2010, month=10, day=1),
+                end_date=date(year=2010, month=10, day=10)
+            ).count(),
+            2
+        )
+        self.assertEqual(
+            # from 10.10.2000 to 17.10.2000
+            Expense.objects.date_range(
+                start_date=date(year=2000, month=10, day=10),
+                end_date=date(year=2000, month=10, day=17)
             ).count(),
             0
         )
