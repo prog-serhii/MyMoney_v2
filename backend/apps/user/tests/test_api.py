@@ -10,45 +10,102 @@ from django.contrib.auth import get_user_model
 
 PASSWORD = 'pAssw0rd!'
 
-
-def create_user(username='test@email.ua', password=PASSWORD):  # new
-    return get_user_model().objects.create_user(
-        email=username,
-        name='Test User',
-        password=password
-    )
+CREATE_USER_URL = reverse('user:sign_up')
+TOKEN_URL = reverse('user:token_create')
 
 
-class AuthenticationTest(APITestCase):
+def create_user(**params):
+    """Helper function to create new user"""
+    return get_user_model().objects.create_user(**params)
+
+
+class PublicUserApiTests(APITestCase):
     def test_user_can_sign_up(self):
-        url = reverse('sign_up')
-        res = self.client.post(url, data={
+        """Test creating using with a valid payload is successful"""
+        payload = {
             'email': 'test@email.ua',
             'name': 'Test User',
             'password1': PASSWORD,
             'password2': PASSWORD
-        })
+        }
+        res = self.client.post(CREATE_USER_URL, payload)
+
         user = get_user_model().objects.last()
-        self.assertEqual(status.HTTP_201_CREATED, res.status_code)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertEqual(res.data['id'], user.id)
         self.assertEqual(res.data['email'], user.email)
         self.assertEqual(res.data['name'], user.name)
+        self.assertTrue(
+            user.check_password(payload['password1'])
+        )
+        passwords = ['password', 'password1', 'password2']
+        self.assertNotIn(res.data, passwords)
 
-    def test_user_can_log_in(self):
-        user = create_user()
-        res = self.client.post(reverse('log_in'), data={
-            'email': user.email,
-            'password': PASSWORD,
-        })
+    def test_user_exists(self):
+        """Test creating a user that already exists fails"""
+        payload = {
+            'email': 'test@email.ua',
+            'name': 'Test User',
+            'password': PASSWORD
+        }
+        create_user(**payload)
+        res = self.client.post(CREATE_USER_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_passwords_doesnt_match(self):
+        payload = {
+            'email': 'test@email.ua',
+            'name': 'Test User',
+            'password1': PASSWORD,
+            'password2': 'invalid password'
+        }
+        res = self.client.post(CREATE_USER_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_token_for_user(self):
+        """Test that a token is created for the user"""
+        payload = {'email': 'test@email.ua', 'password': PASSWORD}
+        user = create_user(**payload)
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertIsNotNone(res.data['access'])
 
         # Parse payload data from access token.
-        access = response.data['access']
+        access = res.data['access']
         header, payload, signature = access.split('.')
         decoded_payload = base64.b64decode(f'{payload}==')
         payload_data = json.loads(decoded_payload)
 
-        self.assertEqual(status.HTTP_200_OK, res.status_code)
         self.assertIsNotNone(res.data['refresh'])
         self.assertEqual(payload_data['id'], user.id)
-        self.assertEqual(payload_data['email'], user.email)
-        self.assertEqual(payload_data['name'], user.name)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_create_token_invalid_credentials(self):
+        """Test that token is not created if invalid credentials are given"""
+        create_user(email='test@londonappdev.com', password=PASSWORD)
+        payload = {'email': 'test@londonappdev.com', 'password': 'wrong'}
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn('access', res.data)
+        self.assertNotIn('refresh', res.data)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_token_no_user(self):
+        """Test that token is not created if user doens't exist"""
+        payload = {'email': 'test@londonappdev.com', 'password': PASSWORD}
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn('access', res.data)
+        self.assertNotIn('refresh', res.data)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_token_missing_field(self):
+        """Test that email and password are required"""
+        res = self.client.post(TOKEN_URL, {'email': 'one', 'password': ''})
+
+        self.assertNotIn('access', res.data)
+        self.assertNotIn('refresh', res.data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
