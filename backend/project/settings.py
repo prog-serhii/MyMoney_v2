@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'djoser',
     'djmoney',
 
     'apps.wallet.apps.WalletConfig',
@@ -135,6 +136,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Django REST Framework
 REST_FRAMEWORK = {
@@ -146,17 +148,34 @@ REST_FRAMEWORK = {
     ),
 }
 
+DJOSER = {
+    # Name of a field in User model to be used as login field
+    'LOGIN_FIELD': 'email',
+    # If True user will be required to click activation
+    # link sent in email after:
+    # * creating an account
+    # * updating their email
+    'SEND_ACTIVATION_EMAIL': True,
+    'ACTIVATION_URL': '/activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': '/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '/username/reset/confirm/{uid}/{token}',
+    # If True, you need to pass re_password to /users/
+    # endpoint, to validate password equality.
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    # If True, register or activation endpoint
+    # will send confirmation email to user.
+    'SEND_CONFIRMATION_EMAIL': True,
+    'SERIALIZERS': {
+        'user': 'apps.user.serializers.UserCreateSerializer',
+        'user_create': 'apps.user.serializers.UserCreateSerializer'
+    }
+}
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
     'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': False,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
     'AUTH_HEADER_TYPES': ('JWT',),
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'id',
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
 }
