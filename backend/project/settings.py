@@ -163,11 +163,12 @@ DJOSER = {
     # * updating their email
     'SEND_ACTIVATION_EMAIL': True,
     'ACTIVATION_URL': '/activate/{uid}/{token}',
-    'PASSWORD_RESET_CONFIRM_URL': '/password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': '/username/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'reset_password_confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'reset_email_confirm/{uid}/{token}',
     # If True, you need to pass re_password to /users/
     # endpoint, to validate password equality.
     'USER_CREATE_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
     # If True, register or activation endpoint
     # will send confirmation email to user.
     'SEND_CONFIRMATION_EMAIL': True,
