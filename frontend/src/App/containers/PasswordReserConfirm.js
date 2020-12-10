@@ -5,20 +5,29 @@ import { connect } from 'react-redux';
 import '../../assets/scss/style.scss';
 import Aux from '../../hoc/_Aux';
 import Breadcrumb from '../layout/AdminLayout/Breadcrumb';
-import { reset_password } from '../../actions/auth';
+import { reset_password_confirm } from '../../actions/auth';
 
 
-const PasswordReset = ({ reset_password }) => {
+const PasswordResetConfirm = ({ match, reset_password_confirm }) => {
     const [requestSent, setRequestSent] = useState(false);
 
-    const [email, setEmail] = useState('');
+    const [formData, setFormData] = useState({
+        new_password: '',
+        re_new_password: ''
+    });
 
-    const onChange = e => setEmail(e.target.value)
+    const { new_password, re_new_password } = formData;
+
+    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
 
     const onSubmit = e => {
         e.preventDefault();
 
-        reset_password(email);
+        const uid = match.params.uid;
+        const token = match.params.token;
+
+        reset_password_confirm(uid, token, new_password, re_new_password);
         setRequestSent(true);
     };
 
@@ -44,14 +53,27 @@ const PasswordReset = ({ reset_password }) => {
                             </div>
                             <h3 className='mb-4'>Request Password: Reset</h3>
                             <form onSubmit={e => onSubmit(e)}>
-                                <div className='input-group mb-3'>
+                                <div className='input-group mb-4'>
                                     <input
-                                        type='email'
+                                        type='password'
                                         className='form-control'
-                                        placeholder='Email'
-                                        name='email'
-                                        value={email}
+                                        placeholder='New Password'
+                                        name='new_password'
+                                        value={new_password}
                                         onChange={e => onChange(e)}
+                                        minLength='6'
+                                        required
+                                    />
+                                </div>
+                                <div className='input-group mb-4'>
+                                    <input
+                                        type='password'
+                                        className='form-control'
+                                        placeholder='Confirm New Password'
+                                        name='re_new_password'
+                                        value={re_new_password}
+                                        onChange={e => onChange(e)}
+                                        minLength='6'
                                         required
                                     />
                                 </div>
@@ -66,4 +88,4 @@ const PasswordReset = ({ reset_password }) => {
 };
 
 
-export default connect(null, { reset_password })(PasswordReset);
+export default connect(null, { reset_password_confirm })(PasswordResetConfirm);
