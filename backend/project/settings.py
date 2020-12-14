@@ -90,10 +90,10 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get('SQL_DATABASE', BASE_DIR / 'db.sqlite3'),
-        'USER': os.environ.get('SQL_USER', 'user'),
-        'PASSWORD': os.environ.get('SQL_PASSWORD', 'password'),
+        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.environ.get('SQL_DATABASE', 'my_money_2'),
+        'USER': os.environ.get('SQL_USER', 'my_money_2'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD', 'prog-serhii'),
         'HOST': os.environ.get('SQL_HOST', 'localhost'),
         'PORT': os.environ.get('SQL_PORT', '5432'),
     }
@@ -180,7 +180,7 @@ DJOSER = {
     # will send confirmation email to user.
     'SEND_CONFIRMATION_EMAIL': True,
     'SERIALIZERS': {
-        'user': 'apps.user.serializers.UserCreateSerializer',
+        'user': 'apps.user.serializers.NewUserSerializer',
         'user_create': 'apps.user.serializers.UserCreateSerializer'
     }
 }

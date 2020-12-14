@@ -15,7 +15,8 @@ class UserAdmin(BaseUserAdmin):
             {
                 'fields': (
                     'name',
-                    'main_currency'
+                    'main_currency',
+                    'currencies'
                 )
             }
         ),

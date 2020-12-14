@@ -1,9 +1,23 @@
 from djmoney.models.fields import CurrencyField
+from moneyed.classes import get_currency, CurrencyDoesNotExist
 
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 from .managers import UserManager
+
+
+def currency_code_validator(value):
+    try:
+        # try to find currency with this code
+        get_currency(code=value)
+    except CurrencyDoesNotExist as e:
+        raise ValidationError(
+            str(e),
+            params={'value': value}
+        )
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -13,7 +27,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     # default value is setup in DEFAULT_CURRENCY (settings.py)
-    main_currency = CurrencyField(verbose_name='Main currency')
+    main_currency = CurrencyField(verbose_name='Main currency', validators=[currency_code_validator])
+    currencies = ArrayField(CurrencyField(blank=True, validators=[currency_code_validator]), size=5)
 
     objects = UserManager()
 
