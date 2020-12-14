@@ -140,6 +140,13 @@ STATIC_URL = '/static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# ------------------------------------------ #
+#                django-money                #
+# ------------------------------------------ #
+DEFAULT_CURRENCY = 'EUR'
+
+EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
+FIXER_ACCESS_KEY = 'f5a898dbf45d15d8aa6eca7af3f372e1'
 
 # ------------------------------------------ #
 #           Django REST Framework            #
