@@ -158,6 +158,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
     ),
 }
 
@@ -180,7 +181,6 @@ DJOSER = {
     # will send confirmation email to user.
     'SEND_CONFIRMATION_EMAIL': True,
     'SERIALIZERS': {
-        'user': 'apps.user.serializers.NewUserSerializer',
         'user_create': 'apps.user.serializers.UserCreateSerializer'
     }
 }

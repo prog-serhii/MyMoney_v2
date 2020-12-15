@@ -1,8 +1,10 @@
-from djoser.serializers import UserCreateSerializer, UserSerializer
+from djoser.serializers import UserCreateSerializer
+from rest_framework import serializers
 
 from django.contrib.auth import get_user_model
 
 from apps.core.validators import CurrencyCodeValidator
+from .models import User
 
 
 class UserCreateSerializer(UserCreateSerializer):
@@ -11,7 +13,8 @@ class UserCreateSerializer(UserCreateSerializer):
         fields = ('id', 'email', 'name', 'password')
 
 
-class UserSerializer(UserSerializer):
-    class Meta(UserSerializer.Meta):
-        model = get_user_model()
-        fields = ('id', 'email', 'name', 'main_currency')
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('name', 'main_currency', 'currencies')

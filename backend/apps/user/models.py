@@ -28,7 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     # default value is setup in DEFAULT_CURRENCY (settings.py)
     main_currency = CurrencyField(verbose_name='Main currency', validators=[currency_code_validator])
-    currencies = ArrayField(CurrencyField(blank=True, validators=[currency_code_validator]), size=5)
+    currencies = ArrayField(CurrencyField(blank=True, validators=[currency_code_validator]), size=5,  blank=True)
 
     objects = UserManager()
 
