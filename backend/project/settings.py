@@ -10,9 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
+
 from pathlib import Path
 from datetime import timedelta
-import os
+from celery.schedules import crontab
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -150,9 +152,25 @@ EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
 FIXER_ACCESS_KEY = 'f5a898dbf45d15d8aa6eca7af3f372e1'
 
 # ------------------------------------------ #
+#                  Celery                    #
+# ------------------------------------------ #
+CELERY_BROKER_URL = os.environ.get('REDIS_LOCATION', 'redis://127.0.0.1:6379')
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_LOCATION', 'redis://127.0.0.1:6379')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+
+
+CELERY_BEAT_SCHEDULE = {
+    'update_rates': {
+        'task': 'apps.user.tasks.update_rates',
+        'schedule': crontab(hour="*/1"),
+    }
+}
+
+# ------------------------------------------ #
 #           Django REST Framework            #
 # ------------------------------------------ #
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -166,7 +184,6 @@ REST_FRAMEWORK = {
 # ------------------------------------------ #
 #                   djoser                   #
 # ------------------------------------------ #
-
 DJOSER = {
     # Name of a field in User model to be used as login field
     'LOGIN_FIELD': 'email',
