@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'djmoney',
+    'djmoney.contrib.exchange',
     'corsheaders',
 
     'apps.wallet.apps.WalletConfig',
@@ -161,6 +162,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication'
     ),
 }
+
+# ------------------------------------------ #
+#                   djoser                   #
+# ------------------------------------------ #
 
 DJOSER = {
     # Name of a field in User model to be used as login field
