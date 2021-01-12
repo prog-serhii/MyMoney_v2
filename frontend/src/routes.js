@@ -2,6 +2,7 @@ import React from 'react';
 
 
 const DashboardDefault = React.lazy(() => import('./Demo/Dashboard/Default'));
+const Wallets = React.lazy(() => import('./App/containers/Wallets'));
 
 const UIBasicButton = React.lazy(() => import('./Demo/UIElements/Basic/Button'));
 const UIBasicBadges = React.lazy(() => import('./Demo/UIElements/Basic/Badges'));
@@ -22,8 +23,11 @@ const GoogleMap = React.lazy(() => import('./Demo/Maps/GoogleMap/index'));
 const OtherSamplePage = React.lazy(() => import('./Demo/Other/SamplePage'));
 const OtherDocs = React.lazy(() => import('./Demo/Other/Docs'));
 
+const Profile = React.lazy(() => import('./App/containers/Profile'));
+
 const routes = [
     { path: '/', exact: true, name: 'Default', component: DashboardDefault },
+    { path: '/wallets', exact: true, name: 'Wallets', component: Wallets },
     { path: '/basic/button', exact: true, name: 'Basic Button', component: UIBasicButton },
     { path: '/basic/badges', exact: true, name: 'Basic Badges', component: UIBasicBadges },
     { path: '/basic/breadcrumb-paging', exact: true, name: 'Basic Breadcrumb Pagination', component: UIBasicBreadcrumbPagination },
@@ -36,6 +40,7 @@ const routes = [
     { path: '/maps/google-map', exact: true, name: 'Google Map', component: GoogleMap },
     { path: '/sample-page', exact: true, name: 'Sample Page', component: OtherSamplePage },
     { path: '/docs', exact: true, name: 'Documentation', component: OtherDocs },
+    { path: '/profile', exact: true, name: 'User Profile', component: Profile }
 ];
 
 export default routes;

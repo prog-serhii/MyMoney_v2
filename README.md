@@ -34,3 +34,8 @@ docker-compose up -d --build
 Bring down the development containers (and the associated volumes with the -v flag):
 
 docker-compose down -v
+
+Celery:
+
+celery -A project worker -l info
+celery -A project beat -l info

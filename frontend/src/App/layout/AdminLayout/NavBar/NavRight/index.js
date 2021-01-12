@@ -91,7 +91,8 @@ class NavRight extends Component {
                                 </div>
                                 <ul className='pro-body'>
                                     <li><a href='#!' className='dropdown-item'><i className='feather icon-user' /> Profile</a></li>
-                                    <li><a href='#!' className='dropdown-item'><i className='feather icon-settings' /> Settings</a></li>
+                                    <li><a href='#!' className='dropdown-item'><i className='feather icon-settings' />Change Login</a></li>
+                                    <li><a href='#!' className='dropdown-item'><i className='feather icon-settings' />Change Password</a></li>
                                     <li><a href='#!' className='dropdown-item' onClick={this.props.logout}><i className='feather icon-log-out' /> Logout</a></li>
                                 </ul>
                             </Dropdown.Menu>

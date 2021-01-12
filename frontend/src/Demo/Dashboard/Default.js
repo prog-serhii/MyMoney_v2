@@ -1,5 +1,6 @@
 import React from 'react';
-import { Row, Col, Card, Table, Tabs, Tab } from 'react-bootstrap';
+import { Row, Col, Card, Table, Tabs, Tab, Pagination } from 'react-bootstrap';
+import { RiExchangeDollarLine } from 'react-icons/ri'
 
 import Aux from "../../hoc/_Aux";
 
@@ -128,10 +129,11 @@ class Dashboard extends React.Component {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col md={6} xl={8}>
+
+                    <Col md={6} xl={12}>
                         <Card className='Recent-Users'>
                             <Card.Header>
-                                <Card.Title as='h5'>Recent Users</Card.Title>
+                                <Card.Title as='h5'>Last Operations</Card.Title>
                             </Card.Header>
                             <Card.Body className='px-0 py-2'>
                                 <Table responsive hover>
@@ -145,7 +147,9 @@ class Dashboard extends React.Component {
                                             <td>
                                                 <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15" />11 MAY 12:56</h6>
                                             </td>
-                                            <td><a href='#!' className="label theme-bg2 text-white f-12">Reject</a><a href='#!' className="label theme-bg text-white f-12">Approve</a></td>
+                                            <td>
+                                                <a href='#!' className="label theme-bg2 text-white f-12">Expense</a>
+                                            </td>
                                         </tr>
                                         <tr className="unread">
                                             <td><img className="rounded-circle" style={{ width: '40px' }} src={avatar2} alt="activity-user" /></td>
@@ -156,7 +160,9 @@ class Dashboard extends React.Component {
                                             <td>
                                                 <h6 className="text-muted"><i className="fa fa-circle text-c-red f-10 m-r-15" />11 MAY 10:35</h6>
                                             </td>
-                                            <td><a href='#!' className="label theme-bg2 text-white f-12">Reject</a><a href='#!' className="label theme-bg text-white f-12">Approve</a></td>
+                                            <td>
+                                                <a href='#!' className="label theme-bg text-white f-12">Income</a>
+                                            </td>
                                         </tr>
                                         <tr className="unread">
                                             <td><img className="rounded-circle" style={{ width: '40px' }} src={avatar3} alt="activity-user" /></td>
@@ -196,6 +202,7 @@ class Dashboard extends React.Component {
                             </Card.Body>
                         </Card>
                     </Col>
+
                     <Col md={6} xl={4}>
                         <Card className='card-event'>
                             <Card.Body>
@@ -212,11 +219,25 @@ class Dashboard extends React.Component {
                                 <i className="fa fa-angellist text-c-purple f-50" />
                             </Card.Body>
                         </Card>
+
                         <Card>
                             <Card.Body className='border-bottom'>
                                 <div className="row d-flex align-items-center">
                                     <div className="col-auto">
-                                        <i className="feather icon-zap f-30 text-c-green" />
+                                        <i className="f-30 text-c-purple">
+                                            <RiExchangeDollarLine />
+                                        </i>
+                                    </div>
+                                    <div className="col">
+                                        <h3 className="f-w-300">235</h3>
+                                        <span className="d-block text-uppercase">total ideas</span>
+                                    </div>
+                                </div>
+                            </Card.Body>
+                            <Card.Body className='border-bottom'>
+                                <div className="row d-flex align-items-center">
+                                    <div className="col-auto">
+                                        <i className="feather icon-pocket f-30 text-c-green" />
                                     </div>
                                     <div className="col">
                                         <h3 className="f-w-300">235</h3>
@@ -236,6 +257,7 @@ class Dashboard extends React.Component {
                                 </div>
                             </Card.Body>
                         </Card>
+
                     </Col>
                     <Col md={6} xl={4}>
                         <Card className='card-social'>

@@ -35,9 +35,7 @@ class Breadcrumb extends Component {
                 if (collapse.type && collapse.type === 'collapse') {
                     this.getCollapse(collapse,);
                 } else if (collapse.type && collapse.type === 'item') {
-                    if (document.location.pathname === config.basename + collapse.url) {
-                        this.setState({ item: collapse, main: item });
-                    }
+                    this.setState({ item: collapse, main: item });
                 }
                 return false;
             });
@@ -54,6 +52,7 @@ class Breadcrumb extends Component {
                     <a href='#!'>{this.state.main.title}</a>
                 </li>
             );
+            console.log(main)
         }
 
         if (this.state.item && this.state.item.type === 'item') {

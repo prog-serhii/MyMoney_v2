@@ -1,3 +1,5 @@
+import uuid
+
 from djmoney.money import Money
 from djmoney.models.fields import MoneyField
 from djmoney.models.managers import money_manager
@@ -15,6 +17,7 @@ class Wallet(models.Model):
         CASHE = 'cashe', 'Cashe'
         CARD = 'card', 'Bank Card'
 
+    uid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(get_user_model(),
                              verbose_name='User',
                              on_delete=models.CASCADE,
@@ -60,6 +63,9 @@ class Wallet(models.Model):
 
     @property
     def balance(self) -> Money:
+        """
+        Return Money object - total balance
+        """
         initial_balance = self.initial_balance
 
         def aggregate_sum(instance, currency) -> Money:
@@ -76,4 +82,5 @@ class Wallet(models.Model):
         expenses = aggregate_sum(self.expenses, self.currency)
 
         balance = initial_balance + incomes - expenses
+
         return round(balance, 2)

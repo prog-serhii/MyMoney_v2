@@ -311,6 +311,10 @@
   content: "\e862";
 }
 
+.icon-dollar-sign:before {
+	content: "\e954";
+}
+
 .icon-download-cloud:before {
   content: "\e863";
 }

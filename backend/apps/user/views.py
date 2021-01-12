@@ -24,3 +24,13 @@ class AllCurrencuesView(APIView):
     def get(self, request, format=None):
         content = [{'code': code, 'name': name} for code, name in CURRENCY_CHOICES]
         return Response(content)
+
+
+class CurrenciesRates(APIView):
+    """
+    A view that returns list of current user's currencies.
+    """
+
+    def get(self, request, format=None):
+        user = self.request.user
+        return Response(user.user_currencies())

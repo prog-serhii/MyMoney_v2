@@ -35,9 +35,9 @@ class AdminLayout extends Component {
     }
 
     render() {
-        if (!this.props.isAuthenticated) {
-            return <Redirect to='/login' />
-        }
+        // if (!this.props.isAuthenticated) {
+        //     return <Redirect to='/login' />
+        // }
 
         /* full screen exit call */
         document.addEventListener('fullscreenchange', this.fullScreenExitHandler);

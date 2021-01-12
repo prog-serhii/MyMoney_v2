@@ -12,6 +12,13 @@ export default {
                     type: 'item',
                     url: '/',
                     icon: 'feather icon-home',
+                },
+                {
+                    id: 'wallets',
+                    title: 'Wallets',
+                    type: 'item',
+                    url: '/wallets',
+                    icon: 'feather icon-shield'
                 }
             ]
         },
