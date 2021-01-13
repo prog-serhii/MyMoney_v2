@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.utils.translation import gettext as _
+from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from apps.user import models
@@ -11,7 +11,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (
-            _('Personal Info'),
+            'Personal Info',
             {
                 'fields': (
                     'name',
@@ -21,7 +21,7 @@ class UserAdmin(BaseUserAdmin):
             }
         ),
         (
-            _('Permissions'),
+            'Permissions',
             {
                 'fields': (
                     'is_active',
@@ -30,7 +30,7 @@ class UserAdmin(BaseUserAdmin):
                 )
             }
         ),
-        (_('Important dates'), {'fields': ('last_login',)}),
+        ('Important dates', {'fields': ('last_login',)}),
     )
     add_fieldsets = (
         (None, {
@@ -40,4 +40,5 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
+admin.site.unregister(Group)
 admin.site.register(models.User, UserAdmin)

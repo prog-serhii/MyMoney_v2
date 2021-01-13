@@ -15,7 +15,7 @@ class Category(models.Model):
     Abstract base classes are useful when you want 
     to put some common information into a number of other models.
     """
-    name = models.CharField(verbose_name='Name',
+    name = models.CharField(verbose_name='Category',
                             max_length=100)
     # logo = models.CharField('an id of icon')
 
