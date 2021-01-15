@@ -1,6 +1,7 @@
 from datetime import date
 
 from djmoney.models.fields import MoneyField
+from djmoney.models.managers import money_manager
 from model_utils.managers import InheritanceManager
 
 from django.contrib.auth import get_user_model

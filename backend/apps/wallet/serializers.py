@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from apps.core.validators import CurrencyCodeValidator
 from .models import Wallet
+from apps.core.validators import CurrencyCodeValidator
 
 
 class WalletSerializer(serializers.ModelSerializer):
@@ -25,7 +25,7 @@ class WalletListSerializer(WalletSerializer):
         fields = ('uid', 'name', 'balance', 'currency')
 
 
-class CreateWalletSerializer(WalletSerializer):
+class WalletCreateSerializer(WalletSerializer):
 
     class Meta:
         model = Wallet
@@ -33,6 +33,7 @@ class CreateWalletSerializer(WalletSerializer):
 
 
 class WalletDetailSerializer(WalletSerializer):
+
     class Meta:
         model = Wallet
         exclude = ('uid',)
