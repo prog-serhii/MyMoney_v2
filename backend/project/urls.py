@@ -19,11 +19,15 @@ schema_view = get_schema_view(
     permission_classes=[AllowAny],
 )
 
+apipatterns = [
+    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('', include('apps.user.urls')),
+    path('', include('apps.wallet.urls')),
+    path('', include('apps.action.urls'))
+]
+
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
-    path('api/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('api/', include('apps.user.urls')),
-    path('api/', include('apps.wallet.urls')),
-    path('api/', include('apps.action.urls'))
+    path('api/', include(apipatterns))
 ]

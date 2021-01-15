@@ -61,6 +61,14 @@ class Wallet(models.Model):
         """
         return str(self.initial_balance.currency)
 
+    # @property
+    # def categories(self) -> list:
+    #     """
+    #     Return a list of categories (<-action)
+    #     """
+    #     income_categories = self.incomes.values('category__name', 'category__pk').distict('category__name')
+    #     expense_categories = self.expenses.values('category__name', 'category__pk').distict('category__name')
+
     @property
     def balance(self) -> Money:
         """

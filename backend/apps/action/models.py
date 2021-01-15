@@ -92,7 +92,7 @@ class Income(Action):
     category = models.ForeignKey(ExpenseCategory,
                                  verbose_name='Category',
                                  on_delete=models.CASCADE,
-                                 related_name='expenses')
+                                 related_name='incomes')
     # організувати звязок між двома об'єктами транзації,
     # щоб при редагувані, видаленні це було в одному місці
     # transaction_rel = models.OneToOneField('Expense',
@@ -106,4 +106,4 @@ class Expense(Action):
     category = models.ForeignKey(IncomeCategory,
                                  verbose_name='Category',
                                  on_delete=models.CASCADE,
-                                 related_name='incomes')
+                                 related_name='expenses')
