@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'djmoney',
     'djmoney.contrib.exchange',
     'corsheaders',
+    'drf_yasg',
 
     'apps.user.apps.UserConfig',
     'apps.wallet.apps.WalletConfig',
@@ -167,7 +168,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 20
+    'PAGE_SIZE': 20,
 }
 
 # ------------------------------------------ #
