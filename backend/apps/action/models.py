@@ -1,14 +1,11 @@
 from datetime import date
 
 from djmoney.models.fields import MoneyField
-from djmoney.models.managers import money_manager
-from model_utils.managers import InheritanceManager
 
 from django.contrib.auth import get_user_model
 from django.db import models
 
 from apps.wallet.models import Wallet
-from .manages import IncomesManager, ExpensesManager
 
 
 class Category(models.Model):
@@ -18,12 +15,9 @@ class Category(models.Model):
     """
     name = models.CharField(verbose_name='Category',
                             max_length=100)
-    # logo = models.CharField('an id of icon')
 
     class Meta:
         abstract = True
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
 
     def __str__(self) -> str:
         return f'{self.name} ({self.user})'
@@ -74,18 +68,28 @@ class Action(models.Model):
     is_transaction = models.BooleanField(verbose_name='Is transaction?',
                                          default=False)
 
-    objects = InheritanceManager()
-    incomes = IncomesManager()
-    expenses = ExpensesManager()
+    class Meta:
+        verbose_name = 'Action'
+        verbose_name_plural = 'Actions'
 
     def __str__(self) -> str:
         return f'{self.name} ({self.user})'
 
-    class Meta:
-        ordering = ['-date', 'name']
+    def clean(self):
+        # This validation uses only model fields and spans no relations.
+        pass
 
-        verbose_name = 'Action'
-        verbose_name_plural = 'Actions'
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    @property
+    def is_income(self):
+        return hasattr(self, 'income')
+
+    @property
+    def is_expense(self):
+        return hasattr(self, 'expense')
 
 
 class Income(Action):
@@ -93,13 +97,6 @@ class Income(Action):
                                  verbose_name='Category',
                                  on_delete=models.CASCADE,
                                  related_name='incomes')
-    # організувати звязок між двома об'єктами транзації,
-    # щоб при редагувані, видаленні це було в одному місці
-    # transaction_rel = models.OneToOneField('Expense',
-    #                                        verbose_name='Transaction',
-    #                                        on_delete=models.CASCADE,
-    #                                        blank=True,
-    #                                        null=True)
 
 
 class Expense(Action):
@@ -107,3 +104,9 @@ class Expense(Action):
                                  verbose_name='Category',
                                  on_delete=models.CASCADE,
                                  related_name='expenses')
+    related_income = models.OneToOneField('Income',
+                                          verbose_name='Related Income',
+                                          related_name='related_expense',
+                                          on_delete=models.SET_NULL,
+                                          blank=True,
+                                          null=True)

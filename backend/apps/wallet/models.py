@@ -1,5 +1,3 @@
-import uuid
-
 from djmoney.money import Money
 from djmoney.models.fields import MoneyField
 from djmoney.models.managers import money_manager
@@ -17,7 +15,6 @@ class Wallet(models.Model):
         CASHE = 'cashe', 'Cashe'
         CARD = 'card', 'Bank Card'
 
-    uid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(get_user_model(),
                              verbose_name='User',
                              on_delete=models.CASCADE,
@@ -39,12 +36,15 @@ class Wallet(models.Model):
                                  default_currency='EUR',
                                  blank=False,
                                  null=False)
+    balance = MoneyField(verbose_name='Total balance',
+                         max_digits=10,
+                         decimal_places=2,
+                         default=0,
+                         default_currency='EUR',
+                         blank=False,
+                         null=False)
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
-
-    # Django-money leaves you to use any custom model managers you like for your models,
-    # but it needs to wrap some of the methods to allow searching for models with money values.
-    objects = money_manager(WalletManager())
 
     class Meta:
         verbose_name = 'Wallet'
@@ -59,38 +59,4 @@ class Wallet(models.Model):
         """
         Return currency of the wallet
         """
-        return str(self.initial_balance.currency)
-
-    # @property
-    # def categories(self) -> list:
-    #     """
-    #     Return a list of categories (<-action)
-    #     """
-    #     income_categories = self.incomes.values('category__name', 'category__pk').distict('category__name')
-    #     expense_categories = self.expenses.values('category__name', 'category__pk').distict('category__name')
-
-    @property
-    def balance(self) -> Money:
-        """
-        Return Money object - total balance
-        """
-        # initial_balance = self.initial_balance
-
-        # def aggregate_sum(instance, currency) -> Money:
-        #     amount = instance.aggregate(Sum('amount'))['amount__sum']
-
-        #     if amount is None:
-        #         amount = float()
-        #     else:
-        #         amount = float(amount)
-
-        #     return Money(amount, self.currency)
-
-        # incomes = aggregate_sum(self.incomes, self.currency)
-        # expenses = aggregate_sum(self.expenses, self.currency)
-
-        # balance = initial_balance + incomes - expenses
-
-        # return round(balance, 2)
-
-        return round(self.initial_balance, 2)
+        return str(self.balance.currency)
