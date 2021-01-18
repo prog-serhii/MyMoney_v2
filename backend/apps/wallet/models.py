@@ -1,12 +1,8 @@
-from djmoney.money import Money
 from djmoney.models.fields import MoneyField
-from djmoney.models.managers import money_manager
 
 from django.db import models
-from django.db.models import Sum
 from django.contrib.auth import get_user_model
-
-from apps.wallet.managers import WalletManager
+from django.core.exceptions import ValidationError
 
 
 class Wallet(models.Model):
@@ -49,10 +45,17 @@ class Wallet(models.Model):
     class Meta:
         verbose_name = 'Wallet'
         verbose_name_plural = 'Wallets'
-        ordering = ['updated']
 
     def __str__(self) -> str:
         return f'{self.name} ({self.user})'
+
+    def clean(self):
+        if self.balance_currency != self.initial_balance_currency:
+            raise ValidationError('Currencies of balance and initial_balance must be the same.')
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     @property
     def currency(self) -> str:

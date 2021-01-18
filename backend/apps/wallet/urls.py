@@ -1,9 +1,10 @@
 from django.urls import path
 
-from .views import WalletListView, WalletDetailView
+from .views import WalletListAPI, WalletDetailAPI, WalletTotalBalanceAPI
 
 
 urlpatterns = [
-    path('wallets/', WalletListView.as_view(), name='api-wallet-list'),
-    path('wallets/<uuid:pk>/', WalletDetailView.as_view(), name='api-wallet-detail'),
+    path('wallets/', WalletListAPI.as_view(), name='api-wallet-list'),
+    path('wallets/<int:pk>/', WalletDetailAPI.as_view(), name='api-wallet-detail'),
+    path('wallets/balance/', WalletTotalBalanceAPI.as_view(), name='api-total-balance')
 ]
