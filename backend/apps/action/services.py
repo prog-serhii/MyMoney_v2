@@ -1,9 +1,6 @@
-from datetime import date, timedelta
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import QuerySet
 
-from apps.wallet.services import wallet_update_balance
 from .models import Expense, Income, Action
 
 
@@ -14,6 +11,31 @@ def get_action_by(action_id: int) -> Action:
         action = None
 
     return action
+
+
+def get_actions_by_wallet(id: int) -> QuerySet:
+    actions = Action.objects.filter(wallet=id)
+    return actions
+
+
+def get_incomes_by_wallet(id: int) -> QuerySet:
+    incomes = Income.objects.filter(wallet=id)
+    return incomes
+
+
+def get_expenses_by_wallet(id: int) -> QuerySet:
+    expenses = Expense.objects.filter(wallet=id)
+    return expenses
+
+
+def get_incomes_by_user(id: int) -> QuerySet:
+    incomes = Income.objects.filter(user=id)
+    return incomes
+
+
+def get_expenses_by_user(id: int) -> QuerySet:
+    expenses = Expense.objects.filter(user=id)
+    return expenses
 
 
 def get_income_by(action_id: int) -> Income:
@@ -55,13 +77,6 @@ def get_transaction_by(action_id: int) -> (Expense, Income):
         return None
 
     return (expense, income)
-
-
-def filter_by_date_range(queryset: QuerySet, from_date: str, to_date: str) -> QuerySet:
-    from_date = date.fromisoformat(from_date)
-    to_date = date.fromisoformat(to_date)
-
-    return income_querysert.filter(date__range=(from_date, to_date))
 
 
 def create_income():

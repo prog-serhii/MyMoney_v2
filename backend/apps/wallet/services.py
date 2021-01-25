@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from decimal import Decimal
 
 from djmoney.money import Money
@@ -30,6 +31,13 @@ def get_wallets_by(user_id: int) -> QuerySet:
     return queryset
 
 
+def filter_by_date_range(queryset: QuerySet, from_date: str, to_date: str) -> QuerySet:
+    from_date = date.fromisoformat(from_date)
+    to_date = date.fromisoformat(to_date)
+
+    return queryset.filter(date__range=(from_date, to_date))
+
+
 def get_total_balance_of(queryset: QuerySet, currency: str) -> Decimal:
     """ """
     total_balance_in_currency = Decimal()
@@ -41,6 +49,20 @@ def get_total_balance_of(queryset: QuerySet, currency: str) -> Decimal:
         total_balance_in_currency += convert_money(balance, currency).amount
 
     return round(total_balance_in_currency, 2)
+
+
+def get_sum_of(queryset: QuerySet) -> Decimal:
+    """ """
+    sum_of_amounts = queryset.aggregate(sum=Sum('amount'))
+
+    return sum_of_amounts['sum']
+
+
+def get_sum_by_day(queryset: QuerySet) -> list:
+    """ """
+    sum_of_amounts = queryset.values('date').annotate(sum=Sum('amount'))
+
+    return [round(amount, 2) for amount in sum_of_amounts]
 
 
 def update_balance_of_wallet(id: int, new_balance: Decimal) -> Wallet:

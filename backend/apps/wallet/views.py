@@ -68,7 +68,7 @@ class WalletTotalBalanceAPI(AuthMixin, APIView):
         wallets = self.get_queryset()
 
         try:
-            currency = self.request.GET['currency']
+            currency = self.request.query_params['currency']
         except KeyError:
             currency = self.request.user.main_currency
 
@@ -89,3 +89,19 @@ class WalletTotalBalanceAPI(AuthMixin, APIView):
             }
 
             return Response(response, status=HTTP_400_BAD_REQUEST)
+
+
+class WalletStatisticAPI(AuthMixin, APIView):
+    """
+    1. filter by date range
+    2. aggregate sum of incomes
+    3. aggregate sum of expenses
+    4. 
+    """
+
+    def get(self, request, format=None):
+        incomes = services.filter_by_date_range()
+        expenses = services.filter_by_date_range()
+
+        sum_of_incomes = services.get_sum_of(incomes)
+        sum_of_expenses = services.get_sum_of(expenses)

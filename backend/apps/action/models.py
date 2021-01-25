@@ -10,8 +10,8 @@ from apps.wallet.models import Wallet
 
 class Category(models.Model):
     """
-    Abstract base classes are useful when you want 
-    to put some common information into a number of other models.
+    Abstract base class to put some common 
+    information into some 'Category' models.
     """
     name = models.CharField(verbose_name='Category',
                             max_length=100)
@@ -48,17 +48,13 @@ class ExpenseCategory(Category):
 
 
 class Action(models.Model):
+    """
+    Abstract base class to put some common 
+    information into some 'Action' models.
+    """
     name = models.CharField(verbose_name='Name',
                             max_length=250,
                             blank=True)
-    user = models.ForeignKey(get_user_model(),
-                             on_delete=models.CASCADE,
-                             verbose_name='User',
-                             related_name='actions')
-    wallet = models.ForeignKey(Wallet,
-                               verbose_name='To wallet',
-                               on_delete=models.CASCADE,
-                               related_name='actions')
     date = models.DateField(verbose_name='Date',
                             default=date.today)
     amount = MoneyField(verbose_name='Amount',
@@ -69,8 +65,7 @@ class Action(models.Model):
                                          default=False)
 
     class Meta:
-        verbose_name = 'Action'
-        verbose_name_plural = 'Actions'
+        abstract = True
 
     def __str__(self) -> str:
         return f'{self.name} ({self.user})'
@@ -85,14 +80,22 @@ class Action(models.Model):
 
     @property
     def is_income(self):
-        return hasattr(self, 'income')
+        return hasattr(self, 'related_expense')
 
     @property
     def is_expense(self):
-        return hasattr(self, 'expense')
+        return hasattr(self, 'related_income')
 
 
 class Income(Action):
+    user = models.ForeignKey(get_user_model(),
+                             on_delete=models.CASCADE,
+                             verbose_name='User',
+                             related_name='incomes')
+    wallet = models.ForeignKey(Wallet,
+                               verbose_name='To wallet',
+                               on_delete=models.CASCADE,
+                               related_name='incomes')
     category = models.ForeignKey(ExpenseCategory,
                                  verbose_name='Category',
                                  on_delete=models.CASCADE,
@@ -100,6 +103,14 @@ class Income(Action):
 
 
 class Expense(Action):
+    user = models.ForeignKey(get_user_model(),
+                             on_delete=models.CASCADE,
+                             verbose_name='User',
+                             related_name='expenses')
+    wallet = models.ForeignKey(Wallet,
+                               verbose_name='To wallet',
+                               on_delete=models.CASCADE,
+                               related_name='expenses')
     category = models.ForeignKey(IncomeCategory,
                                  verbose_name='Category',
                                  on_delete=models.CASCADE,

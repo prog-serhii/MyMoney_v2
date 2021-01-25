@@ -1,11 +1,17 @@
-from djmoney.serializers import MoneyField
-
 from rest_framework import serializers
 
 from .models import Wallet
 
 
+class WalletRepresentationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Wallet
+        fields = ('pk', 'name')
+
+
 class WalletListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Wallet
         fields = ('pk', 'name', 'balance', 'currency')
@@ -21,6 +27,7 @@ class WalletCreateUpdateSerializer(serializers.ModelSerializer):
 
 
 class WalletDetailSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Wallet
         fields = ('pk', 'name', 'wallet_type', 'balance',

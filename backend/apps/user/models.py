@@ -10,15 +10,15 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import UserManager
 
 
-def currency_code_validator(value):
-    try:
-        # try to find currency with this code
-        get_currency(code=value)
-    except CurrencyDoesNotExist as e:
-        raise ValidationError(
-            str(e),
-            params={'value': value}
-        )
+# def currency_code_validator(value):
+#     try:
+#         # try to find currency with this code
+#         get_currency(code=value)
+#     except CurrencyDoesNotExist as e:
+#         raise ValidationError(
+#             str(e),
+#             params={'value': value}
+#         )
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -28,31 +28,35 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
-    main_currency = CurrencyField(verbose_name='Main currency', validators=[currency_code_validator])
+    main_currency = CurrencyField(verbose_name='Main currency')
+    # validators=[currency_code_validator])
     currencies = ArrayField(
-        CurrencyField(blank=True, null=True, validators=[currency_code_validator]),
-        size=5, blank=True, null=True
+        CurrencyField(blank=True, null=True),
+        # validators=[currency_code_validator]),
+        size=5,
+        blank=True,
+        null=True
     )
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
 
-    def user_currencies(self):
-        currencies = []
+    # def user_currencies(self):
+    #     currencies = []
 
-        for currency in self.currencies:
-            name = get_currency(currency).name
-            rate = round(get_rate(currency, self.main_currency), 4)
-            main = True if currency == self.main_currency else False
+    #     for currency in self.currencies:
+    #         name = get_currency(currency).name
+    #         rate = round(get_rate(currency, self.main_currency), 4)
+    #         main = True if currency == self.main_currency else False
 
-            currencies.append(
-                {
-                    'code': currency,
-                    'name': name,
-                    'rate': rate,
-                    'main': main
-                }
-            )
+    #         currencies.append(
+    #             {
+    #                 'code': currency,
+    #                 'name': name,
+    #                 'rate': rate,
+    #                 'main': main
+    #             }
+    #         )
 
-        return currencies
+    #     return currencies
