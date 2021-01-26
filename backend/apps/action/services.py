@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import QuerySet
 
-from .models import Expense, Income, Action
+from .models import Expense, Income
 
 
 def get_incomes_by_wallet(id: int) -> QuerySet:
@@ -73,21 +73,21 @@ def income_update():
     pass
 
 
-def delete_income(id: int) -> bool:
-    income = get_income_by(id)
+# def delete_income(id: int) -> bool:
+#     income = get_income_by(id)
 
-    if income is None:
-        # if the istance doesn't exist
-        return False
+#     if income is None:
+#         # if the istance doesn't exist
+#         return False
 
-    # update balance of related wallet
-    wallet = income.wallet
-    new_balance = wallet.balance - income.amount
-    wallet_update_balance(wallet, new_balance)
+#     # update balance of related wallet
+#     wallet = income.wallet
+#     new_balance = wallet.balance - income.amount
+#     wallet_update_balance(wallet, new_balance)
 
-    income.delete()
+#     income.delete()
 
-    return True
+#     return True
 
 
 def expense_create():

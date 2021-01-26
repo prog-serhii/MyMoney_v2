@@ -10,8 +10,7 @@ from apps.wallet.models import Wallet
 
 class Category(models.Model):
     """
-    Abstract base class to put some common 
-    information into some 'Category' models.
+    Abstract base class to put some common information into some 'Category' models.
     """
     name = models.CharField(verbose_name='Category',
                             max_length=100)
@@ -49,8 +48,7 @@ class ExpenseCategory(Category):
 
 class Action(models.Model):
     """
-    Abstract base class to put some common 
-    information into some 'Action' models.
+    Abstract base class to put some common information into some 'Action' models.
     """
     name = models.CharField(verbose_name='Name',
                             max_length=250,

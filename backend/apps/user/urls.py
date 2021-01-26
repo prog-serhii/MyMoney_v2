@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import UserProfileView, AllCurrencuesView, CurrenciesRates
+# from .views import UserProfileView, AllCurrencuesView, CurrenciesRates
 
 urlpatterns = [
     path('auth/', include('djoser.urls')),

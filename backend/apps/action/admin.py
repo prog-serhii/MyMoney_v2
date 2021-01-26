@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.admin.actions import delete_selected
 
 from .models import (Expense, Income,
-                     ExpenseCategory, IncomeCategory, Action)
+                     ExpenseCategory, IncomeCategory)
 
 
 def delete_selected_(modeladmin, request, queryset):

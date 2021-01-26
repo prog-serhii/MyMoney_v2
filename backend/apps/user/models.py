@@ -1,9 +1,9 @@
 from djmoney.models.fields import CurrencyField
-from djmoney.contrib.exchange.models import get_rate
-from moneyed.classes import get_currency, CurrencyDoesNotExist
+# from djmoney.contrib.exchange.models import get_rate
+# from moneyed.classes import get_currency, CurrencyDoesNotExist
 
 from django.db import models
-from django.core.exceptions import ValidationError
+# from django.core.exceptions import ValidationError
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 

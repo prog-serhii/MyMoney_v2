@@ -3,7 +3,6 @@ from datetime import date
 from djmoney.money import Money
 
 from django.test import TestCase
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
 from apps.user.factories import UserFactory
@@ -36,7 +35,7 @@ class IncomeCategoryModelTest(TestCase):
     def test_reverse_link_from_user_model(self):
         """Test a reverse link from User model."""
 
-        income_categories = IncomeCategoryFactory.create_batch(
+        IncomeCategoryFactory.create_batch(
             5,
             user=self.user
         )
@@ -77,7 +76,7 @@ class ExpenseCategoryModelTest(TestCase):
     def test_reverse_link_from_user_model(self):
         """Test a reverse link from User model."""
 
-        expense_categories = ExpenseCategoryFactory.create_batch(
+        ExpenseCategoryFactory.create_batch(
             3,
             user=self.user
         )
@@ -144,7 +143,7 @@ class IncomeModelTest(TestCase):
         wallet = WalletFactory(user=user)
         income_category = IncomeCategoryFactory(user=user)
 
-        incomes = IncomeFactory.create_batch(
+        IncomeFactory.create_batch(
             20,
             user=user,
             wallet=wallet,
@@ -159,7 +158,7 @@ class IncomeModelTest(TestCase):
         wallet = WalletFactory(user=user)
         income_category = IncomeCategoryFactory(user=user)
 
-        incomes = IncomeFactory.create_batch(
+        IncomeFactory.create_batch(
             11,
             user=user,
             wallet=wallet,
@@ -174,7 +173,7 @@ class IncomeModelTest(TestCase):
         wallet = WalletFactory(user=user)
         income_category = IncomeCategoryFactory(user=user)
 
-        incomes = IncomeFactory.create_batch(
+        IncomeFactory.create_batch(
             6,
             user=user,
             wallet=wallet,
@@ -238,7 +237,7 @@ class ExpenseModelTest(TestCase):
         wallet = WalletFactory(user=user)
         expense_category = ExpenseCategoryFactory(user=user)
 
-        expenses = ExpenseFactory.create_batch(
+        ExpenseFactory.create_batch(
             4,
             user=user,
             wallet=wallet,
@@ -253,7 +252,7 @@ class ExpenseModelTest(TestCase):
         wallet = WalletFactory(user=user)
         expense_category = ExpenseCategoryFactory(user=user)
 
-        expenses = ExpenseFactory.create_batch(
+        ExpenseFactory.create_batch(
             7,
             user=user,
             wallet=wallet,
@@ -268,7 +267,7 @@ class ExpenseModelTest(TestCase):
         wallet = WalletFactory(user=user)
         expense_category = ExpenseCategoryFactory(user=user)
 
-        expenses = ExpenseFactory.create_batch(
+        ExpenseFactory.create_batch(
             7,
             user=user,
             wallet=wallet,
@@ -302,7 +301,7 @@ class ExpenseModelTest(TestCase):
         """Test validation of field 'is_transaction'."""
 
         with self.assertRaises(ValidationError):
-            expense = ExpenseFactory(is_transaction=True)
+            ExpenseFactory(is_transaction=True)
 
     def test_validation_of_related_income(self):
         """Test validation of field 'realated_income'."""
@@ -310,4 +309,4 @@ class ExpenseModelTest(TestCase):
         income = IncomeFactory()
 
         with self.assertRaises(ValidationError):
-            expense = ExpenseFactory(related_income=income)
+            ExpenseFactory(related_income=income)

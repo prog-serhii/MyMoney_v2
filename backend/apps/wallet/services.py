@@ -1,10 +1,11 @@
-from datetime import date, timedelta
+from datetime import date
+# from datetime import timedelta
 from decimal import Decimal
 
 from djmoney.money import Money
 from djmoney.contrib.exchange.models import convert_money
 
-from django.core.exceptions import ObjectDoesNotExist
+# from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import QuerySet, Sum
 
 from .models import Wallet
@@ -65,29 +66,29 @@ def get_sum_by_day(queryset: QuerySet) -> list:
     return [round(amount, 2) for amount in sum_of_amounts]
 
 
-def update_balance_of_wallet(id: int, new_balance: Decimal) -> Wallet:
-    """ """
-    wallet = wallet_get(id)
+# def update_balance_of_wallet(id: int, new_balance: Decimal) -> Wallet:
+#     """ """
+#     wallet = get_wallet_by(id)
 
-    if wallet is None:
-        # if the istance doesn't exist
-        return None
+#     if wallet is None:
+#         # if the istance doesn't exist
+#         return None
 
-    wallet.balance = new_balance
-    wallet.save()
+#     wallet.balance = new_balance
+#     wallet.save()
 
-    return wallet
+#     return wallet
 
 
-def update_initial_balance_of_wallet(id: int, new_initial_balance: Decimal) -> Wallet:
-    """ """
-    wallet = wallet_get(id)
+# def update_initial_balance_of_wallet(id: int, new_initial_balance: Decimal) -> Wallet:
+#     """ """
+#     wallet = get_wallet_by(id)
 
-    if wallet is None:
-        # if the istance doesn't exist
-        return None
+#     if wallet is None:
+#         # if the istance doesn't exist
+#         return None
 
-    wallet.initial_balance = new_balance
-    wallet.save()
+#     wallet.initial_balance = new_balance
+#     wallet.save()
 
-    return wallet
+#     return wallet

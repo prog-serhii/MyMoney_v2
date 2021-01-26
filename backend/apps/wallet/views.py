@@ -4,11 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.status import (HTTP_200_OK, HTTP_201_CREATED,
-                                   HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT)
+from rest_framework.status import (HTTP_200_OK,
+                                   HTTP_400_BAD_REQUEST)
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
-from .models import Wallet
 from . import services
 from . import serializers
 
@@ -91,17 +90,17 @@ class WalletTotalBalanceAPI(AuthMixin, APIView):
             return Response(response, status=HTTP_400_BAD_REQUEST)
 
 
-class WalletStatisticAPI(AuthMixin, APIView):
-    """
-    1. filter by date range
-    2. aggregate sum of incomes
-    3. aggregate sum of expenses
-    4. 
-    """
+# class WalletStatisticAPI(AuthMixin, APIView):
+#     """
+#     1. filter by date range
+#     2. aggregate sum of incomes
+#     3. aggregate sum of expenses
+#     4.
+#     """
 
-    def get(self, request, format=None):
-        incomes = services.filter_by_date_range()
-        expenses = services.filter_by_date_range()
+#     def get(self, request, format=None):
+#         incomes = services.filter_by_date_range()
+#         expenses = services.filter_by_date_range()
 
-        sum_of_incomes = services.get_sum_of(incomes)
-        sum_of_expenses = services.get_sum_of(expenses)
+#         sum_of_incomes = services.get_sum_of(incomes)
+#         sum_of_expenses = services.get_sum_of(expenses)

@@ -1,10 +1,8 @@
 from rest_framework.generics import ListAPIView, ListCreateAPIView
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 from . import serializers
-from .models import Action, Income, Expense
 from . import services
 
 
