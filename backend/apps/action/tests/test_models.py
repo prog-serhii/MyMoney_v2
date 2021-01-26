@@ -4,6 +4,7 @@ from djmoney.money import Money
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 from apps.user.factories import UserFactory
 from apps.wallet.factories import WalletFactory
@@ -215,6 +216,11 @@ class ExpenseModelTest(TestCase):
 
         self.assertFalse(self.expense.is_transaction)
 
+    def test_default_value_of_related_income(self):
+        """Test default value of related_income. It must to be None."""
+
+        self.assertIsNone(self.expense.related_income)
+
     def test_string_representation(self):
         """Test string representation of an Expense."""
 
@@ -270,3 +276,38 @@ class ExpenseModelTest(TestCase):
         )
 
         self.assertEqual(expense_category.expenses.count(), 7)
+
+    def test_reverse_link_from_income_model(self):
+        """Test reverse link from Income model."""
+        user = UserFactory()
+
+        wallet1 = WalletFactory(user=user)
+        wallet2 = WalletFactory(user=user)
+
+        income_category = IncomeCategoryFactory(user=user)
+        expense_category = ExpenseCategoryFactory(user=user)
+
+        income = IncomeFactory(user=user,
+                               wallet=wallet1,
+                               category=income_category)
+        expense = ExpenseFactory(user=user,
+                                 wallet=wallet2,
+                                 category=expense_category,
+                                 is_transaction=True,
+                                 related_income=income)
+
+        self.assertEqual(income.related_expense, expense)
+
+    def test_validation_of_is_transaction(self):
+        """Test validation of field 'is_transaction'."""
+
+        with self.assertRaises(ValidationError):
+            expense = ExpenseFactory(is_transaction=True)
+
+    def test_validation_of_related_income(self):
+        """Test validation of field 'realated_income'."""
+
+        income = IncomeFactory()
+
+        with self.assertRaises(ValidationError):
+            expense = ExpenseFactory(related_income=income)

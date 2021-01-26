@@ -8,4 +8,4 @@ class UserFactory(factory.django.DjangoModelFactory):
         model = User
 
     email = factory.Faker('email')
-    name = factory.Faker('name')
+    name = factory.Faker('word')

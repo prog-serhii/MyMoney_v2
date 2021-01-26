@@ -1,9 +1,9 @@
 from datetime import date
-
 from djmoney.models.fields import MoneyField
 
-from django.contrib.auth import get_user_model
 from django.db import models
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 from apps.wallet.models import Wallet
 
@@ -73,10 +73,6 @@ class Action(models.Model):
     def __str__(self) -> str:
         return f'{self.name} ({self.user})'
 
-    def clean(self):
-        # This validation uses only model fields and spans no relations.
-        pass
-
     def save(self, *args, **kwargs):
         self.full_clean()
         return super().save(*args, **kwargs)
@@ -116,3 +112,10 @@ class Expense(Action):
                                           on_delete=models.SET_NULL,
                                           blank=True,
                                           null=True)
+
+    def clean(self):
+        if self.is_transaction != bool(self.related_income):
+            raise ValidationError(
+                'If field \'is_transaction\' is True then field \'related_income\' \
+                must contain a reference to the associated object. And vice versa.',
+                code='invalid')
