@@ -4,20 +4,6 @@ from django.db.models import QuerySet
 from .models import Expense, Income, Action
 
 
-def get_action_by(action_id: int) -> Action:
-    try:
-        action = Action.objects.get(id=id)
-    except ObjectDoesNotExist:
-        action = None
-
-    return action
-
-
-def get_actions_by_wallet(id: int) -> QuerySet:
-    actions = Action.objects.filter(wallet=id)
-    return actions
-
-
 def get_incomes_by_wallet(id: int) -> QuerySet:
     incomes = Income.objects.filter(wallet=id)
     return incomes
@@ -38,7 +24,7 @@ def get_expenses_by_user(id: int) -> QuerySet:
     return expenses
 
 
-def get_income_by(action_id: int) -> Income:
+def get_income_by(id: int) -> Income:
     try:
         income = Income.objects.get(id=id)
     except ObjectDoesNotExist:
@@ -47,7 +33,7 @@ def get_income_by(action_id: int) -> Income:
     return income
 
 
-def get_expense_by(action_id: int) -> Expense:
+def get_expense_by(id: int) -> Expense:
     try:
         expense = Expense.objects.get(id=id)
     except ObjectDoesNotExist:
@@ -56,27 +42,27 @@ def get_expense_by(action_id: int) -> Expense:
     return expense
 
 
-def get_transaction_by(action_id: int) -> (Expense, Income):
-    action = get_action_by(action_id)
+# def get_transaction_by(action_id: int) -> (Expense, Income):
+#     action = get_action_by(action_id)
 
-    if action.is_expense:
-        expense = get_expense_by(action_id)
-        try:
-            income = expense.related_income
-        except ObjectDoesNotExist:
-            return None
+#     if action.is_expense:
+#         expense = get_expense_by(action_id)
+#         try:
+#             income = expense.related_income
+#         except ObjectDoesNotExist:
+#             return None
 
-    elif action.is_income:
-        income = get_income_by(action_id)
-        try:
-            expense = income.related_expense
-        except ObjectDoesNotExist:
-            return None
+#     elif action.is_income:
+#         income = get_income_by(action_id)
+#         try:
+#             expense = income.related_expense
+#         except ObjectDoesNotExist:
+#             return None
 
-    else:
-        return None
+#     else:
+#         return None
 
-    return (expense, income)
+#     return (expense, income)
 
 
 def create_income():

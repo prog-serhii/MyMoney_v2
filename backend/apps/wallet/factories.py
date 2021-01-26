@@ -1,14 +1,12 @@
 import factory
-from faker import Factory
 
+from apps.user.factories import UserFactory
 from .models import Wallet
-
-
-faker = Factory.create()
 
 
 class WalletFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Wallet
 
-    name = faker.name()
+    name = factory.Faker('word')
+    user = factory.SubFactory(UserFactory)

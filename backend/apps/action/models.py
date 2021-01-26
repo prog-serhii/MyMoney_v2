@@ -60,7 +60,10 @@ class Action(models.Model):
     amount = MoneyField(verbose_name='Amount',
                         max_digits=10,
                         decimal_places=2,
-                        default_currency='EUR')
+                        default=0,
+                        default_currency='EUR',
+                        blank=False,
+                        null=False)
     is_transaction = models.BooleanField(verbose_name='Is transaction?',
                                          default=False)
 
@@ -78,14 +81,6 @@ class Action(models.Model):
         self.full_clean()
         return super().save(*args, **kwargs)
 
-    @property
-    def is_income(self):
-        return hasattr(self, 'related_expense')
-
-    @property
-    def is_expense(self):
-        return hasattr(self, 'related_income')
-
 
 class Income(Action):
     user = models.ForeignKey(get_user_model(),
@@ -96,7 +91,7 @@ class Income(Action):
                                verbose_name='To wallet',
                                on_delete=models.CASCADE,
                                related_name='incomes')
-    category = models.ForeignKey(ExpenseCategory,
+    category = models.ForeignKey(IncomeCategory,
                                  verbose_name='Category',
                                  on_delete=models.CASCADE,
                                  related_name='incomes')
@@ -111,7 +106,7 @@ class Expense(Action):
                                verbose_name='To wallet',
                                on_delete=models.CASCADE,
                                related_name='expenses')
-    category = models.ForeignKey(IncomeCategory,
+    category = models.ForeignKey(ExpenseCategory,
                                  verbose_name='Category',
                                  on_delete=models.CASCADE,
                                  related_name='expenses')
