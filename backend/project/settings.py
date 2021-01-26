@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'djmoney',
     'djmoney.contrib.exchange',
     'corsheaders',
-    'drf_yasg',
 
     'apps.user.apps.UserConfig',
     'apps.wallet.apps.WalletConfig',
