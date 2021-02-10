@@ -5,7 +5,7 @@ from decimal import Decimal
 from djmoney.money import Money
 from djmoney.contrib.exchange.models import convert_money
 
-# from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import QuerySet, Sum
 
 from .models import Wallet
@@ -32,6 +32,15 @@ def get_wallets_by(user_id: int) -> QuerySet:
     return queryset
 
 
+def get_wallet_by(id: int) -> Wallet:
+    try:
+        wallet = Wallet.objects.get(id=id)
+    except ObjectDoesNotExist:
+        wallet = None
+
+    return wallet
+
+
 def filter_by_date_range(queryset: QuerySet, from_date: str, to_date: str) -> QuerySet:
     from_date = date.fromisoformat(from_date)
     to_date = date.fromisoformat(to_date)
@@ -52,18 +61,45 @@ def get_total_balance_of(queryset: QuerySet, currency: str) -> Decimal:
     return round(total_balance_in_currency, 2)
 
 
-def get_sum_of(queryset: QuerySet) -> Decimal:
+def get_amount_of(queryset: QuerySet) -> Decimal:
     """ """
-    sum_of_amounts = queryset.aggregate(sum=Sum('amount'))
+    amount = queryset.aggregate(sum=Sum('amount'))
 
-    return sum_of_amounts['sum']
+    return amount['sum']
 
 
-def get_sum_by_day(queryset: QuerySet) -> list:
+def get_amounts_by_day(queryset: QuerySet) -> list:
     """ """
-    sum_of_amounts = queryset.values('date').annotate(sum=Sum('amount'))
+    amounts_by_day = queryset.values('date').annotate(sum=Sum('amount'))
 
-    return [round(amount, 2) for amount in sum_of_amounts]
+    return list(amounts_by_day)
+
+
+def get_statistic_for_date_range(wallet: Wallet, from_date: str, to_date: str) -> dict:
+    """Sum of incomes and of expenses by day for a current wallet"""
+    # 1. створити список із датами
+    # 2. в словнику створити ключі із дат
+    # 3. до кожної дати додати 1. прибутки 2. витрати 3. баланс
+    #def datetime_range(start=None, end=None):
+    #span = end - start
+    #for i in xrange(span.days + 1):
+    #    yield start + timedelta(days=i)
+
+    if wallet:
+        # filter incomes and expenses for date range
+        incomes = filter_by_date_range(wallet.incomes, from_date, to_date)
+        expenses = filter_by_date_range(wallet.expenses, from_date, to_date)
+        # calculate sum of amounts by day
+        incomes_by_day = get_amounts_by_day(incomes)
+        expenses_by_day = get_amounts_by_day(expenses)
+
+        return {
+            'incomes': incomes_by_day,
+            'expenses': expenses_by_day
+        }
+
+    else:
+        return None
 
 
 # def update_balance_of_wallet(id: int, new_balance: Decimal) -> Wallet:

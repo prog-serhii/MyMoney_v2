@@ -41,22 +41,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-
-    # def user_currencies(self):
-    #     currencies = []
-
-    #     for currency in self.currencies:
-    #         name = get_currency(currency).name
-    #         rate = round(get_rate(currency, self.main_currency), 4)
-    #         main = True if currency == self.main_currency else False
-
-    #         currencies.append(
-    #             {
-    #                 'code': currency,
-    #                 'name': name,
-    #                 'rate': rate,
-    #                 'main': main
-    #             }
-    #         )
-
-    #     return currencies
+    REQUIRED_FIELDS = ('name',)

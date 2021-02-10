@@ -2,7 +2,6 @@ from djmoney.contrib.exchange.exceptions import MissingRate
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.status import (HTTP_200_OK,
                                    HTTP_400_BAD_REQUEST)
@@ -17,7 +16,6 @@ class AuthMixin:
     Apply this mixin to any view get queryset of wallets
     where the owner is the currently authenticated user.
     """
-    permission_classes = (IsAuthenticated, )
 
     def get_queryset(self):
         user = self.request.user
