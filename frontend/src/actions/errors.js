@@ -1,17 +1,31 @@
 import { GET_ERRORS, CLEAR_ERRORS } from './types'
 
 
-// Return errors
-export const returnErrors = (msg, status, id = null) => {
-    return {
-        type: GET_ERRORS,
-        payload: { msg, status, id }
+export const returnErrors = (response, id) => {
+  let payload = {
+    msg: [],
+    status: null,
+    id: 'NO_RESPONSE'
+  }
+
+  // if a server response exist
+  if (response) {
+    let payload = {
+      msg: response.data,
+      status: response.status,
+      id
     }
+  }
+
+  return {
+    type: GET_ERRORS,
+    payload
+  }
+
 }
 
-// Clear errors
 export const clearErrors = () => {
-    return {
-        type: CLEAR_ERRORS
-    }
+  return {
+    type: CLEAR_ERRORS
+  }
 }

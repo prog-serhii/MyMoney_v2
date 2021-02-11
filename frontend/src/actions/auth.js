@@ -46,7 +46,7 @@ export const login = (email, password) => dispatch => {
             })
         })
         .catch(err => {
-            dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'))
+            dispatch(returnErrors(err.response, 'LOGIN_FAIL'))
             dispatch({
                 type: LOGIN_FAIL,
             })
@@ -64,7 +64,7 @@ export const checkAuthenticated = () => dispatch => {
             })
         })
         .catch(err => {
-            dispatch(returnErrors(err.response.data, err.response.status, 'AUTHENTICATED_FAIL'))
+            dispatch(returnErrors(err.response, 'AUTHENTICATED_FAIL'))
             dispatch({
                 type: AUTHENTICATED_FAIL
             })
@@ -94,7 +94,7 @@ export const register = ({ name, email, password, re_password }) => dispatch => 
             })
         })
         .catch(err => {
-            dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'))
+            dispatch(returnErrors(err.response, 'REGISTER_FAIL'))
             dispatch({
                 type: REGISTER_FAIL
             })

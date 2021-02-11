@@ -14,7 +14,7 @@ class WalletListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Wallet
-        fields = ('pk', 'name', 'balance', 'currency')
+        fields = ('pk', 'name', 'wallet_type', 'balance', 'currency')
 
 
 class WalletCreateUpdateSerializer(serializers.ModelSerializer):

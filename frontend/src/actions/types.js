@@ -19,3 +19,7 @@ export const LOGOUT = 'LOGOUT'
 // errors
 export const GET_ERRORS = 'GET_ERRORS'
 export const CLEAR_ERRORS = 'CLEAR_ERRORS'
+
+// wallets
+export const GET_WALLETS_SUCCESS = 'GET_WALLETS_SUCCESS'
+export const GET_WALLETS_FAIL = 'GET_WALLETS_FAIL'

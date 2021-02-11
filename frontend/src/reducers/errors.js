@@ -5,7 +5,7 @@ import {
 
 
 const initialState = {
-  msg: {},
+  msg: [],
   status: null,
   id: null
 }
@@ -20,7 +20,7 @@ export default function (state = initialState, action) {
       }
     case CLEAR_ERRORS:
       return {
-        msg: {},
+        msg: [],
         status: null,
         id: null
       }
