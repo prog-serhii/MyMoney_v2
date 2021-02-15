@@ -1,3 +1,5 @@
+from datetime import date
+
 from djmoney.models.fields import MoneyField
 
 from django.db import models
@@ -6,10 +8,6 @@ from django.core.exceptions import ValidationError
 
 
 class Wallet(models.Model):
-
-    class TypeOfWallet(models.TextChoices):
-        CASHE = 'cashe', 'Cashe'
-        CARD = 'card', 'Bank Card'
 
     user = models.ForeignKey(get_user_model(),
                              verbose_name='User',
@@ -21,10 +19,11 @@ class Wallet(models.Model):
                             max_length=50,
                             blank=False,
                             null=False)
-    wallet_type = models.CharField(verbose_name='Type of wallet',
-                                   max_length=10,
-                                   choices=TypeOfWallet.choices,
-                                   default=TypeOfWallet.CASHE)
+    icon = models.CharField(verbose_name='Icon of wallet',
+                            max_length=20,
+                            default='',
+                            blank=False,
+                            null=False)
     initial_balance = MoneyField(verbose_name='Initial balance',
                                  max_digits=10,
                                  decimal_places=2,
@@ -39,12 +38,15 @@ class Wallet(models.Model):
                          default_currency='EUR',
                          blank=False,
                          null=False)
-    created = models.DateField(auto_now_add=True)
-    updated = models.DateField(auto_now=True)
+    created = models.DateField(verbose_name='Date of initial balance',
+                               default=date.today,
+                               blank=False,
+                               null=False)
 
     class Meta:
         verbose_name = 'Wallet'
         verbose_name_plural = 'Wallets'
+        ordering = ('-name',)
 
     def __str__(self) -> str:
         return f'{self.name} ({self.user})'
@@ -63,3 +65,10 @@ class Wallet(models.Model):
         Return currency of the wallet
         """
         return str(self.balance.currency)
+
+    @property
+    def formatted_balance(self) -> str:
+        """
+        Return formatted balance of the wallet
+        """
+        return str(self.balance)

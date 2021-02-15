@@ -1,5 +1,4 @@
 from datetime import date
-# from datetime import timedelta
 from decimal import Decimal
 
 from djmoney.money import Money
@@ -11,9 +10,12 @@ from django.db.models import QuerySet, Sum
 from .models import Wallet
 
 
-def create_wallet(validated_data):
-    """ """
-    # set balance and balance_currency as in initial_balance
+def create_wallet(validated_data: dict) -> Wallet:
+    """
+    This function creates a new wallet based on the validated data.
+    Also sets the wallet balance equal to the initial balance.
+    And return created wallet.
+    """
     balance_currency = validated_data['initial_balance_currency']
     balance = validated_data['initial_balance']
 
@@ -22,21 +24,62 @@ def create_wallet(validated_data):
         'balance': balance,
     }
 
-    Wallet.objects.create(**validated_data, **balance)
+    wallet = Wallet.objects.create(**validated_data, **balance)
+
+    return wallet
 
 
-def get_wallets_by(user_id: int) -> QuerySet:
-    """ """
-    queryset = Wallet.objects.filter(user=user_id)
+def update_wallet(instance: Wallet, serializer):
+    """
+    Як поступити при змінні валюти, якщо вже є пов'язані із цим гаманцем витрати, прибутки?
+    """
+    new_initial_balance = serializer.validated_data.get('initial_balance')
+
+    if new_initial_balance:
+        print(str(new_initial_balance))
+        try:
+            new_currency = serializer.validated_data['initial_balance_currency']
+        except KeyError:
+            new_currency = instance.balance_currency
+
+        old_initial_balance = instance.initial_balance.amount
+        new_balance = instance.balance.amount - old_initial_balance + new_initial_balance
+
+        serializer.save(balance=new_balance, balance_currency=new_currency)
+
+    else:
+        serializer.save()
+
+
+def remove_wallet(instance: Wallet, remove_related=False) -> None:
+    """
+    This function removes the wallet.
+
+    (Not implemented)
+    And depending on the parameter 'remove_related' removes related objects
+    or sets the value of the link (to a wallet) to NULL.
+    """
+    instance.delete()
+
+
+def get_wallets_by_user(id: int) -> QuerySet:
+    """
+    Returns a queryset of wallets belonging to the specified user.
+    """
+    queryset = Wallet.objects.filter(user=id)
 
     return queryset
 
 
 def get_wallet_by(id: int) -> Wallet:
+    """
+    Returns the wallet according to its id.
+    If this wallet does not exist raise an value error.
+    """
     try:
         wallet = Wallet.objects.get(id=id)
     except ObjectDoesNotExist:
-        wallet = None
+        raise ValueError('There is no wallet with this ID.')
 
     return wallet
 
@@ -84,7 +127,7 @@ def get_statistic_for_date_range(wallet: Wallet, from_date: str, to_date: str) -
     # 2. в словнику створити ключі із дат
     # 3. до кожної дати додати 1. прибутки 2. витрати 3. баланс
     # def datetime_range(start=None, end=None):
-    #span = end - start
+    # span = end - start
     # for i in xrange(span.days + 1):
     #    yield start + timedelta(days=i)
 
@@ -103,31 +146,3 @@ def get_statistic_for_date_range(wallet: Wallet, from_date: str, to_date: str) -
 
     else:
         return None
-
-
-# def update_balance_of_wallet(id: int, new_balance: Decimal) -> Wallet:
-#     """ """
-#     wallet = get_wallet_by(id)
-
-#     if wallet is None:
-#         # if the istance doesn't exist
-#         return None
-
-#     wallet.balance = new_balance
-#     wallet.save()
-
-#     return wallet
-
-
-# def update_initial_balance_of_wallet(id: int, new_initial_balance: Decimal) -> Wallet:
-#     """ """
-#     wallet = get_wallet_by(id)
-
-#     if wallet is None:
-#         # if the istance doesn't exist
-#         return None
-
-#     wallet.initial_balance = new_balance
-#     wallet.save()
-
-#     return wallet

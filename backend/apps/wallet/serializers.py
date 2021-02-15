@@ -7,28 +7,21 @@ class WalletRepresentationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Wallet
-        fields = ('pk', 'name')
+        fields = ('id', 'name')
 
 
 class WalletListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Wallet
-        fields = ('pk', 'name', 'wallet_type', 'balance', 'currency')
-
-
-class WalletCreateUpdateSerializer(serializers.ModelSerializer):
-    initial_balance_currency = serializers.CharField()
-
-    class Meta:
-        model = Wallet
-        fields = ('name', 'wallet_type', 'initial_balance',
-                  'initial_balance_currency')
+        fields = ('id', 'name', 'icon', 'formatted_balance', 'currency')
 
 
 class WalletDetailSerializer(serializers.ModelSerializer):
+    initial_balance_currency = serializers.CharField(write_only=True)
 
     class Meta:
         model = Wallet
-        fields = ('pk', 'name', 'wallet_type', 'balance',
-                  'currency', 'initial_balance', 'created', 'updated')
+        fields = ('id', 'name', 'icon', 'balance', 'initial_balance',
+                  'initial_balance_currency', 'currency', 'created')
+        read_only_fields = ('id', 'balance')
