@@ -70,10 +70,10 @@ class WalletTotalBalanceAPI(AuthMixin, APIView):
             currency = self.request.user.main_currency
 
         try:
-            balance = services.get_total_balance_of(wallets, currency)
+            amount = services.get_total_balance_of(wallets, currency)
 
             response = {
-                'balance': balance,
+                'amount': amount,
                 'currency': currency
             }
 
@@ -81,8 +81,7 @@ class WalletTotalBalanceAPI(AuthMixin, APIView):
 
         except MissingRate:
             response = {
-                'message': 'Error',
-                'error': 'This currency does not exist'
+                'error': f"Rate for '{currency}' does not exist."
             }
 
             return Response(response, status=HTTP_400_BAD_REQUEST)

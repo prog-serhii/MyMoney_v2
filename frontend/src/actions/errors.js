@@ -10,7 +10,7 @@ export const returnErrors = (response, id) => {
 
   // if a server response exist
   if (response) {
-    let payload = {
+    payload = {
       msg: response.data,
       status: response.status,
       id

@@ -49,7 +49,10 @@ def filter_by_date_range(queryset: QuerySet, from_date: str, to_date: str) -> Qu
 
 
 def get_total_balance_of(queryset: QuerySet, currency: str) -> Decimal:
-    """ """
+    """
+
+    """
+
     total_balance_in_currency = Decimal()
 
     balances_in_currencies = queryset.values('balance_currency').annotate(balance=Sum('balance'))
@@ -80,9 +83,9 @@ def get_statistic_for_date_range(wallet: Wallet, from_date: str, to_date: str) -
     # 1. створити список із датами
     # 2. в словнику створити ключі із дат
     # 3. до кожної дати додати 1. прибутки 2. витрати 3. баланс
-    #def datetime_range(start=None, end=None):
+    # def datetime_range(start=None, end=None):
     #span = end - start
-    #for i in xrange(span.days + 1):
+    # for i in xrange(span.days + 1):
     #    yield start + timedelta(days=i)
 
     if wallet:
