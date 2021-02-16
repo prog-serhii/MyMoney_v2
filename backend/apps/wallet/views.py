@@ -6,6 +6,8 @@ from rest_framework.status import (HTTP_200_OK,
                                    HTTP_400_BAD_REQUEST)
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
+from django.utils.translation import gettext as _
+
 from . import services
 from . import serializers
 
@@ -73,7 +75,7 @@ class WalletTotalBalanceAPI(AuthMixin, APIView):
 
         except MissingRate:
             response = {
-                'error': f"Rate for '{currency}' does not exist."
+                'error': _("Rate for '{}' does not exist.").format(currency)
             }
 
             return Response(response, status=HTTP_400_BAD_REQUEST)

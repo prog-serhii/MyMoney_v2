@@ -6,6 +6,7 @@ from djmoney.contrib.exchange.models import convert_money
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import QuerySet, Sum
+from django.utils.translation import gettext_lazy as _
 
 from .models import Wallet
 
@@ -29,23 +30,16 @@ def create_wallet(validated_data: dict) -> Wallet:
     return wallet
 
 
-def update_wallet(instance: Wallet, serializer):
+def update_wallet(instance: Wallet, serializer) -> None:
     """
     Як поступити при змінні валюти, якщо вже є пов'язані із цим гаманцем витрати, прибутки?
     """
-    new_initial_balance = serializer.validated_data.get('initial_balance')
+    new_initial_balance = serializer.validated_data['initial_balance']
+    old_initial_balance = instance.initial_balance
 
-    if new_initial_balance:
-        print(str(new_initial_balance))
-        try:
-            new_currency = serializer.validated_data['initial_balance_currency']
-        except KeyError:
-            new_currency = instance.balance_currency
-
-        old_initial_balance = instance.initial_balance.amount
-        new_balance = instance.balance.amount - old_initial_balance + new_initial_balance
-
-        serializer.save(balance=new_balance, balance_currency=new_currency)
+    if new_initial_balance != old_initial_balance:
+        new_balance = instance.balance.amount - old_initial_balance.amount + new_initial_balance.amount
+        serializer.save(balance=new_balance, balance_currency=new_initial_balance.currency)
 
     else:
         serializer.save()
@@ -79,12 +73,17 @@ def get_wallet_by(id: int) -> Wallet:
     try:
         wallet = Wallet.objects.get(id=id)
     except ObjectDoesNotExist:
-        raise ValueError('There is no wallet with this ID.')
+        raise ValueError(_('There is no wallet with this ID.'))
 
     return wallet
 
 
 def filter_by_date_range(queryset: QuerySet, from_date: str, to_date: str) -> QuerySet:
+    """
+    This function filters the queryset by field 'date'.
+    If its value is between 'from_date' and 'to_data'.
+    'from_date' and 'to_data' must be in the format YYYY-MM-DD.
+    """
     from_date = date.fromisoformat(from_date)
     to_date = date.fromisoformat(to_date)
 
