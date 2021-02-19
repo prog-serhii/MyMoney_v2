@@ -16,3 +16,5 @@ redis==3.5.3
 flake8==3.8.4
 setuptools-rust==0.11.6
 jedi==0.17.2
+PyJWT==1.7.1
+django-filter==2.4.0

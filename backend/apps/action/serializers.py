@@ -1,63 +1,64 @@
 from rest_framework import serializers
 
-from apps.wallet.models import Wallet
 from apps.wallet.serializers import WalletRepresentationSerializer
-from .models import Action, Income, Expense
+from .models import Income, Expense, IncomeCategory, ExpenseCategory
 
 
-class IncomeCategoryRepresentationSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Wallet
-        fields = ('pk', 'name')
-
-
-class ExpenseRepresentationSerializer(serializers.ModelSerializer):
+class IncomeCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Wallet
-        fields = ('pk', 'name')
+        model = IncomeCategory
+        fields = ('id', 'name')
 
 
-class WalletActionListSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Action
-        fields = ('name', 'amount', 'amount_currency', 'date',
-                  'is_transaction', 'is_income', 'is_expense')
-
-
-class WalletIncomeListSerializer(serializers.ModelSerializer):
+class ExpenseCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Income
-        fields = ('name', 'amount', 'amount_currency', 'date',
-                  'is_transaction', 'is_income', 'is_expense')
-
-
-class WalletExpenseListSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Expense
-        fields = ('name', 'amount', 'amount_currency', 'date',
-                  'is_transaction', 'is_income', 'is_expense')
+        model = ExpenseCategory
+        fields = ('id', 'name')
 
 
 class IncomeListSerializer(serializers.ModelSerializer):
-    wallet = WalletRepresentationSerializer(read_only=True)
-    category = IncomeCategoryRepresentationSerializer(read_only=True)
 
     class Meta:
         model = Income
-        fields = ('name', 'wallet', 'amount',
+        fields = ('id', 'name', 'amount', 'currency',
+                  'date', 'is_transaction', 'wallet', 'category')
+        extra_kwargs = {
+            'id': {'read_only': True},
+            'wallet': {'write_only': True},
+            'category': {'write_only': True}
+        }
+
+
+class IncomeDetailSerializer(serializers.ModelSerializer):
+    wallet = WalletRepresentationSerializer(read_only=True)
+    category = IncomeCategorySerializer(read_only=True)
+
+    class Meta:
+        model = Income
+        fields = ('id', 'name', 'wallet', 'amount', 'amount_currency',
                   'date', 'category', 'is_transaction')
 
 
 class ExpenseListSerializer(serializers.ModelSerializer):
-    wallet = WalletRepresentationSerializer(read_only=True)
-    category = ExpenseRepresentationSerializer(read_only=True)
 
     class Meta:
         model = Expense
-        fields = ('name', 'wallet', 'amount',
+        fields = ('id', 'name', 'amount', 'currency',
+                  'date', 'is_transaction', 'wallet', 'category')
+        extra_kwargs = {
+            'id': {'read_only': True},
+            'wallet': {'write_only': True},
+            'category': {'write_only': True}
+        }
+
+
+class ExpenseDetailSerializer(serializers.ModelSerializer):
+    wallet = WalletRepresentationSerializer(read_only=True)
+    category = ExpenseCategorySerializer(read_only=True)
+
+    class Meta:
+        model = Expense
+        fields = ('id', 'name', 'wallet', 'amount', 'amount_currency',
                   'date', 'category', 'is_transaction')

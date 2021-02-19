@@ -36,7 +36,7 @@ class WalletListAPI(AuthMixin, ListCreateAPIView):
 
     def perform_create(self, serializer):
         user = self.request.user
-        services.create_wallet({'user': user, **serializer.validated_data})
+        services.create_wallet(user, serializer.validated_data)
 
 
 class WalletDetailAPI(AuthMixin, RetrieveUpdateDestroyAPIView):

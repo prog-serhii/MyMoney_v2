@@ -12,5 +12,6 @@ class WalletFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
     icon = factory.Faker('word')
     initial_balance = factory.Faker('pydecimal', right_digits=2, max_value=99999)
+    balance = factory.Faker('pydecimal', right_digits=2, max_value=99999)
     initial_balance_currency = 'EUR'
     balance_currency = 'EUR'

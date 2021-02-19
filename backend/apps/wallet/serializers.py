@@ -23,5 +23,5 @@ class WalletDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
         fields = ('id', 'name', 'icon', 'balance', 'initial_balance',
-                  'initial_balance_currency', 'currency', 'created')
+                  'initial_balance_currency', 'created')
         read_only_fields = ('id', 'balance')

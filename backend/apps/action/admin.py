@@ -1,9 +1,11 @@
+from django.forms import ModelForm, ValidationError
 from django.urls import reverse
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.core.exceptions import PermissionDenied
 from django.contrib.admin.actions import delete_selected
 
+from apps.wallet.services import get_wallet_by
 from .models import (Expense, Income,
                      ExpenseCategory, IncomeCategory)
 
@@ -51,8 +53,45 @@ class ExpenseCategoryAdmin(admin.ModelAdmin):
     user_link.short_description = 'User'
 
 
+class ExpenseAdminForm(ModelForm):
+    class Meta:
+        model = Expense
+        fields = '__all__'
+
+    def clean(self):
+        """
+
+        """
+        expense_user = self.cleaned_data['user']
+        expense_currency = self.cleaned_data['amount'].currency
+
+        wallet_user = self.cleaned_data['wallet'].user
+        wallet_currency = self.cleaned_data['wallet'].currency
+
+        category_user = self.cleaned_data['category'].user
+
+        if expense_user != wallet_user:
+            self.add_error(
+                'wallet',
+                ValidationError(' expense_user != wallet_user', code='invalid')
+            )
+
+        if expense_currency != wallet_currency:
+            self.add_error(
+                'wallet',
+                ValidationError(' expense_ cue != wallet_ cue', code='invalid')
+            )
+
+        if expense_user != category_user:
+            self.add_error(
+                'category',
+                ValidationError(' expense_user != category_user', code='invalid')
+            )
+
+
 @admin.register(Expense)
 class ExpenseAdmin(admin.ModelAdmin):
+    form = ExpenseAdminForm
     list_display = ('name', 'user_link', 'amount', 'date', 'is_transaction')
     search_fields = ('name',)
     ordering = ('date',)
@@ -70,8 +109,45 @@ class ExpenseAdmin(admin.ModelAdmin):
     user_link.short_description = 'User'
 
 
+class IncomeAdminForm(ModelForm):
+    class Meta:
+        model = Income
+        fields = '__all__'
+
+    def clean(self):
+        """
+
+        """
+        income_user = self.cleaned_data['user']
+        income_currency = self.cleaned_data['amount'].currency
+
+        wallet_user = self.cleaned_data['wallet'].user
+        wallet_currency = self.cleaned_data['wallet'].currency
+
+        category_user = self.cleaned_data['category'].user
+
+        if income_user != wallet_user:
+            self.add_error(
+                'wallet',
+                ValidationError(' income_user != wallet_user', code='invalid')
+            )
+
+        if income_currency != wallet_currency:
+            self.add_error(
+                'wallet',
+                ValidationError(' income_ cue != wallet_ cue', code='invalid')
+            )
+
+        if income_user != category_user:
+            self.add_error(
+                'category',
+                ValidationError(' income_user != category_user', code='invalid')
+            )
+
+
 @admin.register(Income)
 class IncomeAdmin(admin.ModelAdmin):
+    form = IncomeAdminForm
     list_display = ('name', 'user_link', 'amount', 'date', 'is_transaction')
     search_fields = ('name',)
     ordering = ('date', )

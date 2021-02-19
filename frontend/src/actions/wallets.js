@@ -4,7 +4,9 @@ import {
     GET_WALLETS_SUCCESS,
     GET_WALLETS_FAIL,
     GET_BALANCE_SUCCESS,
-    GET_BALANCE_FAIL
+    GET_BALANCE_FAIL,
+    GET_WALLET_DETAIL_FAIL,
+    GET_WALLET_DETAIL_SUCCESS
 } from './types'
 
 import { returnErrors } from './errors'
@@ -42,6 +44,22 @@ export const getBalance = () => dispatch => {
         })
 }
 
+export const getWalletDetail = (id) => dispatch => {
+    axiosInstance.get(`wallets/${id}`)
+        .then(res => {
+            dispatch({
+                type: GET_WALLET_DETAIL_SUCCESS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response, 'GET_WALLET_DETAIL_FAIL'))
+            dispatch({
+                type: GET_WALLET_DETAIL_FAIL
+            })
+        })
+}
+
 export const removeWallet = (id) => dispatch => {
     axiosInstance.delete(`wallets/${id}`)
         .then(() => {
@@ -50,7 +68,7 @@ export const removeWallet = (id) => dispatch => {
             })
         })
         .catch(err => {
-            dispatch(returnErrors(err.response, 'GET_BALANCE_FAIL'))
+            dispatch(returnErrors(err.response, 'REMOVE_WALLET_FAIL'))
             dispatch({
                 type: REMOVE_WALLET_FAIL
             })

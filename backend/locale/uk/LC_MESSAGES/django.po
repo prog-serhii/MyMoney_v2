@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-16 10:39+0000\n"
+"POT-Creation-Date: 2021-02-17 17:47+0000\n"
 "PO-Revision-Date: 2021-02-16 10:45+0000\n"
 "Last-Translator: b'Anonymous User <kazmiruk.sergii@gmail.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,46 +16,99 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 "X-Translated-Using: django-rosetta 0.9.5\n"
 
-#: apps/wallet/models.py:14
+#: apps/action/models.py:16 apps/action/models.py:93 apps/action/models.py:108
+msgid "Category"
+msgstr ""
+
+#: apps/action/models.py:28 apps/action/models.py:40 apps/action/models.py:86
+#: apps/action/models.py:101 apps/wallet/models.py:14
 msgid "User"
 msgstr "Користувач"
 
-#: apps/wallet/models.py:19
+#: apps/action/models.py:34
+msgid "Income Category"
+msgstr ""
+
+#: apps/action/models.py:35
+msgid "Income Categories"
+msgstr ""
+
+#: apps/action/models.py:46
+msgid "Expense Category"
+msgstr ""
+
+#: apps/action/models.py:47
+msgid "Expense Categories"
+msgstr ""
+
+#: apps/action/models.py:54 apps/wallet/models.py:19
 msgid "Name"
 msgstr "Назва"
+
+#: apps/action/models.py:57
+msgid "Date"
+msgstr ""
+
+#: apps/action/models.py:59
+msgid "Amount"
+msgstr ""
+
+#: apps/action/models.py:66
+msgid "Is transaction?"
+msgstr ""
+
+#: apps/action/models.py:89 apps/action/models.py:104
+#, fuzzy
+#| msgid "Icon of wallet"
+msgid "To wallet"
+msgstr "Іконка гаманця"
+
+#: apps/action/models.py:112
+msgid "Related Income"
+msgstr ""
+
+#: apps/action/models.py:121
+msgid ""
+"If field 'is_transaction' is True then field "
+"'related_income'                 must contain a reference to the associated "
+"object. And vice versa."
+msgstr ""
 
 #: apps/wallet/models.py:23
 msgid "Icon of wallet"
 msgstr "Іконка гаманця"
 
-#: apps/wallet/models.py:28
+#: apps/wallet/models.py:27
 msgid "Initial balance"
 msgstr "Початковий баланс"
 
-#: apps/wallet/models.py:35
+#: apps/wallet/models.py:32
 msgid "Total balance"
 msgstr "Загальний баланс"
 
-#: apps/wallet/models.py:42
+#: apps/wallet/models.py:39
 msgid "Date of initial balance"
 msgstr "Дата початкового балансу"
 
-#: apps/wallet/models.py:48
+#: apps/wallet/models.py:45
 msgid "Wallet"
 msgstr "Гаменець"
 
-#: apps/wallet/models.py:49
+#: apps/wallet/models.py:46
 msgid "Wallets"
 msgstr "Гаманці"
 
-#: apps/wallet/models.py:57
+#: apps/wallet/models.py:54
 msgid "Currencies of balance and initial_balance must be the same."
 msgstr "Валюти balance і initial_balance мають бути однаковими."
 
-#: apps/wallet/services.py:83
+#: apps/wallet/services.py:76
 msgid "There is no wallet with this ID."
 msgstr "Гаменець із даний id не існує."
 
@@ -63,10 +116,10 @@ msgstr "Гаменець із даний id не існує."
 msgid "Rate for '{}' does not exist."
 msgstr "Обмінний курс для '{}' не існує."
 
-#: project/settings.py:118
+#: project/settings.py:120
 msgid "English"
 msgstr "Англійська"
 
-#: project/settings.py:119
+#: project/settings.py:121
 msgid "Ukrainian"
 msgstr "Українська"

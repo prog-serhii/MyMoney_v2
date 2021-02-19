@@ -5,27 +5,30 @@ from djmoney.money import Money
 from djmoney.contrib.exchange.models import convert_money
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from django.db.models import QuerySet, Sum
 from django.utils.translation import gettext_lazy as _
 
 from .models import Wallet
 
 
-def create_wallet(validated_data: dict) -> Wallet:
+def create_wallet(user, validated_data: dict) -> Wallet:
     """
-    This function creates a new wallet based on the validated data.
+    This function creates a new wallet based on the validated data and user id.
     Also sets the wallet balance equal to the initial balance.
     And return created wallet.
     """
     balance_currency = validated_data['initial_balance_currency']
     balance = validated_data['initial_balance']
 
-    balance = {
+    data = {
+        **validated_data,
+        'user': user,
         'balance_currency': balance_currency,
         'balance': balance,
     }
 
-    wallet = Wallet.objects.create(**validated_data, **balance)
+    wallet = Wallet.objects.create(**data)
 
     return wallet
 
@@ -43,6 +46,14 @@ def update_wallet(instance: Wallet, serializer) -> None:
 
     else:
         serializer.save()
+
+
+def update_wallets_balance(wallet_id: int, delta: Money) -> None:
+    with transaction.atomic():
+        wallet = Wallet.objects.select_for_update().get(id=wallet_id)
+
+        wallet.balance += delta
+        wallet.save(update_fields=['balance'])
 
 
 def remove_wallet(instance: Wallet, remove_related=False) -> None:

@@ -46,26 +46,26 @@ class Wallet(models.Model):
         verbose_name_plural = _('Wallets')
         ordering = ('-name',)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.name} ({self.user})'
 
-    def clean(self):
-        if self.balance_currency != self.initial_balance_currency:
-            raise ValidationError(_('Currencies of balance and initial_balance must be the same.'))
+    # def clean(self):
+    #     if self.balance_currency != self.initial_balance_currency:
+    #         raise ValidationError(_('Currencies of balance and initial_balance must be the same.'))
 
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        return super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.full_clean()
+    #     return super().save(*args, **kwargs)
 
     @property
-    def currency(self):
+    def currency(self) -> str:
         """
         Return currency of the wallet
         """
         return str(self.balance.currency)
 
     @property
-    def formatted_balance(self):
+    def formatted_balance(self) -> str:
         """
         Return formatted balance of the wallet
         """
