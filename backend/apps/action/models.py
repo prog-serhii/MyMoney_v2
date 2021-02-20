@@ -53,14 +53,13 @@ class Action(models.Model):
     """
     name = models.CharField(verbose_name=_('Name'),
                             max_length=250,
-                            blank=True)
+                            blank=False,
+                            null=False)
     date = models.DateField(verbose_name=_('Date'),
                             default=date.today)
     amount = MoneyField(verbose_name=_('Amount'),
                         max_digits=10,
                         decimal_places=2,
-                        default=0,
-                        default_currency='EUR',
                         blank=False,
                         null=False)
     is_transaction = models.BooleanField(verbose_name=_('Is transaction?'),
@@ -79,35 +78,54 @@ class Action(models.Model):
         """
         return str(self.amount.currency)
 
+    @property
+    def formatted_amount(self) -> str:
+        """
+        Return formatted amount of the action
+        """
+        return str(self.amount)
+
 
 class Income(Action):
     user = models.ForeignKey(get_user_model(),
                              on_delete=models.CASCADE,
                              verbose_name=_('User'),
-                             related_name='incomes')
+                             related_name='incomes',
+                             blank=False,
+                             null=False)
     wallet = models.ForeignKey(Wallet,
                                verbose_name=_('To wallet'),
                                on_delete=models.CASCADE,
-                               related_name='incomes')
+                               related_name='incomes',
+                               blank=False,
+                               null=False)
     category = models.ForeignKey(IncomeCategory,
                                  verbose_name=_('Category'),
                                  on_delete=models.CASCADE,
-                                 related_name='incomes')
+                                 related_name='incomes',
+                                 blank=False,
+                                 null=False)
 
 
 class Expense(Action):
     user = models.ForeignKey(get_user_model(),
                              on_delete=models.CASCADE,
                              verbose_name=_('User'),
-                             related_name='expenses')
+                             related_name='expenses',
+                             blank=False,
+                             null=False)
     wallet = models.ForeignKey(Wallet,
                                verbose_name=_('To wallet'),
                                on_delete=models.CASCADE,
-                               related_name='expenses')
+                               related_name='expenses',
+                               blank=False,
+                               null=False)
     category = models.ForeignKey(ExpenseCategory,
                                  verbose_name=_('Category'),
                                  on_delete=models.CASCADE,
-                                 related_name='expenses')
+                                 related_name='expenses',
+                                 blank=False,
+                                 null=False)
     related_income = models.OneToOneField('Income',
                                           verbose_name=_('Related Income'),
                                           related_name='related_expense',

@@ -1,9 +1,10 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.views import APIView
-from rest_framework.generics import (ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView)
+from rest_framework.generics import (ListCreateAPIView, RetrieveUpdateDestroyAPIView)
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
 
+
+from apps.api.mixins import ApiErrorsMixin
 from . import serializers
 from . import services
 
@@ -12,9 +13,8 @@ class LargeResultsSetPagination(LimitOffsetPagination):
     default_limit = 50
 
 
-class IncomeCategoryListAPI(ListCreateAPIView):
+class IncomeCategoryListAPI(ApiErrorsMixin, ListCreateAPIView):
     serializer_class = serializers.IncomeCategorySerializer
-    pagination_class = None
     filter_backends = (SearchFilter, OrderingFilter)
 
     search_fields = ('name',)
@@ -29,7 +29,7 @@ class IncomeCategoryListAPI(ListCreateAPIView):
         services.create_income_category(user, serializer.validated_data)
 
 
-class IncomeCategoryDetailAPI(RetrieveUpdateDestroyAPIView):
+class IncomeCategoryDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.IncomeCategorySerializer
 
     def get_queryset(self):
@@ -43,9 +43,8 @@ class IncomeCategoryDetailAPI(RetrieveUpdateDestroyAPIView):
         services.remove_income_category(instance)
 
 
-class ExpenseCategoryListAPI(ListCreateAPIView):
+class ExpenseCategoryListAPI(ApiErrorsMixin, ListCreateAPIView):
     serializer_class = serializers.ExpenseCategorySerializer
-    pagination_class = None
     filter_backends = (SearchFilter, OrderingFilter)
 
     search_fields = ('name',)
@@ -60,7 +59,7 @@ class ExpenseCategoryListAPI(ListCreateAPIView):
         services.create_expense_category(user, serializer.validated_data)
 
 
-class ExpenseCategoryDetailAPI(RetrieveUpdateDestroyAPIView):
+class ExpenseCategoryDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.ExpenseCategorySerializer
 
     def get_queryset(self):
@@ -74,7 +73,7 @@ class ExpenseCategoryDetailAPI(RetrieveUpdateDestroyAPIView):
         services.remove_expense_category(instance)
 
 
-class IncomeListAPI(ListCreateAPIView):
+class IncomeListAPI(ApiErrorsMixin, ListCreateAPIView):
     serializer_class = serializers.IncomeListSerializer
     pagination_class = LargeResultsSetPagination
     filter_backends = (SearchFilter, OrderingFilter, DjangoFilterBackend)
@@ -92,7 +91,7 @@ class IncomeListAPI(ListCreateAPIView):
         services.create_income(user, serializer.validated_data)
 
 
-class IncomeDetailAPI(RetrieveUpdateDestroyAPIView):
+class IncomeDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.IncomeDetailSerializer
 
     def get_queryset(self):
@@ -100,7 +99,7 @@ class IncomeDetailAPI(RetrieveUpdateDestroyAPIView):
         return services.get_incomes_by_user(user_id)
 
 
-class ExpenseListAPI(ListCreateAPIView):
+class ExpenseListAPI(ApiErrorsMixin, ListCreateAPIView):
     serializer_class = serializers.ExpenseListSerializer
     pagination_class = LargeResultsSetPagination
     filter_backends = (SearchFilter, OrderingFilter, DjangoFilterBackend)
@@ -118,7 +117,7 @@ class ExpenseListAPI(ListCreateAPIView):
         services.create_expense(user, serializer.validated_data)
 
 
-class ExpenseDetailAPI(RetrieveUpdateDestroyAPIView):
+class ExpenseDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.ExpenseDetailSerializer
 
     def get_queryset(self):

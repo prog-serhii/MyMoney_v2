@@ -8,6 +8,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 
 from django.utils.translation import gettext as _
 
+from apps.api.mixins import ApiErrorsMixin
 from . import services
 from . import serializers
 
@@ -23,8 +24,7 @@ class AuthMixin:
         return services.get_wallets_by_user(user_id)
 
 
-class WalletListAPI(AuthMixin, ListCreateAPIView):
-    pagination_class = None
+class WalletListAPI(AuthMixin, ApiErrorsMixin, ListCreateAPIView):
 
     def get_serializer_class(self, *args, **kwargs):
         request_method = self.request.method
@@ -39,7 +39,7 @@ class WalletListAPI(AuthMixin, ListCreateAPIView):
         services.create_wallet(user, serializer.validated_data)
 
 
-class WalletDetailAPI(AuthMixin, RetrieveUpdateDestroyAPIView):
+class WalletDetailAPI(AuthMixin, ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.WalletDetailSerializer
 
     def perform_update(self, serializer):
@@ -50,7 +50,7 @@ class WalletDetailAPI(AuthMixin, RetrieveUpdateDestroyAPIView):
         services.remove_wallet(instance)
 
 
-class WalletTotalBalanceAPI(AuthMixin, APIView):
+class WalletTotalBalanceAPI(AuthMixin, ApiErrorsMixin, APIView):
     """
     Return a total balance of all user's wallets in a curtain currency
     """

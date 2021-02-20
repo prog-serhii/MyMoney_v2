@@ -49,6 +49,9 @@ def update_wallet(instance: Wallet, serializer) -> None:
 
 
 def update_wallets_balance(wallet_id: int, delta: Money) -> None:
+    """
+    This function adds 'delta' to the 'balance' field of the Wallet model.
+    """
     with transaction.atomic():
         wallet = Wallet.objects.select_for_update().get(id=wallet_id)
 

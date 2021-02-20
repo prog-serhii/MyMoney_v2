@@ -5,7 +5,6 @@ from django.utils.safestring import mark_safe
 from django.core.exceptions import PermissionDenied
 from django.contrib.admin.actions import delete_selected
 
-from apps.wallet.services import get_wallet_by
 from .models import (Expense, Income,
                      ExpenseCategory, IncomeCategory)
 

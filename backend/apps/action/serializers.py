@@ -19,15 +19,18 @@ class ExpenseCategorySerializer(serializers.ModelSerializer):
 
 
 class IncomeListSerializer(serializers.ModelSerializer):
+    amount_currency = serializers.CharField(write_only=True)
 
     class Meta:
         model = Income
-        fields = ('id', 'name', 'amount', 'currency',
-                  'date', 'is_transaction', 'wallet', 'category')
+        fields = ('id', 'name', 'amount', 'formatted_amount', 'currency',
+                  'date', 'is_transaction', 'wallet', 'category', 'amount_currency')
+        read_only_fields = ('id',)
+
         extra_kwargs = {
-            'id': {'read_only': True},
-            'wallet': {'write_only': True},
-            'category': {'write_only': True}
+            'amount': {'write_only': True},
+            'category': {'write_only': True},
+            'wallet': {'write_only': True}
         }
 
 
@@ -42,15 +45,18 @@ class IncomeDetailSerializer(serializers.ModelSerializer):
 
 
 class ExpenseListSerializer(serializers.ModelSerializer):
+    amount_currency = serializers.CharField(write_only=True)
 
     class Meta:
         model = Expense
-        fields = ('id', 'name', 'amount', 'currency',
-                  'date', 'is_transaction', 'wallet', 'category')
+        fields = ('id', 'name', 'amount', 'formatted_amount', 'currency',
+                  'date', 'is_transaction', 'wallet', 'category', 'amount_currency')
+        read_only_fields = ('id',)
+
         extra_kwargs = {
-            'id': {'read_only': True},
-            'wallet': {'write_only': True},
-            'category': {'write_only': True}
+            'amount': {'write_only': True},
+            'category': {'write_only': True},
+            'wallet': {'write_only': True}
         }
 
 

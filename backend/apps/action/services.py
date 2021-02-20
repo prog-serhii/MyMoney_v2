@@ -1,7 +1,5 @@
-from djmoney.money import Money
-
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction
+from django.utils.translation import gettext_lazy as _
 from django.db.models import QuerySet
 
 from apps.wallet.services import update_wallets_balance

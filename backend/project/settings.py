@@ -44,7 +44,8 @@ INSTALLED_APPS = [
 
     'apps.user.apps.UserConfig',
     'apps.wallet.apps.WalletConfig',
-    'apps.action.apps.ActionConfig'
+    'apps.action.apps.ActionConfig',
+    'apps.api.apps.ApiConfig'
 ]
 
 MIDDLEWARE = [
@@ -180,9 +181,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'EXCEPTION_HANDLER': 'apps.api.errors.custom_exception_handler',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
-    'PAGE_SIZE': 20,
 }
 
 # ------------------------------------------ #
