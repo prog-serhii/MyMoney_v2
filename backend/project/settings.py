@@ -42,9 +42,9 @@ INSTALLED_APPS = [
     'djmoney.contrib.exchange',
     'corsheaders',
 
-    'apps.user.apps.UserConfig',
-    'apps.wallet.apps.WalletConfig',
-    'apps.action.apps.ActionConfig',
+    'apps.authentication.apps.UserConfig',
+    'apps.account.apps.AccountConfig',
+    'apps.transaction.apps.TransactionConfig',
     'apps.api.apps.ApiConfig'
 ]
 
@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'authentication.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
