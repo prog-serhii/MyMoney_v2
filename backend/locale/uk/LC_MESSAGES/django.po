@@ -8,118 +8,188 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-17 17:47+0000\n"
-"PO-Revision-Date: 2021-02-16 10:45+0000\n"
+"POT-Creation-Date: 2021-02-23 08:37+0000\n"
+"PO-Revision-Date: 2021-02-23 08:43+0000\n"
 "Last-Translator: b'Anonymous User <kazmiruk.sergii@gmail.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
-"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
-"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
-"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 "X-Translated-Using: django-rosetta 0.9.5\n"
 
-#: apps/action/models.py:16 apps/action/models.py:93 apps/action/models.py:108
-msgid "Category"
-msgstr ""
-
-#: apps/action/models.py:28 apps/action/models.py:40 apps/action/models.py:86
-#: apps/action/models.py:101 apps/wallet/models.py:14
+#: apps/account/admin.py:28 apps/account/models.py:13
+#: apps/transaction/admin.py:43 apps/transaction/admin.py:53
+#: apps/transaction/admin.py:109 apps/transaction/admin.py:165
+#: apps/transaction/models.py:28 apps/transaction/models.py:40
+#: apps/transaction/models.py:92 apps/transaction/models.py:117
 msgid "User"
 msgstr "Користувач"
 
-#: apps/action/models.py:34
-msgid "Income Category"
-msgstr ""
+#: apps/account/apps.py:7 apps/account/models.py:44
+msgid "Account"
+msgstr "Рахунок"
 
-#: apps/action/models.py:35
-msgid "Income Categories"
-msgstr ""
-
-#: apps/action/models.py:46
-msgid "Expense Category"
-msgstr ""
-
-#: apps/action/models.py:47
-msgid "Expense Categories"
-msgstr ""
-
-#: apps/action/models.py:54 apps/wallet/models.py:19
+#: apps/account/models.py:18 apps/transaction/models.py:54
 msgid "Name"
 msgstr "Назва"
 
-#: apps/action/models.py:57
-msgid "Date"
-msgstr ""
-
-#: apps/action/models.py:59
-msgid "Amount"
-msgstr ""
-
-#: apps/action/models.py:66
-msgid "Is transaction?"
-msgstr ""
-
-#: apps/action/models.py:89 apps/action/models.py:104
-#, fuzzy
+#: apps/account/models.py:22
 #| msgid "Icon of wallet"
-msgid "To wallet"
-msgstr "Іконка гаманця"
+msgid "Icon of account"
+msgstr "Іконка рахунку"
 
-#: apps/action/models.py:112
-msgid "Related Income"
-msgstr ""
-
-#: apps/action/models.py:121
-msgid ""
-"If field 'is_transaction' is True then field "
-"'related_income'                 must contain a reference to the associated "
-"object. And vice versa."
-msgstr ""
-
-#: apps/wallet/models.py:23
-msgid "Icon of wallet"
-msgstr "Іконка гаманця"
-
-#: apps/wallet/models.py:27
+#: apps/account/models.py:26
 msgid "Initial balance"
 msgstr "Початковий баланс"
 
-#: apps/wallet/models.py:32
+#: apps/account/models.py:31
 msgid "Total balance"
 msgstr "Загальний баланс"
 
-#: apps/wallet/models.py:39
+#: apps/account/models.py:38
 msgid "Date of initial balance"
 msgstr "Дата початкового балансу"
 
-#: apps/wallet/models.py:45
-msgid "Wallet"
-msgstr "Гаменець"
+#: apps/account/models.py:45
+msgid "Accounts"
+msgstr "Рахунки"
 
-#: apps/wallet/models.py:46
-msgid "Wallets"
-msgstr "Гаманці"
+#: apps/account/services.py:91
+#| msgid "There is no wallet with this ID."
+msgid "There is no account with this ID."
+msgstr "Рахунок із даним id не існує."
 
-#: apps/wallet/models.py:54
-msgid "Currencies of balance and initial_balance must be the same."
-msgstr "Валюти balance і initial_balance мають бути однаковими."
-
-#: apps/wallet/services.py:76
-msgid "There is no wallet with this ID."
-msgstr "Гаменець із даний id не існує."
-
-#: apps/wallet/views.py:78
+#: apps/account/views.py:78
 msgid "Rate for '{}' does not exist."
 msgstr "Обмінний курс для '{}' не існує."
 
-#: project/settings.py:120
+#: apps/authentication/admin.py:15
+msgid "Personal Info"
+msgstr "Персональна інформація"
+
+#: apps/authentication/admin.py:25
+msgid "Permissions"
+msgstr "Дозволи"
+
+#: apps/authentication/admin.py:34
+msgid "Important dates"
+msgstr "Важлива інформація"
+
+#: apps/authentication/apps.py:7
+msgid "Authentication"
+msgstr "Аунтефікація"
+
+#: apps/authentication/managers.py:10
+msgid "Users must have an email address"
+msgstr "Користувач повинен мати email адресу"
+
+#: apps/authentication/models.py:17
+msgid "Main currency"
+msgstr "Головна валюта"
+
+#: apps/transaction/admin.py:23
+msgid "Delete selected objects"
+msgstr "Видалити вибрані об'єкти"
+
+#: apps/transaction/apps.py:7
+msgid "Transaction"
+msgstr "Транзакція"
+
+#: apps/transaction/models.py:16 apps/transaction/models.py:103
+#: apps/transaction/models.py:128
+msgid "Category"
+msgstr "Категорія"
+
+#: apps/transaction/models.py:34
+msgid "Income Category"
+msgstr "Катогорія прибутків"
+
+#: apps/transaction/models.py:35
+msgid "Income Categories"
+msgstr "Категорії прибутків"
+
+#: apps/transaction/models.py:46
+msgid "Expense Category"
+msgstr "Категорія витрат"
+
+#: apps/transaction/models.py:47
+msgid "Expense Categories"
+msgstr "Категорії витрат"
+
+#: apps/transaction/models.py:58
+msgid "Date"
+msgstr "Дата"
+
+#: apps/transaction/models.py:60
+msgid "Amount"
+msgstr "Сума"
+
+#: apps/transaction/models.py:65
+msgid "Is transaction?"
+msgstr "Це трансфер?"
+
+#: apps/transaction/models.py:97 apps/transaction/models.py:122
+msgid "To account"
+msgstr "До рахунку"
+
+#: apps/transaction/models.py:110
+msgid "Income"
+msgstr "Прибуток"
+
+#: apps/transaction/models.py:111
+msgid "Incomes"
+msgstr "Прибутки"
+
+#: apps/transaction/models.py:134
+msgid "Related Income"
+msgstr "Пов'язаний прибуток"
+
+#: apps/transaction/models.py:141
+msgid "Expense"
+msgstr "Витрата"
+
+#: apps/transaction/models.py:142
+msgid "Expenses"
+msgstr "Витрати"
+
+#: apps/transaction/models.py:147
+msgid ""
+"If field 'is_transaction' is True then field 'related_income'"
+"                 must contain a reference to the associated object. And vice"
+" versa."
+msgstr ""
+"Якщо поле 'is_transaction' є Trueтоді поле 'related_income' повине містити "
+"пов'язаний із ним об'єкт. І навпаки."
+
+#: apps/transaction/services.py:13
+#| msgid "There is no wallet with this ID."
+msgid "There is no income with this ID."
+msgstr "Прибутку із даним id не існує."
+
+#: apps/transaction/services.py:48
+#| msgid "There is no wallet with this ID."
+msgid "There is no expense with this ID."
+msgstr "Витрати із даним id не існує."
+
+#: project/settings.py:121
 msgid "English"
 msgstr "Англійська"
 
-#: project/settings.py:121
+#: project/settings.py:122
 msgid "Ukrainian"
 msgstr "Українська"
+
+#, fuzzy
+#~ msgid "To wallet"
+#~ msgstr "Іконка гаманця"
+
+#~ msgid "Wallet"
+#~ msgstr "Гаменець"
+
+#~ msgid "Wallets"
+#~ msgstr "Гаманці"
+
+#~ msgid "Currencies of balance and initial_balance must be the same."
+#~ msgstr "Валюти balance і initial_balance мають бути однаковими."

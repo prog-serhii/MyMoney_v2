@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-17 17:47+0000\n"
+"POT-Creation-Date: 2021-02-23 08:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,102 +18,158 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/action/models.py:16 apps/action/models.py:93 apps/action/models.py:108
-msgid "Category"
-msgstr ""
-
-#: apps/action/models.py:28 apps/action/models.py:40 apps/action/models.py:86
-#: apps/action/models.py:101 apps/wallet/models.py:14
+#: apps/account/admin.py:28 apps/account/models.py:13
+#: apps/transaction/admin.py:43 apps/transaction/admin.py:53
+#: apps/transaction/admin.py:109 apps/transaction/admin.py:165
+#: apps/transaction/models.py:28 apps/transaction/models.py:40
+#: apps/transaction/models.py:92 apps/transaction/models.py:117
 msgid "User"
 msgstr ""
 
-#: apps/action/models.py:34
-msgid "Income Category"
+#: apps/account/apps.py:7 apps/account/models.py:44
+msgid "Account"
 msgstr ""
 
-#: apps/action/models.py:35
-msgid "Income Categories"
-msgstr ""
-
-#: apps/action/models.py:46
-msgid "Expense Category"
-msgstr ""
-
-#: apps/action/models.py:47
-msgid "Expense Categories"
-msgstr ""
-
-#: apps/action/models.py:54 apps/wallet/models.py:19
+#: apps/account/models.py:18 apps/transaction/models.py:54
 msgid "Name"
 msgstr ""
 
-#: apps/action/models.py:57
+#: apps/account/models.py:22
+msgid "Icon of account"
+msgstr ""
+
+#: apps/account/models.py:26
+msgid "Initial balance"
+msgstr ""
+
+#: apps/account/models.py:31
+msgid "Total balance"
+msgstr ""
+
+#: apps/account/models.py:38
+msgid "Date of initial balance"
+msgstr ""
+
+#: apps/account/models.py:45
+msgid "Accounts"
+msgstr ""
+
+#: apps/account/services.py:91
+msgid "There is no account with this ID."
+msgstr ""
+
+#: apps/account/views.py:78
+msgid "Rate for '{}' does not exist."
+msgstr ""
+
+#: apps/authentication/admin.py:15
+msgid "Personal Info"
+msgstr ""
+
+#: apps/authentication/admin.py:25
+msgid "Permissions"
+msgstr ""
+
+#: apps/authentication/admin.py:34
+msgid "Important dates"
+msgstr ""
+
+#: apps/authentication/apps.py:7
+msgid "Authentication"
+msgstr ""
+
+#: apps/authentication/managers.py:10
+msgid "Users must have an email address"
+msgstr ""
+
+#: apps/authentication/models.py:17
+msgid "Main currency"
+msgstr ""
+
+#: apps/transaction/admin.py:23
+msgid "Delete selected objects"
+msgstr ""
+
+#: apps/transaction/apps.py:7
+msgid "Transaction"
+msgstr ""
+
+#: apps/transaction/models.py:16 apps/transaction/models.py:103
+#: apps/transaction/models.py:128
+msgid "Category"
+msgstr ""
+
+#: apps/transaction/models.py:34
+msgid "Income Category"
+msgstr ""
+
+#: apps/transaction/models.py:35
+msgid "Income Categories"
+msgstr ""
+
+#: apps/transaction/models.py:46
+msgid "Expense Category"
+msgstr ""
+
+#: apps/transaction/models.py:47
+msgid "Expense Categories"
+msgstr ""
+
+#: apps/transaction/models.py:58
 msgid "Date"
 msgstr ""
 
-#: apps/action/models.py:59
+#: apps/transaction/models.py:60
 msgid "Amount"
 msgstr ""
 
-#: apps/action/models.py:66
+#: apps/transaction/models.py:65
 msgid "Is transaction?"
 msgstr ""
 
-#: apps/action/models.py:89 apps/action/models.py:104
-msgid "To wallet"
+#: apps/transaction/models.py:97 apps/transaction/models.py:122
+msgid "To account"
 msgstr ""
 
-#: apps/action/models.py:112
+#: apps/transaction/models.py:110
+msgid "Income"
+msgstr ""
+
+#: apps/transaction/models.py:111
+msgid "Incomes"
+msgstr ""
+
+#: apps/transaction/models.py:134
 msgid "Related Income"
 msgstr ""
 
-#: apps/action/models.py:121
+#: apps/transaction/models.py:141
+msgid "Expense"
+msgstr ""
+
+#: apps/transaction/models.py:142
+msgid "Expenses"
+msgstr ""
+
+#: apps/transaction/models.py:147
 msgid ""
 "If field 'is_transaction' is True then field "
 "'related_income'                 must contain a reference to the associated "
 "object. And vice versa."
 msgstr ""
 
-#: apps/wallet/models.py:23
-msgid "Icon of wallet"
+#: apps/transaction/services.py:13
+msgid "There is no income with this ID."
 msgstr ""
 
-#: apps/wallet/models.py:27
-msgid "Initial balance"
-msgstr ""
-
-#: apps/wallet/models.py:32
-msgid "Total balance"
-msgstr ""
-
-#: apps/wallet/models.py:39
-msgid "Date of initial balance"
-msgstr ""
-
-#: apps/wallet/models.py:45
-msgid "Wallet"
-msgstr ""
-
-#: apps/wallet/models.py:46
-msgid "Wallets"
-msgstr ""
-
-#: apps/wallet/models.py:54
-msgid "Currencies of balance and initial_balance must be the same."
-msgstr ""
-
-#: apps/wallet/services.py:76
-msgid "There is no wallet with this ID."
-msgstr ""
-
-#: apps/wallet/views.py:78
-msgid "Rate for '{}' does not exist."
-msgstr ""
-
-#: project/settings.py:120
-msgid "English"
+#: apps/transaction/services.py:48
+msgid "There is no expense with this ID."
 msgstr ""
 
 #: project/settings.py:121
+msgid "English"
+msgstr ""
+
+#: project/settings.py:122
 msgid "Ukrainian"
 msgstr ""

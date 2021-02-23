@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'djmoney.contrib.exchange',
     'corsheaders',
 
-    'apps.authentication.apps.UserConfig',
+    'apps.authentication.apps.AuthenticationConfig',
     'apps.account.apps.AccountConfig',
     'apps.transaction.apps.TransactionConfig',
     'apps.api.apps.ApiConfig'

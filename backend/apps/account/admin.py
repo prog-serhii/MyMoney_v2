@@ -1,6 +1,7 @@
 from django.urls import reverse
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 
 
 from .models import Account
@@ -24,4 +25,4 @@ class AccountAdmin(admin.ModelAdmin):
 
     def user_link(self, account):
         return user_link_(account)
-    user_link.short_description = 'User'
+    user_link.short_description = _('User')

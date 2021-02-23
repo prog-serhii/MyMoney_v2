@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.core.exceptions import PermissionDenied
 from django.contrib.admin.actions import delete_selected
+from django.utils.translation import gettext_lazy as _
 
 from .models import (Expense, Income,
                      ExpenseCategory, IncomeCategory)
@@ -19,7 +20,7 @@ def delete_selected_(modeladmin, request, queryset):
         return delete_selected(modeladmin, request, queryset)
 
 
-delete_selected_.short_description = 'Delete selected objects'
+delete_selected_.short_description = _('Delete selected objects')
 
 
 def user_link_(obj):
@@ -39,7 +40,7 @@ class IncomeCategoryAdmin(admin.ModelAdmin):
 
     def user_link(self, income_category):
         return user_link_(income_category)
-    user_link.short_description = 'User'
+    user_link.short_description = _('User')
 
 
 @admin.register(ExpenseCategory)
@@ -49,7 +50,7 @@ class ExpenseCategoryAdmin(admin.ModelAdmin):
 
     def user_link(self, expense_category):
         return user_link_(expense_category)
-    user_link.short_description = 'User'
+    user_link.short_description = _('User')
 
 
 class ExpenseAdminForm(ModelForm):
@@ -105,7 +106,7 @@ class ExpenseAdmin(admin.ModelAdmin):
 
     def user_link(self, expense):
         return user_link_(expense)
-    user_link.short_description = 'User'
+    user_link.short_description = _('User')
 
 
 class IncomeAdminForm(ModelForm):
@@ -161,4 +162,4 @@ class IncomeAdmin(admin.ModelAdmin):
 
     def user_link(self, expense):
         return user_link_(expense)
-    user_link.short_description = 'User'
+    user_link.short_description = _('User')
