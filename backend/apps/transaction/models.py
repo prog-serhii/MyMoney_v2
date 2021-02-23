@@ -106,6 +106,10 @@ class Income(Transaction):
                                  blank=False,
                                  null=False)
 
+    class Meta:
+        verbose_name = _('Income')
+        verbose_name_plural = _('Incomes')
+
 
 class Expense(Transaction):
     user = models.ForeignKey(get_user_model(),
@@ -132,6 +136,10 @@ class Expense(Transaction):
                                           on_delete=models.SET_NULL,
                                           blank=True,
                                           null=True)
+
+    class Meta:
+        verbose_name = _('Expense')
+        verbose_name_plural = _('Expenses')
 
     def clean(self):
         if self.is_transaction != bool(self.related_income):

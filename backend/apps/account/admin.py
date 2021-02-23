@@ -10,7 +10,7 @@ def user_link_(obj):
     """
     Create link to user
     """
-    url = reverse('admin:user_user_change',
+    url = reverse('admin:authentication_user_change',
                   args=[obj.user.id])
     link = f'<a href="{url}"> {obj.user.email} </a>'
     return mark_safe(link)

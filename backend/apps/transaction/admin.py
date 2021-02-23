@@ -26,7 +26,7 @@ def user_link_(obj):
     """
     Create link to user
     """
-    url = reverse('admin:user_user_change',
+    url = reverse('admin:authentication_user_change',
                   args=[obj.user.id])
     link = f'<a href="{url}"> {obj.user.email} </a>'
     return mark_safe(link)
@@ -75,11 +75,11 @@ class ExpenseAdminForm(ModelForm):
                 ValidationError(' expense_user != account_user', code='invalid')
             )
 
-        if expense_currency != account_currency:
-            self.add_error(
-                'account',
-                ValidationError(' expense_ cue != account_ cue', code='invalid')
-            )
+        # if expense_currency != account_currency:
+        #     self.add_error(
+        #         'account',
+        #         ValidationError(' expense_ cue != account_ cue', code='invalid')
+        #     )
 
         if expense_user != category_user:
             self.add_error(
@@ -131,11 +131,11 @@ class IncomeAdminForm(ModelForm):
                 ValidationError(' income_user != account_user', code='invalid')
             )
 
-        if income_currency != account_currency:
-            self.add_error(
-                'account',
-                ValidationError(' income_ cue != account_ cue', code='invalid')
-            )
+        # if income_currency != account_currency:
+        #     self.add_error(
+        #         'account',
+        #         ValidationError(' income_ cue != account_ cue', code='invalid')
+        #     )
 
         if income_user != category_user:
             self.add_error(

@@ -1,16 +1,35 @@
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet, DateFilter
 from rest_framework.generics import (ListCreateAPIView, RetrieveUpdateDestroyAPIView)
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 
 from apps.api.mixins import ApiErrorsMixin
+from .models import Income, Expense
 from . import serializers
 from . import services
 
 
 class LargeResultsSetPagination(LimitOffsetPagination):
     default_limit = 50
+
+
+class IncomeFilter(FilterSet):
+    start_date = DateFilter(field_name='date', lookup_expr='gte')
+    end_date = DateFilter(field_name='date', lookup_expr='lte')
+
+    class Meta:
+        model = Income
+        fields = ('account', 'category')
+
+
+class ExpenseFilter(FilterSet):
+    start_date = DateFilter(field_name='date', lookup_expr='gte')
+    end_date = DateFilter(field_name='date', lookup_expr='lte')
+
+    class Meta:
+        model = Expense
+        fields = ('account', 'category')
 
 
 class IncomeCategoryListAPI(ApiErrorsMixin, ListCreateAPIView):
@@ -45,7 +64,7 @@ class IncomeCategoryDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
 
 class ExpenseCategoryListAPI(ApiErrorsMixin, ListCreateAPIView):
     serializer_class = serializers.ExpenseCategorySerializer
-    filter_backends = (SearchFilter, OrderingFilter)
+    filter_backends = (SearchFilter, OrderingFilter, DjangoFilterBackend)
 
     search_fields = ('name',)
     ordering_fields = ('name',)
@@ -80,7 +99,7 @@ class IncomeListAPI(ApiErrorsMixin, ListCreateAPIView):
 
     search_fields = ('name',)
     ordering_fields = ('date', 'name',)
-    filterset_fields = ('account', 'category')
+    filterset_class = IncomeFilter
 
     def get_queryset(self):
         user_id = self.request.user.id
@@ -106,7 +125,7 @@ class ExpenseListAPI(ApiErrorsMixin, ListCreateAPIView):
 
     search_fields = ('name',)
     ordering_fields = ('date', 'name')
-    filterset_fields = ('account', 'category')
+    filterset_class = ExpenseFilter
 
     def get_queryset(self):
         user_id = self.request.user.id
