@@ -43,8 +43,8 @@ class AccountDetailAPI(AuthMixin, ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.AccountDetailSerializer
 
     def perform_update(self, serializer):
-        instance = self.get_object()
-        services.update_account(instance, serializer)
+        account_id = self.get_object().id
+        services.update_account(account_id, serializer.validated_data)
 
     def perform_destroy(self, instance):
         services.remove_account(instance)

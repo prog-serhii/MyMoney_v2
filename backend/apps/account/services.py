@@ -33,20 +33,32 @@ def create_account(user, validated_data: dict) -> Account:
     return account
 
 
-def update_account(instance: Account, serializer) -> None:
+def update_account(account_id: int, validated_data: dict) -> None:
     """
-    ПЕРЕПИСАТИ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    Як поступити при змінні валюти, якщо вже є пов'язані із цим гаманцем витрати, прибутки?
+    This function stores data from the serializer in the Account object.
+    And in case of updating or currency or the amount of the initial balance
+    recalculation the balance. 
     """
-    new_initial_balance = serializer.validated_data['initial_balance']
-    old_initial_balance = instance.initial_balance
 
-    if new_initial_balance != old_initial_balance:
-        new_balance = instance.balance.amount - old_initial_balance.amount + new_initial_balance.amount
-        serializer.save(balance=new_balance, balance_currency=new_initial_balance.currency)
+    initial_balance = validated_data['initial_balance']
+    initial_balance_currency = validated_data['initial_balance_currency']
 
-    else:
-        serializer.save()
+    with transaction.atomic():
+        account = Account.objects.select_for_update().get(id=account_id)
+
+        if initial_balance != account.initial_balance:
+            # subtract the previous value of the initial balance
+            account.balance -= account.initial_balance
+            # update currency of balance
+            account.balance_currency = initial_balance_currency
+            # add a new value of initial balance to the balance
+            account.balance += initial_balance
+
+        # update fields from the serializer
+        for attr, value in validated_data.items():
+            setattr(account, attr, value)
+
+        account.save()
 
 
 def update_accounts_balance(account_id: int, delta: Money) -> None:

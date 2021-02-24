@@ -53,10 +53,7 @@ class IncomeCategoryDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         user_id = self.request.user.id
-        return services.get_income_categories_by_user(user_id)
-
-    def perform_update(self, serializer):
-        pass
+        return services. get_income_categories_by_user(user_id)
 
     def perform_destroy(self, instance):
         services.remove_income_category(instance)
@@ -84,9 +81,6 @@ class ExpenseCategoryDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         user_id = self.request.user.id
         return services.get_expense_categories_by_user(user_id)
-
-    def perform_update(self, serializer):
-        pass
 
     def perform_destroy(self, instance):
         services.remove_expense_category(instance)
@@ -117,6 +111,13 @@ class IncomeDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
         user_id = self.request.user.id
         return services.get_incomes_by_user(user_id)
 
+    def perform_update(self, serializer):
+        income = self.get_object()
+        services.update_income(income, serializer)
+
+    def perform_destroy(self, instance):
+        services.remove_income(instance)
+
 
 class ExpenseListAPI(ApiErrorsMixin, ListCreateAPIView):
     serializer_class = serializers.ExpenseListSerializer
@@ -142,3 +143,10 @@ class ExpenseDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         user_id = self.request.user.id
         return services.get_expenses_by_user(user_id)
+
+    def perform_update(self, serializer):
+        expense = self.get_object()
+        services.update_expense(expense, serializer)
+
+    def perform_destroy(self, instance):
+        services.remove_expense(instance)

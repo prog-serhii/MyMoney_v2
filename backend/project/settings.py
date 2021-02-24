@@ -178,9 +178,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',
-    ),
     'EXCEPTION_HANDLER': 'apps.api.errors.custom_exception_handler',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
@@ -211,6 +208,9 @@ DJOSER = {
     }
 }
 
+# ------------------------------------------ #
+#               Simple JWT                   #
+# ------------------------------------------ #
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),

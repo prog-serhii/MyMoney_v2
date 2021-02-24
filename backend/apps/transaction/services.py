@@ -1,3 +1,5 @@
+from djmoney.money import Money
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 from django.db.models import QuerySet
@@ -41,6 +43,29 @@ def create_income(user, validated_data: dict) -> Income:
     return income
 
 
+def update_income(income: Income, serializer) -> None:
+    """
+    """
+    currency = income.amount_currency
+
+    income_amount = income.amount.amount
+    new_income_amount = serializer.validated_data['amount']
+
+    if income_amount != new_income_amount:
+        delta = -income_amount + new_income_amount
+        update_accounts_balance(income.account.id, Money(delta, currency))
+
+    serializer.save()
+
+
+def remove_income(income: Income) -> None:
+    """
+    """
+    update_accounts_balance(income.account.id, -income.amount)
+
+    income.delete()
+
+
 def get_expense_by(id: int) -> Expense:
     try:
         expense = Expense.objects.get(id=id)
@@ -74,6 +99,29 @@ def create_expense(user, validated_data: dict) -> Expense:
     update_accounts_balance(expense.account.id, -expense.amount)
 
     return expense
+
+
+def update_expense(expense: Expense, serializer) -> None:
+    """
+    """
+    currency = expense.amount_currency
+
+    expense_amount = expense.amount.amount
+    new_expense_amount = serializer.validated_data['amount']
+
+    if expense_amount != new_expense_amount:
+        delta = expense_amount - new_expense_amount
+        update_accounts_balance(expense.account.id, Money(delta, currency))
+
+    serializer.save()
+
+
+def remove_expense(expense: Expense) -> None:
+    """
+    """
+    update_accounts_balance(expense.account.id, expense.amount)
+
+    expense.delete()
 
 
 def get_income_categories_by_user(user_id: int) -> QuerySet:
@@ -122,30 +170,6 @@ def create_expense_category(user, validated_data: dict) -> ExpenseCategory:
 
 def remove_expense_category(instance: ExpenseCategory) -> None:
     instance.delete()
-
-# def delete_income(id: int) -> bool:
-#     income = get_income_by(id)
-
-#     if income is None:
-#         # if the istance doesn't exist
-#         return False
-
-#     # update balance of related account
-#     account = income.account
-#     new_balance = account.balance - income.amount
-#     account_update_balance(account, new_balance)
-
-#     income.delete()
-
-#     return True
-
-
-def expense_update():
-    pass
-
-
-def expense_delete():
-    pass
 
 
 def transaction_create():
