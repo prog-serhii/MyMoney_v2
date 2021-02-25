@@ -15,6 +15,10 @@ class Category(models.Model):
     """
     name = models.CharField(verbose_name=_('Category'),
                             max_length=100)
+    icon = models.CharField(verbose_name=_('Icon of category'),
+                            max_length=20,
+                            blank=False,
+                            null=False)
 
     class Meta:
         abstract = True

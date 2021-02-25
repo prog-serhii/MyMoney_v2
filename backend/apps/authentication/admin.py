@@ -17,7 +17,6 @@ class UserAdmin(BaseUserAdmin):
                 'fields': (
                     'name',
                     'main_currency',
-                    'currencies'
                 )
             }
         ),
@@ -36,7 +35,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2')
+            'fields': ('email', 'password1', 'password2', 'name', 'main_currency')
         }),
     )
 

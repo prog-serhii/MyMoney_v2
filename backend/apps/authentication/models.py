@@ -20,3 +20,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('name',)
+
+    def save(self, *args, **kwargs):
+        created = self._state.adding
+        super(User, self).save(*args, **kwargs)
+
+        if created:
+            from .services import (create_initial_income_categories,
+                                   create_initial_expense_categories)
+            create_initial_income_categories(self)
+            # create_initial_expense_categories(self)
