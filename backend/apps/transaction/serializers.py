@@ -24,7 +24,7 @@ class IncomeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Income
         fields = ('id', 'name', 'amount', 'formatted_amount', 'currency',
-                  'date', 'is_transaction', 'account', 'category', 'amount_currency')
+                  'date', 'is_transfer', 'account', 'category', 'amount_currency')
         read_only_fields = ('id',)
 
         extra_kwargs = {
@@ -41,7 +41,7 @@ class IncomeDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Income
         fields = ('id', 'name', 'account', 'amount', 'amount_currency',
-                  'date', 'category', 'is_transaction')
+                  'date', 'category', 'is_transfer')
 
 
 class ExpenseListSerializer(serializers.ModelSerializer):
@@ -50,7 +50,7 @@ class ExpenseListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expense
         fields = ('id', 'name', 'amount', 'formatted_amount', 'currency',
-                  'date', 'is_transaction', 'account', 'category', 'amount_currency')
+                  'date', 'is_transfer', 'account', 'category', 'amount_currency')
         read_only_fields = ('id',)
 
         extra_kwargs = {
@@ -67,4 +67,4 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expense
         fields = ('id', 'name', 'account', 'amount', 'amount_currency',
-                  'date', 'category', 'is_transaction')
+                  'date', 'category', 'is_transfer')

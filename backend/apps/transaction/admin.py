@@ -92,7 +92,7 @@ class ExpenseAdminForm(ModelForm):
 @admin.register(Expense)
 class ExpenseAdmin(admin.ModelAdmin):
     form = ExpenseAdminForm
-    list_display = ('name', 'user_link', 'amount', 'date', 'is_transaction')
+    list_display = ('name', 'user_link', 'amount', 'date', 'is_transfer')
     search_fields = ('name',)
     ordering = ('date',)
     list_filter = ('date',)
@@ -148,7 +148,7 @@ class IncomeAdminForm(ModelForm):
 @admin.register(Income)
 class IncomeAdmin(admin.ModelAdmin):
     form = IncomeAdminForm
-    list_display = ('name', 'user_link', 'amount', 'date', 'is_transaction')
+    list_display = ('name', 'user_link', 'amount', 'date', 'is_transfer')
     search_fields = ('name',)
     ordering = ('date', )
     list_filter = ('date',)

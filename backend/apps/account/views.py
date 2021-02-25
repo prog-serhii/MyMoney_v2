@@ -74,6 +74,7 @@ class AccountTotalBalanceAPI(AuthMixin, ApiErrorsMixin, APIView):
             return Response(response, status=HTTP_200_OK)
 
         except MissingRate:
+            # Переписати
             response = {
                 'error': _("Rate for '{}' does not exist.").format(currency)
             }

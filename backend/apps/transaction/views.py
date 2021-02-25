@@ -1,5 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, DateFilter
-from rest_framework.generics import (ListCreateAPIView, RetrieveUpdateDestroyAPIView)
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
 
@@ -117,6 +119,25 @@ class IncomeDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
 
     def perform_destroy(self, instance):
         services.remove_income(instance)
+
+
+class IncomeStatisticAPI(ApiErrorsMixin, APIView):
+    filter_backend = DjangoFilterBackend
+    filterset_class = IncomeFilter
+
+    def filter_queryset(self, queryset):
+        queryset = self.filter_backend().filter_queryset(self.request, queryset, self)
+        return queryset
+
+    def get_queryset(self):
+        user_id = self.request.user.id
+        return services.get_incomes_by_user(user_id)
+
+    def get(self, request):
+        incomes = self.filter_queryset(self.get_queryset())
+        print(incomes)
+
+        return Response('incomes.count()')
 
 
 class ExpenseListAPI(ApiErrorsMixin, ListCreateAPIView):

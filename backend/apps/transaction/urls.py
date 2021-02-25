@@ -8,11 +8,15 @@ urlpatterns = [
          views.IncomeListAPI.as_view(), name='api-incomes-list'),
     path('incomes/<int:pk>/',
          views.IncomeDetailAPI.as_view(), name='api-incomes-detail'),
+    path('incomes/statistic/',
+         views.IncomeStatisticAPI.as_view(), name='api-income-statistic'),
 
     path('expenses/',
          views.ExpenseListAPI.as_view(), name='api-expenses-list'),
     path('expenses/<int:pk>/',
          views.ExpenseDetailAPI.as_view(), name='api-expenses-detail'),
+    #     path('expenses/statistic/',
+    #          views.ExpenseStatisticAPI.as_view(), name='api-expense-statistic'),
 
     path('income-categories/',
          views.IncomeCategoryListAPI.as_view(), name='api-income-categories-list'),

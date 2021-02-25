@@ -62,8 +62,8 @@ class Transaction(models.Model):
                         decimal_places=2,
                         blank=False,
                         null=False)
-    is_transaction = models.BooleanField(verbose_name=_('Is transaction?'),
-                                         default=False)
+    is_transfer = models.BooleanField(verbose_name=_('Is transfer?'),
+                                      default=False)
 
     class Meta:
         abstract = True
@@ -130,24 +130,30 @@ class Expense(Transaction):
                                  related_name='expenses',
                                  blank=False,
                                  null=False)
-    related_income = models.OneToOneField('Income',
-                                          verbose_name=_('Related Income'),
-                                          related_name='related_expense',
-                                          on_delete=models.SET_NULL,
-                                          blank=True,
-                                          null=True)
 
     class Meta:
         verbose_name = _('Expense')
         verbose_name_plural = _('Expenses')
 
-    def clean(self):
-        if self.is_transaction != bool(self.related_income):
-            raise ValidationError(
-                _('If field \'is_transaction\' is True then field \'related_income\' \
-                must contain a reference to the associated object. And vice versa.'),
-                code='invalid')
 
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        return super().save(*args, **kwargs)
+class Transfer(models.Model):
+    income = models.OneToOneField(Income,
+                                  verbose_name=_('Income'),
+                                  on_delete=models.CASCADE,
+                                  related_name='income',
+                                  blank=False,
+                                  null=False)
+    expense = models.OneToOneField(Income,
+                                   verbose_name=_('Expense'),
+                                   on_delete=models.CASCADE,
+                                   related_name='expense',
+                                   blank=False,
+                                   null=False)
+    rate = models.DecimalField(verbose_name=_('Rate'),
+                               default=1.0,
+                               decimal_places=2,
+                               max_digits=10)
+
+    class Meta:
+        verbose_name = _('Transfer')
+        verbose_name_plural = _('Transfers')

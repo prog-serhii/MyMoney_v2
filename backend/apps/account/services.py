@@ -121,7 +121,6 @@ def get_total_balance_of(queryset: QuerySet, currency: str) -> Decimal:
     """
 
     """
-
     total_balance_in_currency = Decimal()
 
     balances_in_currencies = queryset.values('balance_currency').annotate(balance=Sum('balance'))

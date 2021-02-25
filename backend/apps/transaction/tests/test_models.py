@@ -277,16 +277,16 @@ class ExpenseModelTest(TestCase):
         expense = ExpenseFactory(user=user,
                                  account=account2,
                                  category=expense_category,
-                                 is_transaction=True,
+                                 is_transfer=True,
                                  related_income=income)
 
         self.assertEqual(income.related_expense, expense)
 
-    def test_validation_of_is_transaction(self):
-        """Test validation of field 'is_transaction'."""
+    def test_validation_of_is_transfer(self):
+        """Test validation of field 'is_transfer'."""
 
         with self.assertRaises(ValidationError):
-            ExpenseFactory(is_transaction=True)
+            ExpenseFactory(is_transfer=True)
 
     def test_validation_of_related_income(self):
         """Test validation of field 'realated_income'."""
