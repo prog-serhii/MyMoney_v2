@@ -1,7 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, DateFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, DestroyAPIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
 
@@ -171,3 +171,25 @@ class ExpenseDetailAPI(ApiErrorsMixin, RetrieveUpdateDestroyAPIView):
 
     def perform_destroy(self, instance):
         services.remove_expense(instance)
+
+
+class TransferRemoveAPI(ApiErrorsMixin, DestroyAPIView):
+
+    def get_queryset(self):
+        user_id = self.request.user.id
+        return services.get_transfer_by_user(user_id)
+
+    def perform_destroy(self, instance):
+        services.remove_transfer(instance)
+
+
+class TransferCreateAPI(ApiErrorsMixin, CreateAPIView):
+    serializer_class = serializers.TransferCreateSerializer
+
+    def get_queryset(self):
+        user_id = self.request.user.id
+        return services.get_transfer_by_user(user_id)
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        services.create_transfer(user, serializer.validated_data)

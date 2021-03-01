@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.transaction.models import IncomeCategory, ExpenseCategory
 
 
-def _create_categories(CategoryModel, categories: list):
+def _create_categories(CategoryModel, user, categories: list):
     category_instances = [
         CategoryModel(
             user=user,
@@ -38,7 +38,7 @@ def create_initial_income_categories(user):
         }
     ]
 
-    _create_categories(IncomeCategory, INCOME_CATEGORIES)
+    _create_categories(IncomeCategory, user, INCOME_CATEGORIES)
 
 
 def create_initial_expense_categories(user):
@@ -81,4 +81,4 @@ def create_initial_expense_categories(user):
         }
     ]
 
-    _create_categories(ExpenseCategory, EXPENSE_CATEGORIES)
+    _create_categories(ExpenseCategory, user, EXPENSE_CATEGORIES)

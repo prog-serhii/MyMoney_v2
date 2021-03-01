@@ -26,6 +26,11 @@ urlpatterns = [
     path('expense-categories/',
          views.ExpenseCategoryListAPI.as_view(), name='api-expense-categories-list'),
     path('expense-categories/<int:pk>/',
-         views.ExpenseCategoryDetailAPI.as_view(), name='api-expense-categories-detail')
+         views.ExpenseCategoryDetailAPI.as_view(), name='api-expense-categories-detail'),
+
+    path('transfers/',
+         views.TransferCreateAPI.as_view(), name='api-transfer-create'),
+    path('transfers/<int:pk>/',
+         views.TransferRemoveAPI.as_view(), name='api-transfer-remove')
 
 ]

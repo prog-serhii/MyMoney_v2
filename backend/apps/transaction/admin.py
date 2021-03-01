@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.admin.actions import delete_selected
 from django.utils.translation import gettext_lazy as _
 
-from .models import (Expense, Income,
+from .models import (Expense, Income, Transfer,
                      ExpenseCategory, IncomeCategory)
 
 
@@ -163,3 +163,8 @@ class IncomeAdmin(admin.ModelAdmin):
     def user_link(self, expense):
         return user_link_(expense)
     user_link.short_description = _('User')
+
+
+@admin.register(Transfer)
+class TransferAdmin(admin.ModelAdmin):
+    exclude = ['id']

@@ -1,7 +1,9 @@
+from datetime import date
 from rest_framework import serializers
 
 from apps.account.serializers import AccountRepresentationSerializer
-from .models import Income, Expense, IncomeCategory, ExpenseCategory
+from apps.account.models import Account
+from .models import Income, Expense, Transfer, IncomeCategory, ExpenseCategory
 
 
 class IncomeCategorySerializer(serializers.ModelSerializer):
@@ -68,3 +70,39 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
         model = Expense
         fields = ('id', 'name', 'account', 'amount', 'amount_currency',
                   'date', 'category', 'is_transfer')
+
+
+class TransferCreateSerializer(serializers.Serializer):
+    name = serializers.CharField(required=True,
+                                 allow_blank=False,
+                                 max_length=250)
+    date = serializers.DateField(default=date.today)
+    income_amount = serializers.DecimalField(required=True,
+                                             max_digits=10,
+                                             decimal_places=2)
+    income_currency = serializers.CharField(required=True,
+                                            allow_blank=False,
+                                            max_length=5)
+    income_account = serializers.PrimaryKeyRelatedField(
+        queryset=Account.objects.all())
+    income_category = serializers.PrimaryKeyRelatedField(
+        queryset=IncomeCategory.objects.all())
+    expense_amount = serializers.DecimalField(required=True,
+                                              max_digits=10,
+                                              decimal_places=2)
+    expense_currency = serializers.CharField()
+    expense_account = serializers.PrimaryKeyRelatedField(queryset=Account.objects.all())
+    expense_category = serializers.PrimaryKeyRelatedField(
+        queryset=ExpenseCategory.objects.all())
+    rate = serializers.DecimalField(required=True,
+                                    max_digits=10,
+                                    decimal_places=2)
+
+
+class TransferDetailSerializer(serializers.ModelSerializer):
+    income = IncomeDetailSerializer()
+    expense = ExpenseDetailSerializer()
+
+    class Meta:
+        model = Transfer
+        fields = ('income', 'expense', 'rate')

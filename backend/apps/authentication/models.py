@@ -29,4 +29,4 @@ class User(AbstractBaseUser, PermissionsMixin):
             from .services import (create_initial_income_categories,
                                    create_initial_expense_categories)
             create_initial_income_categories(self)
-            # create_initial_expense_categories(self)
+            create_initial_expense_categories(self)

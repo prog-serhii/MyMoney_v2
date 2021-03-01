@@ -1,11 +1,17 @@
+from collections import defaultdict
+from decimal import Decimal
+
 from djmoney.money import Money
+from djmoney.contrib.exchange.models import convert_money
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Sum
 
 from apps.account.services import update_accounts_balance
-from .models import (Expense, Income, ExpenseCategory, IncomeCategory)
+
+from .models import (Expense, Income, Transfer,
+                     ExpenseCategory, IncomeCategory)
 
 
 def get_income_by(id: int) -> Income:
@@ -172,13 +178,124 @@ def remove_expense_category(instance: ExpenseCategory) -> None:
     instance.delete()
 
 
-def transaction_create():
-    pass
+def get_transfer_by(id: int) -> Transfer:
+    try:
+        transfer = Transfer.objects.get(id=id)
+    except ObjectDoesNotExist:
+        raise ValueError(_('There is no transaction with this ID'))
+    return transfer
 
 
-def transaction_update():
-    pass
+def get_transfer_by_user(id: int) -> QuerySet:
+    transfers = Transfer.objects.filter(user=id)
+    return transfers
 
 
-def transaction_delete():
-    pass
+def create_transfer(user, validated_data: dict) -> Transfer:
+    """
+    """
+
+    income_data = {
+        'is_transfer': True,
+
+        'name': validated_data['name'],
+        'date': validated_data['date'],
+
+        'amount': validated_data['income_amount'],
+        'amount_currency': validated_data['income_currency'],
+        'account': validated_data['income_account'],
+        'category': validated_data['income_category']
+    }
+    income = create_income(user, income_data)
+
+    expense_data = {
+        'is_transfer': True,
+
+        'name': validated_data['name'],
+        'date': validated_data['date'],
+
+        'amount': validated_data['expense_amount'],
+        'amount_currency': validated_data['expense_currency'],
+        'account': validated_data['expense_account'],
+        'category': validated_data['expense_category']
+    }
+    expense = create_expense(user, expense_data)
+
+    transfer_data = {
+        'user': user,
+        'income': income,
+        'expense': expense,
+        'rate': validated_data['rate']
+    }
+    Transfer.objects.create(**transfer_data)
+
+
+def remove_transfer(transfer: Transfer) -> None:
+    """
+    This function removes the transfer and related expense and income.
+    Account balances will be recalculated.
+    """
+    remove_income(transfer.income)
+    remove_expense(transfer.expense)
+
+    transfer.delete()
+
+
+def incomes_by_category_statistic(queryset: QuerySet, currency='UAH'):
+    """
+    """
+    # aggregate data grouped by categories and their currencies
+    data = queryset \
+        .values('amount_currency', 'category') \
+        .annotate(sum=Sum('amount'))
+
+    result = defaultdict(list)
+    result_sum = Decimal()
+
+    categories = defaultdict(list)
+
+    # item_id: [
+    #   {'item_currency1': ..., 'item_amount1': ... },
+    #   {'item_currency2': ..., 'item_amount2': ... },
+    #   ...
+    # ]
+    for item in data:
+        item_category_id = item['category']
+        item_currency = item['amount_currency']
+        item_amount = item['sum']
+
+        categories[item_category_id].append({
+            'currency': item_currency,
+            'amount': item_amount
+        })
+
+    for key, value in categories.items():
+        sum_money = Money(0, currency)
+
+        for amount in value:
+            amount = Money(amount['amount'], amount['currency'])
+            sum_money += convert_money(amount, currency)
+
+            result_sum += sum_money.amount
+
+        result['categories'].append({
+            'id': key,
+            'amounts': value,
+            'sum': round(sum_money.amount, 2)
+        })
+
+    result['sum'] = round(result_sum, 2)
+    result['currency'] = currency
+    return(result)
+
+# SELECT
+#     "transaction_income"."amo unt_currency",
+#     "transaction_income"."category_id",
+#     SUM("transaction_income"."amount") AS "sum"
+# FROM
+#     "transaction_income"
+# WHERE
+#     "transaction_income"."user_id" = 1
+# GROUP BY
+#     "transaction_income"."amount_currency",
+#     "transaction_income"."category_id"

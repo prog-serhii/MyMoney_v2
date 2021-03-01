@@ -37,7 +37,7 @@ def update_account(account_id: int, validated_data: dict) -> None:
     """
     This function stores data from the serializer in the Account object.
     And in case of updating or currency or the amount of the initial balance
-    recalculation the balance. 
+    recalculation the balance.
     """
 
     initial_balance = validated_data['initial_balance']
@@ -72,20 +72,16 @@ def update_accounts_balance(account_id: int, delta: Money) -> None:
         account.save(update_fields=['balance'])
 
 
-def remove_account(instance: Account, remove_related=False) -> None:
+def remove_account(instance: Account) -> None:
     """
     This function removes the account.
-
-    (Not implemented)
-    And depending on the parameter 'remove_related' removes related objects
-    or sets the value of the link (to a account) to NULL.
     """
     instance.delete()
 
 
 def get_accounts_by_user(id: int) -> QuerySet:
     """
-    Returns a queryset of accounts belonging to the specified user.
+    Returns a queryset of accounts belonging to the user with `id`.
     """
     queryset = Account.objects.filter(user=id)
 
@@ -94,7 +90,7 @@ def get_accounts_by_user(id: int) -> QuerySet:
 
 def get_account_by(id: int) -> Account:
     """
-    Returns the account according to its id.
+    Returns the account according to its `id`.
     If this account does not exist raise an value error.
     """
     try:
@@ -103,6 +99,23 @@ def get_account_by(id: int) -> Account:
         raise ValueError(_('There is no account with this ID.'))
 
     return account
+
+
+def get_total_balance_of(queryset: QuerySet, currency: str) -> Money:
+    """
+    This function sums all balances in `queryset` according to their currencies.
+    And converts them to one `currency`.
+    And it returns a Money object with `currency` and a convertible balance.
+    """
+    balance_in_currency = Money(0, currency)
+
+    balances_in_currencies = queryset.values('balance_currency').annotate(balance=Sum('balance'))
+
+    for balance in balances_in_currencies:
+        balance = Money(balance['balance'], balance['balance_currency'])
+        balance_in_currency += convert_money(balance, currency)
+
+    return balance_in_currency
 
 
 def filter_by_date_range(queryset: QuerySet, from_date: str, to_date: str) -> QuerySet:
@@ -117,21 +130,6 @@ def filter_by_date_range(queryset: QuerySet, from_date: str, to_date: str) -> Qu
     return queryset.filter(date__range=(from_date, to_date))
 
 
-def get_total_balance_of(queryset: QuerySet, currency: str) -> Decimal:
-    """
-
-    """
-    total_balance_in_currency = Decimal()
-
-    balances_in_currencies = queryset.values('balance_currency').annotate(balance=Sum('balance'))
-
-    for balance in balances_in_currencies:
-        balance = Money(balance['balance'], balance['balance_currency'])
-        total_balance_in_currency += convert_money(balance, currency).amount
-
-    return round(total_balance_in_currency, 2)
-
-
 def get_amount_of(queryset: QuerySet) -> Decimal:
     """ """
     amount = queryset.aggregate(sum=Sum('amount'))
@@ -140,7 +138,8 @@ def get_amount_of(queryset: QuerySet) -> Decimal:
 
 
 def get_amounts_by_day(queryset: QuerySet) -> list:
-    """ """
+    """
+    """
     amounts_by_day = queryset.values('date').annotate(sum=Sum('amount'))
 
     return list(amounts_by_day)
@@ -156,18 +155,14 @@ def get_statistic_for_date_range(account: Account, from_date: str, to_date: str)
     # for i in xrange(span.days + 1):
     #    yield start + timedelta(days=i)
 
-    if account:
-        # filter incomes and expenses for date range
-        incomes = filter_by_date_range(account.incomes, from_date, to_date)
-        expenses = filter_by_date_range(account.expenses, from_date, to_date)
-        # calculate sum of amounts by day
-        incomes_by_day = get_amounts_by_day(incomes)
-        expenses_by_day = get_amounts_by_day(expenses)
+    # filter incomes and expenses for date range
+    incomes = filter_by_date_range(account.incomes, from_date, to_date)
+    expenses = filter_by_date_range(account.expenses, from_date, to_date)
+    # calculate sum of amounts by day
+    incomes_by_day = get_amounts_by_day(incomes)
+    expenses_by_day = get_amounts_by_day(expenses)
 
-        return {
-            'incomes': incomes_by_day,
-            'expenses': expenses_by_day
-        }
-
-    else:
-        return None
+    return {
+        'incomes': incomes_by_day,
+        'expenses': expenses_by_day
+    }

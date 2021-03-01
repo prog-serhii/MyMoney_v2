@@ -3,7 +3,7 @@ from djmoney.models.fields import MoneyField
 
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+# from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from apps.account.models import Account
@@ -141,13 +141,19 @@ class Expense(Transaction):
 
 
 class Transfer(models.Model):
+    user = models.ForeignKey(get_user_model(),
+                             on_delete=models.CASCADE,
+                             verbose_name=_('User'),
+                             related_name='transfers',
+                             blank=False,
+                             null=False)
     income = models.OneToOneField(Income,
                                   verbose_name=_('Income'),
                                   on_delete=models.CASCADE,
                                   related_name='income',
                                   blank=False,
                                   null=False)
-    expense = models.OneToOneField(Income,
+    expense = models.OneToOneField(Expense,
                                    verbose_name=_('Expense'),
                                    on_delete=models.CASCADE,
                                    related_name='expense',
