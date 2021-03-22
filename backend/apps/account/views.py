@@ -82,17 +82,53 @@ class AccountTotalBalanceAPI(AuthMixin, ApiErrorsMixin, APIView):
             return Response(response, status=HTTP_400_BAD_REQUEST)
 
 
-# class WalletStatisticAPI(AuthMixin, APIView):
+class AvailableCurrenciesAPI(ApiErrorsMixin, APIView):
+    """
+    Об'єднати із настипним
+
+    флаг -- all -- users
+    """
+
+    def get(self, request, format=None):
+        available_currencies = services.get_available_currencies()
+
+        response = {
+            'currencies': available_currencies
+        }
+
+        return Response(response, status=HTTP_200_OK)
+
+
+class UsersCurrenciesAPI(AuthMixin, ApiErrorsMixin, APIView):
+    """
+    """
+
+    def get(self, request, format=None):
+        accounts = self.get_queryset()
+
+        currencies = services.get_currencies(accounts)
+
+        response = {
+            'currencies': currencies
+        }
+
+        return Response(response, status=HTTP_200_OK)
+
+
+# class UsersRatesAPI(AuthMixin, ApiErrorsMixin, APIView):
 #     """
-#     1. filter by date range
-#     2. aggregate sum of incomes
-#     3. aggregate sum of expenses
-#     4.
 #     """
 
 #     def get(self, request, format=None):
-#         incomes = services.filter_by_date_range()
-#         expenses = services.filter_by_date_range()
+#         accounts = self.get_queryset()
 
-#         sum_of_incomes = services.get_sum_of(incomes)
-#         sum_of_expenses = services.get_sum_of(expenses)
+#         try:
+#             currency = self.request.query_params['currency']
+#         except KeyError:
+#             currency = self.request.user.main_currency
+
+#         response = {
+#             'currency': currency
+#         }
+
+#         return Response(response, status=HTTP_200_OK)

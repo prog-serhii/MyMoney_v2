@@ -47,37 +47,37 @@ def create_initial_expense_categories(user):
     EXPENSE_CATEGORIES = [
         {
             'name': _('Education'),
-            'icom': 'some-icon'
+            'icon': 'some-icon'
         },
         {
             'name': _('Shopping'),
-            'icom': 'some-icon'},
+            'icon': 'some-icon'},
         {
             'name': _('Personal Care'),
-            'icom': 'some-icon'},
+            'icon': 'some-icon'},
         {
             'name': _('Health & Fitness'),
-            'icom': 'some-icon'
+            'icon': 'some-icon'
         },
         {
             'name': _('Kids'),
-            'icom': 'some-icon'},
+            'icon': 'some-icon'},
         {
             'name': _('Gifts & Donations'),
-            'icom': 'some-icon'},
+            'icon': 'some-icon'},
         {
             'name': _('Auto & Transport'),
-            'icom': 'some-icon'},
+            'icon': 'some-icon'},
         {
             'name': _('Food'),
-            'icom': 'some-icon'
+            'icon': 'some-icon'
         },
         {
             'name': _('Utilities'),
-            'icom': 'some-icon'},
+            'icon': 'some-icon'},
         {
             'name': _('Recreation & Entertainment'),
-            'icom': 'some-icon'
+            'icon': 'some-icon'
         }
     ]
 

@@ -1,8 +1,9 @@
 from datetime import date
 from decimal import Decimal
 
+from moneyed import get_currency, CurrencyDoesNotExist
 from djmoney.money import Money
-from djmoney.contrib.exchange.models import convert_money
+from djmoney.contrib.exchange.models import Rate, convert_money, get_rate
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
@@ -14,7 +15,7 @@ from .models import Account
 
 def create_account(user, validated_data: dict) -> Account:
     """
-    This function creates a new account based on the validated data and user id.
+    Creates a new account based on the validated data and user id.
     Also sets the account balance equal to the initial balance.
     And return created account.
     """
@@ -35,8 +36,8 @@ def create_account(user, validated_data: dict) -> Account:
 
 def update_account(account_id: int, validated_data: dict) -> None:
     """
-    This function stores data from the serializer in the Account object.
-    And in case of updating or currency or the amount of the initial balance
+    Stores data from the serializer in the Account object.
+    In case of updating or currency or the amount of the initial balance
     recalculation the balance.
     """
 
@@ -166,3 +167,72 @@ def get_statistic_for_date_range(account: Account, from_date: str, to_date: str)
         'incomes': incomes_by_day,
         'expenses': expenses_by_day
     }
+
+
+def get_available_currencies() -> list:
+    """
+    Returns list of available currencies for rate backend.
+    """
+    result = list()
+
+    available_currencies = Rate.objects.values_list('currency')
+
+    for currency in available_currencies:
+        CODE_POSITION = 0
+
+        code = currency[CODE_POSITION]
+
+        try:
+            name = get_currency(code=code).name
+        except CurrencyDoesNotExist:
+            continue
+
+        result.append(
+            {
+                'code': code,
+                'name': name
+            }
+        )
+
+    return result
+
+
+def get_currencies(accounts: QuerySet) -> list:
+    """
+    Returns all currencies used by user in format:
+    (currency_code_1, currency_name_1), (currency_code_2, currency_name_2)
+    """
+    result = list()
+
+    unique_currencies = accounts \
+        .values_list('balance_currency') \
+        .order_by('balance_currency') \
+        .distinct('balance_currency')
+
+    for currency in unique_currencies:
+        CODE_POSITION = 0
+
+        code = currency[CODE_POSITION]
+
+        try:
+            name = get_currency(code=code).name
+        except CurrencyDoesNotExist:
+            continue
+
+        result.append(
+            {
+                'code': code,
+                'name': name
+            }
+        )
+
+    return result
+
+
+# def get_exchange_rates(user_id: int, base_currency: str) -> list:
+#     """
+#     Returns an exchange rate between `base_currency` and all user's currencies.
+#     Uses data ************* if the base_currency is not specified.
+#     get_rate
+#     """
+#     return get_rate('UAH', 'EUR')
