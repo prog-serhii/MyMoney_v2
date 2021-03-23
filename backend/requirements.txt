@@ -9,12 +9,12 @@ django-rosetta==0.9.5
 djangorestframework==3.12.2
 djangorestframework-simplejwt==4.4.0
 djoser==2.1.0
+gunicorn==20.0.4
 factory-boy==3.2.0
 ipython==7.16.1
 psycopg2-binary==2.8.6
 redis==3.5.3
 flake8==3.8.4
-setuptools-rust==0.11.6
 jedi==0.17.2
 PyJWT==1.7.1
 django-filter==2.4.0

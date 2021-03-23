@@ -1,20 +1,29 @@
-FROM python:3.7-alpine
-LABEL maintainer="Serhii Kazmiruk"
+# pull official base image
+FROM python:3.8.3-alpine
+
+# set work directory
+WORKDIR /usr/src/backend
 
 # set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Install dependencies
-COPY ./requirements.txt /requirements.txt
-RUN apk add --update --no-cache postgresql-client
-RUN apk add --update --no-cache --virtual .tmp-build-deps \
-    gcc libc-dev linux-headers postgresql-dev libffi-dev
+# install psycopg2 dependencies
+RUN apk update \
+    && apk add postgresql-dev gcc python3-dev \
+    musl-dev libffi-dev libc-dev linux-headers openssl-dev cargo
+
+# install dependencies
 RUN pip install --upgrade pip
 RUN pip install cryptography
-RUN pip install -r /requirements.txt
-RUN apk del .tmp-build-deps
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
 
-# Setup directory structure
-RUN mkdir /app
-WORKDIR /app
-COPY . /app
+# copy entrypoint.sh
+COPY ./entrypoint.sh .
+
+# copy project
+COPY . .
+
+# run entrypoint.sh
+ENTRYPOINT [ "/usr/src/backend/entrypoint.sh" ]

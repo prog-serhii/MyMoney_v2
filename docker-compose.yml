@@ -4,24 +4,34 @@ services:
   web:
     container_name: my_money_web
     build: ./backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn project.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - ./backend:/app
-    ports:
-      - 8000:8000
+      - static_volume:/usr/src/backend/static/
+    expose:
+      - 8000
     env_file:
       - ./backend/.env
     depends_on: 
       - db
   db:
-    container_name: my_money_postgres_db
-    image: postgres:12-alpine
+    container_name: my_money_db
+    image: postgres:12.0-alpine
     volumes: 
       - postgres_data:/var/lib/postgresql/data/
     environment: 
       - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=(vk185a4)
-      - POSTGRES_DB=my_money
-
+      - POSTGRES_PASSWORD=prog-serhii
+      - POSTGRES_DB=mymoney
+  nginx:
+    container_name: my_money_nginx
+    build: ./nginx
+    volumes: 
+      - static_volume:/usr/src/backend/static/
+    ports:
+      - 80:80
+    depends_on: 
+      - web
+  
 volumes:
   postgres_data:
+  static_volume:
