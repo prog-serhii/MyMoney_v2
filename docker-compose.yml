@@ -1,12 +1,12 @@
 version: '3.7'
 
 services:
-  web:
-    container_name: my_money_web
+  django:
+    container_name: my_money_django
     build: ./backend
     command: gunicorn project.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - static_volume:/usr/src/backend/static/
+      - django_static_volume:/usr/src/backend/static/
     expose:
       - 8000
     env_file:
@@ -22,16 +22,28 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=prog-serhii
       - POSTGRES_DB=mymoney
+  react:
+    container_name: my_money_react
+    build: ./frontend
+    volumes: 
+      - react_static_volume:/usr/src/frontend/build/static
+    expose: 
+      - 3000
+    command: serve -s build -l 3000
+    depends_on:
+      - django    
   nginx:
     container_name: my_money_nginx
     build: ./nginx
     volumes: 
-      - static_volume:/usr/src/backend/static/
+      - django_static_volume:/usr/src/backend/django_files/static
+      - react_static_volume:/usr/src/frontend/react_files/static
     ports:
       - 80:80
     depends_on: 
-      - web
+      - react
   
 volumes:
   postgres_data:
-  static_volume:
+  django_static_volume:
+  react_static_volume:

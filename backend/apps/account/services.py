@@ -3,7 +3,8 @@ from decimal import Decimal
 
 from moneyed import get_currency, CurrencyDoesNotExist
 from djmoney.money import Money
-from djmoney.contrib.exchange.models import Rate, convert_money, get_rate
+from djmoney.contrib.exchange.models import Rate, convert_money
+# from djmoney.contrib.exchange.models import get_rate
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction

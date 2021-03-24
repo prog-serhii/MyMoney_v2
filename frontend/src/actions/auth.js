@@ -38,7 +38,7 @@ export const login = (email, password) => dispatch => {
     const body = JSON.stringify({ email, password })
 
     // POST request to create a access token
-    axiosInstance.post('auth/jwt/create', body)
+    axiosInstance.post('auth/jwt/create/', body)
         .then(res => {
             dispatch({
                 type: LOGIN_SUCCESS,

@@ -63,10 +63,10 @@ class ExpenseAdminForm(ModelForm):
 
         """
         expense_user = self.cleaned_data['user']
-        expense_currency = self.cleaned_data['amount'].currency
+        # expense_currency = self.cleaned_data['amount'].currency
 
         account_user = self.cleaned_data['account'].user
-        account_currency = self.cleaned_data['account'].currency
+        # account_currency = self.cleaned_data['account'].currency
 
         category_user = self.cleaned_data['category'].user
 
@@ -119,10 +119,10 @@ class IncomeAdminForm(ModelForm):
 
         """
         income_user = self.cleaned_data['user']
-        income_currency = self.cleaned_data['amount'].currency
+        # income_currency = self.cleaned_data['amount'].currency
 
         account_user = self.cleaned_data['account'].user
-        account_currency = self.cleaned_data['account'].currency
+        # account_currency = self.cleaned_data['account'].currency
 
         category_user = self.cleaned_data['category'].user
 
