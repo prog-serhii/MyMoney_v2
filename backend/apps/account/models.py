@@ -8,6 +8,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Account(models.Model):
+    """
+    One user can has several accounts
+    """
 
     user = models.ForeignKey(get_user_model(),
                              verbose_name=_('User'),
@@ -47,14 +50,6 @@ class Account(models.Model):
 
     def __str__(self) -> str:
         return f'{self.name} ({self.user})'
-
-    # def clean(self):
-    #     if self.balance_currency != self.initial_balance_currency:
-    #         raise ValidationError(_('Currencies of balance and initial_balance must be the same.'))
-
-    # def save(self, *args, **kwargs):
-    #     self.full_clean()
-    #     return super().save(*args, **kwargs)
 
     @property
     def currency(self) -> str:

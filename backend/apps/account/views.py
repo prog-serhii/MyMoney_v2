@@ -8,7 +8,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 
 from django.utils.translation import gettext as _
 
-from apps.api.mixins import ApiErrorsMixin
+from apps.common.mixins import ApiErrorsMixin
 from . import services
 from . import serializers
 

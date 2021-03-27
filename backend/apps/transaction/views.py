@@ -6,7 +6,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 
-from apps.api.mixins import ApiErrorsMixin
+from apps.common.mixins import ApiErrorsMixin
 from .models import Income, Expense
 from . import serializers
 from . import services

@@ -8,4 +8,4 @@ services:
 before_script: pip install docker-compose
 
 script:
-    - docker-compose run web sh -c "flake8"
+    - docker-compose run django sh -c "flake8"

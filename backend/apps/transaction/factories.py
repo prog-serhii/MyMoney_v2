@@ -27,8 +27,8 @@ class IncomeFactory(factory.django.DjangoModelFactory):
 
     name = factory.Faker('word')
     user = factory.SubFactory(UserFactory)
-    category = factory.SubFactory(IncomeCategoryFactory)
-    account = factory.SubFactory(AccountFactory)
+    category = factory.SubFactory(IncomeCategoryFactory, user=factory.SelfAttribute('..user'))
+    account = factory.SubFactory(AccountFactory, user=factory.SelfAttribute('..user'))
     amount = factory.Faker('pydecimal', right_digits=2, max_value=99999)
 
 
@@ -38,6 +38,6 @@ class ExpenseFactory(factory.django.DjangoModelFactory):
 
     name = factory.Faker('word')
     user = factory.SubFactory(UserFactory)
-    category = factory.SubFactory(ExpenseCategoryFactory)
-    account = factory.SubFactory(AccountFactory)
+    category = factory.SubFactory(ExpenseCategoryFactory, user=factory.SelfAttribute('..user'))
+    account = factory.SubFactory(AccountFactory, user=factory.SelfAttribute('..user'))
     amount = factory.Faker('pydecimal', right_digits=2, max_value=99999)

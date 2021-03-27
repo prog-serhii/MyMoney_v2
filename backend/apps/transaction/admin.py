@@ -6,6 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.admin.actions import delete_selected
 from django.utils.translation import gettext_lazy as _
 
+from apps.common import validators
 from .models import (Expense, Income, Transfer,
                      ExpenseCategory, IncomeCategory)
 
@@ -63,18 +64,20 @@ class ExpenseAdminForm(ModelForm):
 
         """
         expense_user = self.cleaned_data['user']
-        # expense_currency = self.cleaned_data['amount'].currency
-
         account_user = self.cleaned_data['account'].user
-        # account_currency = self.cleaned_data['account'].currency
-
         category_user = self.cleaned_data['category'].user
 
-        if expense_user != account_user:
-            self.add_error(
-                'account',
-                ValidationError(' expense_user != account_user', code='invalid')
-            )
+        account_currency = self.cleaned_data['account'].currency
+        expense_currency = self.cleaned_data['amount'].currency
+
+        validators.check_transaction_users(expense_user, account_user)
+        validators.check_transaction_users(expense_user, category_user)
+        validators.check_transaction_currencies(expense_currency, account_currency)
+        # if expense_user != account_user:
+        #     self.add_error(
+        #         'account',
+        #         ValidationError(' expense_user != account_user', code='invalid')
+        #     )
 
         # if expense_currency != account_currency:
         #     self.add_error(
@@ -82,11 +85,11 @@ class ExpenseAdminForm(ModelForm):
         #         ValidationError(' expense_ cue != account_ cue', code='invalid')
         #     )
 
-        if expense_user != category_user:
-            self.add_error(
-                'category',
-                ValidationError(' expense_user != category_user', code='invalid')
-            )
+        # if expense_user != category_user:
+        #     self.add_error(
+        #         'category',
+        #         ValidationError(' expense_user != category_user', code='invalid')
+        #     )
 
 
 @admin.register(Expense)

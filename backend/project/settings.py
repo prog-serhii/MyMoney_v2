@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
     'apps.account.apps.AccountConfig',
     'apps.transaction.apps.TransactionConfig',
-    'apps.api.apps.ApiConfig',
+    'apps.common.apps.CommonConfig',
     'apps.authentication.apps.AuthenticationConfig'
 ]
 
@@ -179,7 +179,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'EXCEPTION_HANDLER': 'apps.api.errors.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'apps.common.errors.custom_exception_handler',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 

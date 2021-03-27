@@ -14,28 +14,73 @@ from .models import (Expense, Income, Transfer,
                      ExpenseCategory, IncomeCategory)
 
 
-def get_income_by(id: int) -> Income:
+def get_income_by(income_id: int) -> Income:
+    """
+    Returns an instance of Income by its id.
+    If this instance does not exist, an ValueError occurs.
+    """
     try:
-        income = Income.objects.get(id=id)
+        income = Income.objects.get(id=income_id)
     except ObjectDoesNotExist:
         raise ValueError(_('There is no income with this ID.'))
 
     return income
 
 
-def get_incomes_by_account(id: int) -> QuerySet:
-    incomes = Income.objects.filter(account=id)
+def get_expense_by(expense_id: int) -> Expense:
+    """
+    Returns an instance of Expense by its id.
+    If this instance does not exist, an ValueError occurs.
+    """
+    try:
+        expense = Expense.objects.get(id=expense_id)
+    except ObjectDoesNotExist:
+        raise ValueError(_('There is no expense with this ID.'))
+
+    return expense
+
+
+def get_incomes_by_account(account_id: int) -> QuerySet[Income]:
+    """
+    Returns a queryset of incomes.
+    If the  account does not contain incomes, it is returned empty queryset.
+    """
+    incomes = Income.objects.filter(account=account_id)
+
     return incomes
 
 
-def get_incomes_by_user(id: int) -> QuerySet:
-    incomes = Income.objects.filter(user=id)
+def get_expenses_by_account(account_id: int) -> QuerySet[Expense]:
+    """
+    Returns a queryset of expenses.
+    If the  account does not contain expenses, it is returned empty queryset.
+    """
+    expenses = Expense.objects.filter(account=account_id)
+
+    return expenses
+
+
+def get_incomes_by_user(user_id: int) -> QuerySet[Income]:
+    """
+    If the  account does not contain incomes, it is returned empty queryset.
+    """
+    incomes = Income.objects.filter(user=user_id)
+
     return incomes
+
+
+def get_expenses_by_user(user_id: int) -> QuerySet[Expense]:
+    """
+    If the  account does not contain expenses, it is returned empty queryset.
+    """
+    expenses = Expense.objects.filter(user=user_id)
+    return expenses
 
 
 def create_income(user, validated_data: dict) -> Income:
     """
-    This function creates an new income based on the validated data and user id.
+    Creates an new income based on the validated data and user id.
+    After it 
     """
     data = {
         **validated_data,
@@ -44,6 +89,7 @@ def create_income(user, validated_data: dict) -> Income:
 
     income = Income.objects.create(**data)
 
+    # розідлити?
     update_accounts_balance(income.account.id, income.amount)
 
     return income
@@ -70,25 +116,6 @@ def remove_income(income: Income) -> None:
     update_accounts_balance(income.account.id, -income.amount)
 
     income.delete()
-
-
-def get_expense_by(id: int) -> Expense:
-    try:
-        expense = Expense.objects.get(id=id)
-    except ObjectDoesNotExist:
-        raise ValueError(_('There is no expense with this ID.'))
-
-    return expense
-
-
-def get_expenses_by_account(id: int) -> QuerySet:
-    expenses = Expense.objects.filter(account=id)
-    return expenses
-
-
-def get_expenses_by_user(id: int) -> QuerySet:
-    expenses = Expense.objects.filter(user=id)
-    return expenses
 
 
 def create_expense(user, validated_data: dict) -> Expense:
