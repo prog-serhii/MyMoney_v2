@@ -82,31 +82,29 @@ class AccountTotalBalanceAPI(AuthMixin, ApiErrorsMixin, APIView):
             return Response(response, status=HTTP_400_BAD_REQUEST)
 
 
-class AvailableCurrenciesAPI(ApiErrorsMixin, APIView):
-    """
-    Об'єднати із настипним
-
-    флаг -- all -- users
-    """
-
-    def get(self, request, format=None):
-        available_currencies = services.get_available_currencies()
-
-        response = {
-            'currencies': available_currencies
-        }
-
-        return Response(response, status=HTTP_200_OK)
-
-
-class UsersCurrenciesAPI(AuthMixin, ApiErrorsMixin, APIView):
+class CurrenciesAPI(ApiErrorsMixin, APIView):
     """
     """
 
     def get(self, request, format=None):
-        accounts = self.get_queryset()
+        ALL_CURRENCIES = 'all'
+        USERS_CURRENCIES = 'user'
+        DEFAULT_TYPE = USERS_CURRENCIES
 
-        currencies = services.get_currencies(accounts)
+        try:
+            type_of_currencies = self.request.query_params['type']
+        except KeyError:
+            type_of_currencies = DEFAULT_TYPE
+
+        if type_of_currencies == ALL_CURRENCIES:
+            # get all available currencies
+            currencies = services.get_available_currencies()
+        elif type_of_currencies == USERS_CURRENCIES:
+            # get currencies of user's accounts
+            user_id = self.request.user.id
+            currencies = services.get_currencies_by_user(user_id)
+        else:
+            raise ValueError(_('Not valid GET parameter - \'type\''))
 
         response = {
             'currencies': currencies
@@ -115,20 +113,22 @@ class UsersCurrenciesAPI(AuthMixin, ApiErrorsMixin, APIView):
         return Response(response, status=HTTP_200_OK)
 
 
-# class UsersRatesAPI(AuthMixin, ApiErrorsMixin, APIView):
-#     """
-#     """
+class CurrencyRatesAPI(ApiErrorsMixin, APIView):
+    """
+    """
 
-#     def get(self, request, format=None):
-#         accounts = self.get_queryset()
+    def get(self, request, format=None):
+        try:
+            currency = self.request.query_params['currency']
+        except KeyError:
+            currency = self.request.user.main_currency
 
-#         try:
-#             currency = self.request.query_params['currency']
-#         except KeyError:
-#             currency = self.request.user.main_currency
+        user = self.request.user.id
+        rates = services.get_exchange_rates(user, currency)
 
-#         response = {
-#             'currency': currency
-#         }
+        response = {
+            'rates': rates,
+            'baseCurrency': currency
+        }
 
-#         return Response(response, status=HTTP_200_OK)
+        return Response(response, status=HTTP_200_OK)

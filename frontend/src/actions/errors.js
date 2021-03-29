@@ -11,7 +11,7 @@ export const returnErrors = (response, id) => {
   // if a server response exist
   if (response) {
     payload = {
-      msg: response.data,
+      msg: response.data.errors[0].message,
       status: response.status,
       id
     }

@@ -3,8 +3,7 @@ from decimal import Decimal
 
 from moneyed import get_currency, CurrencyDoesNotExist
 from djmoney.money import Money
-from djmoney.contrib.exchange.models import Rate, convert_money
-# from djmoney.contrib.exchange.models import get_rate
+from djmoney.contrib.exchange.models import Rate, convert_money, get_rate
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
@@ -198,11 +197,13 @@ def get_available_currencies() -> list:
     return result
 
 
-def get_currencies(accounts: QuerySet) -> list:
+def get_currencies_by_user(user_id: int) -> list:
     """
     Returns all currencies used by user in format:
     (currency_code_1, currency_name_1), (currency_code_2, currency_name_2)
     """
+    accounts = get_accounts_by_user(user_id)
+
     result = list()
 
     unique_currencies = accounts \
@@ -230,10 +231,24 @@ def get_currencies(accounts: QuerySet) -> list:
     return result
 
 
-# def get_exchange_rates(user_id: int, base_currency: str) -> list:
-#     """
-#     Returns an exchange rate between `base_currency` and all user's currencies.
-#     Uses data ************* if the base_currency is not specified.
-#     get_rate
-#     """
-#     return get_rate('UAH', 'EUR')
+def get_exchange_rates(user_id: int, base_currency: str) -> list:
+    """
+    Returns an exchange rate between `base_currency` and all user's currencies.
+    Uses data ************* if the base_currency is not specified.
+    get_rate
+    """
+    result = list()
+
+    currencies = get_currencies_by_user(user_id)
+
+    for currency in currencies:
+        # skip base currency
+        if currency['code'] == base_currency:
+            continue
+
+        rate = get_rate(currency['code'], base_currency)
+        currency['rate'] = round(rate, 4)
+
+        result.append(currency)
+
+    return result
