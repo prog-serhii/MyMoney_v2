@@ -13,21 +13,23 @@ import { getBalance } from '../../actions/dashboard'
 
 
 const BalanceWidget = (props) => {
+  const { loading, balance } = props
+  const { getBalance } = props
 
   useEffect(() => {
-    props.getBalance()
+    getBalance()
   }, [])
 
-  let balance = <CSpinner className="text-center" />
+  let formatedBalance = <CSpinner className="text-center" />
 
-  if (props.loading == false && props.balance.amount) {
-    balance = `${props.balance.amount} ${props.balance.currency}`
+  if (loading == false && balance.amount) {
+    formatedBalance = `${balance.amount} ${balance.currency}`
   }
 
   return (
     <CWidgetIcon 
       text="balance" 
-      header={balance} 
+      header={formatedBalance} 
       color="warning" 
       iconPadding={false}
       footerSlot={

@@ -14,12 +14,14 @@ import CIcon from '@coreui/icons-react'
 import { getExchangeRates } from '../../actions/dashboard'
 
 const ExchangeRatesCard = (props) => {
+  const { loading, rates } = props
+  const { getExchangeRates } = props
 
     useEffect(() => {
-      props.getExchangeRates()
+      getExchangeRates()
     }, [])
 
-    const listRates = props.rates.map((rate) =>
+    const listRates = rates.map((rate) =>
       <CListGroupItem key={rate.code}>
         {`1 ${rate.code} = ${rate.rate} ${props.currency}`}
       </CListGroupItem>
@@ -35,7 +37,7 @@ const ExchangeRatesCard = (props) => {
             </div>
           </CCardHeader>
             <CCardBody>
-              {props.loading
+              {loading
                 ? <div className="text-center">
                     <CSpinner grow className="m-2" />
                     <CSpinner grow className="m-2" />

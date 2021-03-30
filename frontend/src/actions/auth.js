@@ -44,6 +44,8 @@ export const login = (email, password) => dispatch => {
                 type: LOGIN_SUCCESS,
                 payload: res.data
             })
+            axiosInstance.defaults.headers['Authorization'] = 
+                'JWT ' + res.data.access
         })
         .catch(err => {
             dispatch(returnErrors(err.response, 'LOGIN_FAIL'))

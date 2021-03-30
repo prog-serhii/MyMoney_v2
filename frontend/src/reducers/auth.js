@@ -9,6 +9,7 @@ import {
   REGISTER_FAIL,
   LOGOUT
 } from '../actions/types'
+import axiosInstance from '../axios'
 
 
 const initialState = {
@@ -38,6 +39,7 @@ export default function (state = initialState, action) {
     case LOGIN_SUCCESS:
       localStorage.setItem('accessToken', action.payload.access)
       localStorage.setItem('refreshToken', action.payload.refresh)
+
       return {
         ...state,
         accessToken: action.payload.access,

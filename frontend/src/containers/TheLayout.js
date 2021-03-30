@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
 
 import {
   TheContent,
@@ -7,14 +6,9 @@ import {
   TheFooter,
   TheHeader
 } from './index'
-import { checkAuthenticated } from '../actions/auth'
 
 
 const TheLayout = (props) => {
-  useEffect(() => {
-    props.checkAuthenticated();
-    //props.loadUser();
-  }, [])
 
   return (
     <div className="c-app c-default-layout">
@@ -30,4 +24,4 @@ const TheLayout = (props) => {
   )
 }
 
-export default connect(null, { checkAuthenticated })(TheLayout)
+export default TheLayout
