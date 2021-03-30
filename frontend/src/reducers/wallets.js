@@ -1,8 +1,6 @@
 import {
     GET_WALLETS_FAIL,
     GET_WALLETS_SUCCESS,
-    GET_BALANCE_SUCCESS,
-    GET_BALANCE_FAIL,
     GET_WALLET_DETAIL_SUCCESS,
     GET_WALLET_DETAIL_FAIL
 } from '../actions/types'
@@ -27,18 +25,6 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 wallets: [],
-            }
-
-        case GET_BALANCE_SUCCESS:
-            return {
-                ...state,
-                balance: action.payload
-            }
-
-        case GET_BALANCE_FAIL:
-            return {
-                ...state,
-                balance: {}
             }
 
         case GET_WALLET_DETAIL_SUCCESS:

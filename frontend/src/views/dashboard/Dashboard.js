@@ -10,13 +10,16 @@ import {
   CCol,
   CProgress,
   CRow,
-  CCallout
+  CCallout,
+  CWidgetIcon,
+  CLink
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
 import MainChartExample from '../charts/MainChartExample.js'
 
-import ExchangeRates from './ExchangeRates'
+import ExchangeRatesCard from './ExchangeRatesCard'
+import BalanceWidget from './BalanceWidget'
 
 // const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 // const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
@@ -24,8 +27,15 @@ import ExchangeRates from './ExchangeRates'
 const Dashboard = () => {
   return (
     <>
-      <ExchangeRates />
       {/* <WidgetsDropdown /> */}
+      <CRow>
+        <CCol xs="12" sm="6" lg="3">
+          <BalanceWidget />
+        </CCol>
+        <CCol xs="12" sm="6" lg="4">
+          <ExchangeRatesCard />
+        </CCol>
+      </CRow>
       <CCard>
         <CCardBody>
           <CRow>

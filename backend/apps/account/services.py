@@ -116,7 +116,7 @@ def get_total_balance_of(queryset: QuerySet, currency: str) -> Money:
         balance = Money(balance['balance'], balance['balance_currency'])
         balance_in_currency += convert_money(balance, currency)
 
-    return balance_in_currency
+    return round(balance_in_currency, 2)
 
 
 def filter_by_date_range(queryset: QuerySet, from_date: str, to_date: str) -> QuerySet:

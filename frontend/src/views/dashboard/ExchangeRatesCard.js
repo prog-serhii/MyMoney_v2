@@ -8,11 +8,12 @@ import {
   CListGroupItem,
   CSpinner,
 } from  '@coreui/react'
+import { freeSet } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 import { getExchangeRates } from '../../actions/dashboard'
 
-const ExchangeRates = (props) => {
+const ExchangeRatesCard = (props) => {
 
     useEffect(() => {
       props.getExchangeRates()
@@ -20,7 +21,7 @@ const ExchangeRates = (props) => {
 
     const listRates = props.rates.map((rate) =>
       <CListGroupItem key={rate.code}>
-        {`1 ${props.currency} = ${rate.rate} ${rate.code}`}
+        {`1 ${rate.code} = ${rate.rate} ${props.currency}`}
       </CListGroupItem>
     )
 
@@ -28,9 +29,9 @@ const ExchangeRates = (props) => {
       <>
         <CCard color="gradient-secondary">
           <CCardHeader>
-            Card with icon
+            Exchange Rates
             <div className="card-header-actions">
-              <CIcon name="cil-check" className="float-right"/>
+              <CIcon content={freeSet.cilBank} className="float-right"/>
             </div>
           </CCardHeader>
             <CCardBody>
@@ -65,4 +66,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExchangeRates)
+export default connect(mapStateToProps, mapDispatchToProps)(ExchangeRatesCard)

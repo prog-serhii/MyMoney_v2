@@ -1,3 +1,5 @@
+import time
+
 from djmoney.contrib.exchange.exceptions import MissingRate
 
 from rest_framework.views import APIView
@@ -56,6 +58,9 @@ class AccountTotalBalanceAPI(AuthMixin, ApiErrorsMixin, APIView):
     """
 
     def get(self, request, format=None):
+        # simulation
+        time.sleep(2)
+
         accounts = self.get_queryset()
 
         try:
@@ -67,7 +72,7 @@ class AccountTotalBalanceAPI(AuthMixin, ApiErrorsMixin, APIView):
             amount = services.get_total_balance_of(accounts, currency)
 
             response = {
-                'amount': amount,
+                'amount': amount.amount,
                 'currency': currency
             }
 
@@ -75,6 +80,7 @@ class AccountTotalBalanceAPI(AuthMixin, ApiErrorsMixin, APIView):
 
         except MissingRate:
             # Переписати
+
             response = {
                 'error': _("Rate for '{}' does not exist.").format(currency)
             }
@@ -118,6 +124,9 @@ class CurrencyRatesAPI(ApiErrorsMixin, APIView):
     """
 
     def get(self, request, format=None):
+        # simulation
+        time.sleep(2)
+
         try:
             currency = self.request.query_params['currency']
         except KeyError:
