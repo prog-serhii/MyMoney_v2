@@ -9,17 +9,16 @@ import {
   CContainer,
   CForm,
   CInput,
-  CSpinner,
   CInputGroup,
   CInputGroupPrepend,
   CInputGroupText,
-  CInvalidFeedback,
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { connect } from 'react-redux'
 import { login } from '../../../actions/auth'
 import { clearErrors } from '../../../actions/errors'
+
 
 class Login extends React.Component {
   state = {
