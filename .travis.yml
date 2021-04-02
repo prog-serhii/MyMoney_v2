@@ -1,11 +1,14 @@
 language: python
 python:
-    - "3.6"
+    - "3.8"
 
-services:
-    - docker
-
-before_script: pip install docker-compose
+install:
+    - pip install -r ./backend/requirements.txt
 
 script:
-    - docker-compose run django sh -c "flake8"
+    - cd ./backend
+    - flake8
+    - python3 manage.py test
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)

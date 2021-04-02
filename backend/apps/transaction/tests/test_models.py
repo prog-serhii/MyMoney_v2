@@ -2,7 +2,7 @@ import factory
 from datetime import date
 
 from django.test import TestCase
-from django.core.exceptions import ValidationError
+# from django.core.exceptions import ValidationError
 
 from apps.authentication.factories import UserFactory
 from apps.account.factories import AccountFactory
@@ -31,15 +31,15 @@ class IncomeCategoryModelTest(TestCase):
 
         self.assertEqual(str(income_category2), f'{name} ({self.user})')
 
-    def test_reverse_link_from_user_model(self):
-        """Test a reverse link from User model."""
+    # def test_reverse_link_from_user_model(self):
+    #     """Test a reverse link from User model."""
 
-        IncomeCategoryFactory.create_batch(
-            5,
-            user=self.user
-        )
+    #     IncomeCategoryFactory.create_batch(
+    #         5,
+    #         user=self.user
+    #     )
 
-        self.assertEqual(self.user.income_categories.count(), 5)
+    #     self.assertEqual(self.user.income_categories.count(), 5)
 
     def test_verbose_name(self):
         """Test a verbose_name of an IncomeCategory."""
@@ -72,15 +72,15 @@ class ExpenseCategoryModelTest(TestCase):
 
         self.assertEqual(str(expense_category2), f'{name} ({self.user})')
 
-    def test_reverse_link_from_user_model(self):
-        """Test a reverse link from User model."""
+    # def test_reverse_link_from_user_model(self):
+    #     """Test a reverse link from User model."""
 
-        ExpenseCategoryFactory.create_batch(
-            3,
-            user=self.user
-        )
+    #     ExpenseCategoryFactory.create_batch(
+    #         3,
+    #         user=self.user
+    #     )
 
-        self.assertEqual(self.user.expense_categories.count(), 3)
+    #     self.assertEqual(self.user.expense_categories.count(), 3)
 
     def test_verbose_name(self):
         """Test a verbose_name of an ExpenseCategory."""
@@ -113,10 +113,10 @@ class IncomeModelTest(TestCase):
 
         self.assertEqual(self.income.date, date.today())
 
-    def test_default_value_of_is_transaction(self):
-        """Test default value of is_transaction. It must to be false."""
+    # def test_default_value_of_is_transaction(self):
+    #     """Test default value of is_transaction. It must to be false."""
 
-        self.assertFalse(self.income.is_transaction)
+    #     self.assertFalse(self.income.is_transaction)
 
     def test_string_representation(self):
         """Test string representation of an Income."""
@@ -195,15 +195,15 @@ class ExpenseModelTest(TestCase):
 
         self.assertEqual(self.expense.date, date.today())
 
-    def test_default_value_of_is_transaction(self):
-        """Test default value of is_transaction. It must to be false."""
+    # def test_default_value_of_is_transaction(self):
+    #     """Test default value of is_transaction. It must to be false."""
 
-        self.assertFalse(self.expense.is_transaction)
+    #     self.assertFalse(self.expense.is_transaction)
 
-    def test_default_value_of_related_income(self):
-        """Test default value of related_income. It must to be None."""
+    # def test_default_value_of_related_income(self):
+    #     """Test default value of related_income. It must to be None."""
 
-        self.assertIsNone(self.expense.related_income)
+    #     self.assertIsNone(self.expense.related_income)
 
     def test_string_representation(self):
         """Test string representation of an Expense."""
@@ -261,37 +261,37 @@ class ExpenseModelTest(TestCase):
 
         self.assertEqual(expense_category.expenses.count(), 7)
 
-    def test_reverse_link_from_income_model(self):
-        """Test reverse link from Income model."""
-        user = UserFactory()
+    # def test_reverse_link_from_income_model(self):
+    #     """Test reverse link from Income model."""
+    #     user = UserFactory()
 
-        account1 = AccountFactory(user=user)
-        account2 = AccountFactory(user=user)
+    #     account1 = AccountFactory(user=user)
+    #     account2 = AccountFactory(user=user)
 
-        income_category = IncomeCategoryFactory(user=user)
-        expense_category = ExpenseCategoryFactory(user=user)
+    #     income_category = IncomeCategoryFactory(user=user)
+    #     expense_category = ExpenseCategoryFactory(user=user)
 
-        income = IncomeFactory(user=user,
-                               account=account1,
-                               category=income_category)
-        expense = ExpenseFactory(user=user,
-                                 account=account2,
-                                 category=expense_category,
-                                 is_transfer=True,
-                                 related_income=income)
+    #     income = IncomeFactory(user=user,
+    #                            account=account1,
+    #                            category=income_category)
+    #     expense = ExpenseFactory(user=user,
+    #                              account=account2,
+    #                              category=expense_category,
+    #                              is_transfer=True,
+    #                              related_income=income)
 
-        self.assertEqual(income.related_expense, expense)
+    #     self.assertEqual(income.related_expense, expense)
 
-    def test_validation_of_is_transfer(self):
-        """Test validation of field 'is_transfer'."""
+    # def test_validation_of_is_transfer(self):
+    #     """Test validation of field 'is_transfer'."""
 
-        with self.assertRaises(ValidationError):
-            ExpenseFactory(is_transfer=True)
+    #     with self.assertRaises(ValidationError):
+    #         ExpenseFactory(is_transfer=True)
 
-    def test_validation_of_related_income(self):
-        """Test validation of field 'realated_income'."""
+    # def test_validation_of_related_income(self):
+    #     """Test validation of field 'realated_income'."""
 
-        income = IncomeFactory()
+    #     income = IncomeFactory()
 
-        with self.assertRaises(ValidationError):
-            ExpenseFactory(related_income=income)
+    #     with self.assertRaises(ValidationError):
+    #         ExpenseFactory(related_income=income)
