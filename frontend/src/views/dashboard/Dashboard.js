@@ -20,6 +20,7 @@ import MainChartExample from '../charts/MainChartExample.js'
 
 import ExchangeRatesCard from './ExchangeRatesCard'
 import BalanceWidget from './BalanceWidget'
+import LastTransactions from './LastTransactions'
 
 // const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 // const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
@@ -29,11 +30,12 @@ const Dashboard = () => {
     <>
       {/* <WidgetsDropdown /> */}
       <CRow>
-        <CCol xs="12" sm="6" lg="3">
-          <BalanceWidget />
+        <CCol xs="12" sm="8" lg="8">
+          <LastTransactions />
         </CCol>
-        <CCol xs="12" sm="6" lg="4">
+        <CCol xs="12" sm="4" lg="4">
           <ExchangeRatesCard />
+          <BalanceWidget />
         </CCol>
       </CRow>
       <CCard>

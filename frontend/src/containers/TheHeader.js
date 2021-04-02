@@ -18,14 +18,10 @@ import routes from '../routes'
 
 import {
   TheHeaderDropdown,
-  TheHeaderDropdownMssg,
   TheHeaderDropdownNotif,
-  TheHeaderDropdownTasks
-} from './index'
-
-import LanguageSwitcher, {
+  TheHeaderDropdownTasks,
   TheLanguageSwitcher
-} from './TheLanguageSwithcer'
+} from './index'
 
 import { toggleSidebar } from '../actions/template'
 
@@ -72,7 +68,7 @@ class TheHeader extends Component {
         </CHeaderNav>
 
         <CHeaderNav className="px-3">
-          <LanguageSwitcher />
+          <TheLanguageSwitcher />
           <TheHeaderDropdownNotif />
           <TheHeaderDropdownTasks />
           <TheHeaderDropdown />

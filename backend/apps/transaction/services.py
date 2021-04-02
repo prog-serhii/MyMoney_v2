@@ -80,7 +80,6 @@ def get_expenses_by_user(user_id: int) -> QuerySet[Expense]:
 def create_income(user, validated_data: dict) -> Income:
     """
     Creates an new income based on the validated data and user id.
-    After it 
     """
     data = {
         **validated_data,

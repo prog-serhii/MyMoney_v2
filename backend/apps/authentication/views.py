@@ -1,8 +1,4 @@
 from rest_framework import generics
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
-from djmoney.settings import CURRENCY_CHOICES
 
 from .serializers import UserSerializer
 

@@ -1,4 +1,5 @@
-from django.forms import ModelForm, ValidationError
+from django.forms import ModelForm
+# from django.forms import ValidationError
 from django.urls import reverse
 from django.contrib import admin
 from django.utils.safestring import mark_safe
@@ -6,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.admin.actions import delete_selected
 from django.utils.translation import gettext_lazy as _
 
-from apps.common import validators
+# from apps.common import validators
 from .models import (Expense, Income, Transfer,
                      ExpenseCategory, IncomeCategory)
 
@@ -63,16 +64,16 @@ class ExpenseAdminForm(ModelForm):
         """
 
         """
-        expense_user = self.cleaned_data['user']
-        account_user = self.cleaned_data['account'].user
-        category_user = self.cleaned_data['category'].user
+        # expense_user = self.cleaned_data['user']
+        # account_user = self.cleaned_data['account'].user
+        # category_user = self.cleaned_data['category'].user
 
-        account_currency = self.cleaned_data['account'].currency
-        expense_currency = self.cleaned_data['amount'].currency
+        # account_currency = self.cleaned_data['account'].currency
+        # expense_currency = self.cleaned_data['amount'].currency
 
-        validators.check_transaction_users(expense_user, account_user)
-        validators.check_transaction_users(expense_user, category_user)
-        validators.check_transaction_currencies(expense_currency, account_currency)
+        # validators.check_transaction_users(expense_user, account_user)
+        # validators.check_transaction_users(expense_user, category_user)
+        # validators.check_transaction_currencies(expense_currency, account_currency)
         # if expense_user != account_user:
         #     self.add_error(
         #         'account',
@@ -121,19 +122,19 @@ class IncomeAdminForm(ModelForm):
         """
 
         """
-        income_user = self.cleaned_data['user']
-        # income_currency = self.cleaned_data['amount'].currency
+        # income_user = self.cleaned_data['user']
+        # # income_currency = self.cleaned_data['amount'].currency
 
-        account_user = self.cleaned_data['account'].user
-        # account_currency = self.cleaned_data['account'].currency
+        # account_user = self.cleaned_data['account'].user
+        # # account_currency = self.cleaned_data['account'].currency
 
-        category_user = self.cleaned_data['category'].user
+        # category_user = self.cleaned_data['category'].user
 
-        if income_user != account_user:
-            self.add_error(
-                'account',
-                ValidationError(' income_user != account_user', code='invalid')
-            )
+        # if income_user != account_user:
+        #     self.add_error(
+        #         'account',
+        #         ValidationError(' income_user != account_user', code='invalid')
+        #     )
 
         # if income_currency != account_currency:
         #     self.add_error(
@@ -141,11 +142,11 @@ class IncomeAdminForm(ModelForm):
         #         ValidationError(' income_ cue != account_ cue', code='invalid')
         #     )
 
-        if income_user != category_user:
-            self.add_error(
-                'category',
-                ValidationError(' income_user != category_user', code='invalid')
-            )
+        # if income_user != category_user:
+        #     self.add_error(
+        #         'category',
+        #         ValidationError(' income_user != category_user', code='invalid')
+        #     )
 
 
 @admin.register(Income)
